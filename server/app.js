@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -10,6 +11,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("API Running");
 });
+
+// User Routes
+app.use("/api/users", userRoutes);
 
 // Register Error Middleware
 app.use(notFound);
