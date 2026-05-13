@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 
 // Pages
 import HomeScreen from "./pages/HomeScreen";
+import ProductScreen from "./pages/ProductScreen";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <main className="flex-grow container mx-auto px-6">
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/product/:id" element={<ProductScreen />} />
             {/* Add more routes here as we build them */}
           </Routes>
         </main>
