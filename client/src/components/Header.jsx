@@ -4,6 +4,7 @@ import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
 
 const Header = () => {
     const { userInfo } = useSelector((state) => state.auth);
+    const { cartItems } = useSelector((state) => state.cart);
 
     return (
         <header className="sticky top-0 z-50 glass">
@@ -28,9 +29,11 @@ const Header = () => {
                     
                     <Link to="/cart" className="relative hover:text-primary transition-colors">
                         <FaShoppingCart size={20} />
-                        <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                            0
-                        </span>
+                        {cartItems.length > 0 && (
+                            <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                                {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                            </span>
+                        )}
                     </Link>
 
                     {userInfo ? (

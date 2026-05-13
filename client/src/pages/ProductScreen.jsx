@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FaArrowLeft, FaMinus, FaPlus } from "react-icons/fa";
+import { addToCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
 
 const ProductScreen = () => {
     const { id: productId } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -29,8 +32,8 @@ const ProductScreen = () => {
     }, [productId]);
 
     const addToCartHandler = () => {
-        // Will implement in Phase 5.2
-        console.log("Add to cart", product.name, qty);
+        dispatch(addToCart({ ...product, qty }));
+        navigate("/cart");
     };
 
     if (loading) return <div className="py-20 text-center uppercase tracking-widest animate-pulse">Refining Details...</div>;

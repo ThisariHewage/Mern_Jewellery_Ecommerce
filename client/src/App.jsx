@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 // Pages
 import HomeScreen from "./pages/HomeScreen";
 import ProductScreen from "./pages/ProductScreen";
+import CartScreen from "./pages/CartScreen";
 
 function App() {
   return (
@@ -16,10 +17,11 @@ function App() {
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-grow container mx-auto px-6">
+        <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
             {/* Add more routes here as we build them */}
           </Routes>
         </main>
