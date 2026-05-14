@@ -39,6 +39,25 @@ export const getOrderDetails = createAsyncThunk(
     }
 );
 
+/**
+ * Async Thunk to pay an order.
+ */
+export const payOrder = createAsyncThunk(
+    "orders/pay",
+    async ({ orderId, details }, { rejectWithValue }) => {
+        try {
+            const response = await api.put(`/api/orders/${orderId}/pay`, details);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+            );
+        }
+    }
+);
+
 const orderSlice = createSlice({
     name: "orders",
     initialState: {
@@ -46,6 +65,8 @@ const orderSlice = createSlice({
         loading: false,
         error: null,
         success: false,
+        loadingPay: false,
+        successPay: false,
     },
     reducers: {
         resetOrder: (state) => {
@@ -53,6 +74,8 @@ const orderSlice = createSlice({
             state.loading = false;
             state.error = null;
             state.success = false;
+            state.loadingPay = false;
+            state.successPay = false;
         },
     },
     extraReducers: (builder) => {
@@ -78,6 +101,17 @@ const orderSlice = createSlice({
             })
             .addCase(getOrderDetails.rejected, (state, action) => {
                 state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(payOrder.pending, (state) => {
+                state.loadingPay = true;
+            })
+            .addCase(payOrder.fulfilled, (state) => {
+                state.loadingPay = false;
+                state.successPay = true;
+            })
+            .addCase(payOrder.rejected, (state, action) => {
+                state.loadingPay = false;
                 state.error = action.payload;
             });
     },

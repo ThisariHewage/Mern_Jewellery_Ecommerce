@@ -16,7 +16,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -26,6 +29,11 @@ app.get("/api/health", (req, res) => {
         status: "UP",
         db: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
     });
+});
+
+// PayPal Config
+app.get("/api/config/paypal", (req, res) => {
+    res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
 
 app.get("/", (req, res) => {

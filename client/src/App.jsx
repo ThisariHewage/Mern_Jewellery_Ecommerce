@@ -14,6 +14,11 @@ import CartScreen from "./pages/CartScreen";
 import ShippingScreen from "./pages/ShippingScreen";
 import PaymentScreen from "./pages/PaymentScreen";
 import PlaceOrderScreen from "./pages/PlaceOrderScreen";
+import OrderScreen from "./pages/OrderScreen";
+import LoginScreen from "./pages/LoginScreen";
+import RegisterScreen from "./pages/RegisterScreen";
+import ShopScreen from "./pages/ShopScreen";
+import NewArrivalsScreen from "./pages/NewArrivalsScreen";
 
 function App() {
   return (
@@ -24,14 +29,19 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/shop" element={<ShopScreen />} />
+            <Route path="/new-arrivals" element={<NewArrivalsScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             
             {/* Registered Users Only */}
-            <Route path="" element={<PrivateRoute />}>
+            <Route element={<PrivateRoute />}>
                 <Route path="/shipping" element={<ShippingScreen />} />
                 <Route path="/payment" element={<PaymentScreen />} />
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
+                <Route path="/order/:id" element={<OrderScreen />} />
             </Route>
           </Routes>
         </main>
