@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
 
 // Pages
 import HomeScreen from "./pages/HomeScreen";
@@ -44,6 +45,11 @@ function App() {
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
                 <Route path="/order/:id" element={<OrderScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
+            </Route>
+
+            {/* Admin Users Only */}
+            <Route element={<AdminRoute />}>
+                {/* Admin routes will go here in the next steps */}
             </Route>
           </Routes>
         </main>
