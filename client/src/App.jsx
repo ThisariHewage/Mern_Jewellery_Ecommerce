@@ -19,6 +19,7 @@ import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
 import ShopScreen from "./pages/ShopScreen";
 import NewArrivalsScreen from "./pages/NewArrivalsScreen";
+import ProfileScreen from "./pages/ProfileScreen";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/payment" element={<PaymentScreen />} />
                 <Route path="/placeorder" element={<PlaceOrderScreen />} />
                 <Route path="/order/:id" element={<OrderScreen />} />
+                <Route path="/profile" element={<ProfileScreen />} />
             </Route>
           </Routes>
         </main>

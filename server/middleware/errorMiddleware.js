@@ -13,6 +13,7 @@ const notFound = (req, res, next) => {
  * This catches all errors passed to next() and sends a JSON response.
  */
 const errorHandler = (err, req, res, next) => {
+    console.error(`Error: ${err.message}`);
     // If the status code is 200, change it to 500 (Internal Server Error)
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;

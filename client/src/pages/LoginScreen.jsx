@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../redux/slices/authSlice";
 import api from "../services/api";
-import { Mail, Lock, ArrowRight, UserPlus } from "lucide-react";
+import { X } from "lucide-react";
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [loginError, setLoginError] = useState("");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,12 +30,14 @@ const LoginScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setLoginError("");
         try {
             const res = await api.post("/api/users/login", { email, password });
             dispatch(setCredentials({ ...res.data }));
             navigate(redirect);
             toast.success("Welcome back!");
         } catch (err) {
+            setLoginError("Incorrect email or password.");
             toast.error(err?.data?.message || err.message || "Login failed");
         } finally {
             setLoading(false);
@@ -42,74 +45,79 @@ const LoginScreen = () => {
     };
 
     return (
-        <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-            <div className="bg-white rounded-[3rem] p-8 sm:p-16 shadow-2xl shadow-gray-200/50 border border-gray-100 max-w-xl w-full">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-gray-900 mb-3 tracking-tight">Welcome Back</h1>
-                    <p className="text-gray-500 uppercase tracking-widest text-[10px] font-bold">Sign in to continue your fashion journey</p>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+            <div className="bg-white p-8 sm:p-12 w-full max-w-lg shadow-sm border border-gray-100 relative">
+                {/* Header with X */}
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-medium text-gray-900">Login</h1>
+                    <Link to="/" className="text-gray-900 hover:text-gray-500 transition-colors">
+                        <X size={28} />
+                    </Link>
                 </div>
 
-                <form onSubmit={submitHandler} className="space-y-8">
-                    <div className="space-y-6">
-                        {/* Email Field */}
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 ml-1">Email Address</label>
-                            <div className="relative group">
-                                <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="email"
-                                    placeholder="your@email.com"
-                                    value={email}
-                                    required
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-5 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
+                {/* Error Banner */}
+                {loginError && (
+                    <div className="bg-red-50 border border-red-100 p-4 mb-8 text-center text-red-500 text-sm">
+                        <span className="inline-block w-1 h-1 bg-red-500 rounded-full mr-2 mb-[2px]"></span>
+                        {loginError}
+                    </div>
+                )}
 
-                        {/* Password Field */}
-                        <div className="space-y-2">
-                            <div className="flex justify-between items-center px-1">
-                                <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">Password</label>
-                                <a href="#" className="text-[10px] uppercase tracking-widest font-bold text-gray-400 hover:text-black transition-colors">Forgot?</a>
-                            </div>
-                            <div className="relative group">
-                                <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    required
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-5 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
+                <form onSubmit={submitHandler} className="space-y-8">
+                    {/* Email Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            placeholder="Email Address"
+                            value={email}
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
                     </div>
 
+                    {/* Password Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
+                    </div>
+
+                    {/* Login Button */}
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-5 bg-black text-white rounded-2xl font-bold text-lg hover:bg-gray-800 transition-all active:scale-[0.98] shadow-xl shadow-black/10 flex items-center justify-center gap-3 group"
+                        className="w-full py-5 bg-[#001569] text-white font-bold text-xl uppercase tracking-widest hover:bg-[#000d4d] transition-all disabled:opacity-50"
                     >
-                        {loading ? "Authenticating..." : (
-                            <>
-                                Sign In
-                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                            </>
-                        )}
+                        {loading ? "Logging In..." : "LOG IN"}
                     </button>
                 </form>
 
-                <div className="mt-12 pt-12 border-t border-gray-100 text-center">
-                    <p className="text-gray-500 text-sm mb-4">New to FashionHub?</p>
-                    <Link 
-                        to={redirect !== "/" ? `/register?redirect=${redirect}` : "/register"}
-                        className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-bold text-black hover:text-gray-600 transition-colors"
-                    >
-                        <UserPlus size={16} />
-                        Create an Account
-                    </Link>
+                {/* Footer Links */}
+                <div className="mt-8 text-center space-y-6">
+                    <a href="#" className="block text-gray-700 underline text-lg font-medium hover:text-black transition-colors">
+                        Forgot your password?
+                    </a>
+
+                    <div className="pt-4">
+                        <Link 
+                            to={redirect !== "/" ? `/register?redirect=${redirect}` : "/register"}
+                            className="inline-block w-full py-4 border border-[#001569] text-[#001569] font-bold text-xl uppercase tracking-widest hover:bg-[#001569] hover:text-white transition-all text-center"
+                        >
+                            CREATE ACCOUNT
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

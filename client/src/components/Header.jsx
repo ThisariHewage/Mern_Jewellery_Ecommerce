@@ -1,10 +1,25 @@
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { FaShoppingCart, FaUser, FaSearch } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
+import api from "../services/api";
+import { FaShoppingCart, FaUser, FaSearch, FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
     const { userInfo } = useSelector((state) => state.auth);
     const { cartItems } = useSelector((state) => state.cart);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logoutHandler = async () => {
+        try {
+            await api.post("/api/users/logout");
+            dispatch(logout());
+            navigate("/login");
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <header className="sticky top-0 z-50 glass">
@@ -37,10 +52,19 @@ const Header = () => {
                     </Link>
 
                     {userInfo ? (
-                        <Link to="/profile" className="flex items-center space-x-2 hover:text-primary transition-colors">
-                            <FaUser size={18} />
-                            <span className="hidden sm:inline text-sm font-medium">{userInfo.name}</span>
-                        </Link>
+                        <div className="flex items-center space-x-4">
+                            <Link to="/profile" className="flex items-center space-x-2 hover:text-primary transition-colors">
+                                <FaUser size={18} />
+                                <span className="hidden sm:inline text-sm font-medium">{userInfo.name}</span>
+                            </Link>
+                            <button 
+                                onClick={logoutHandler}
+                                className="flex items-center space-x-1 hover:text-red-500 transition-colors text-sm font-bold uppercase tracking-widest cursor-pointer"
+                            >
+                                <FaSignOutAlt size={16} />
+                                <span className="hidden sm:inline">Logout</span>
+                            </button>
+                        </div>
                     ) : (
                         <Link to="/login" className="flex items-center space-x-2 hover:text-primary transition-colors">
                             <FaUser size={18} />
