@@ -53,6 +53,12 @@ const Header = () => {
 
                     {userInfo ? (
                         <div className="flex items-center space-x-4">
+                            {userInfo.isAdmin && (
+                                <div className="hidden lg:flex items-center space-x-4 mr-4 pr-4 border-r border-gray-200">
+                                    <Link to="/admin/userlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Users</Link>
+                                    <Link to="/admin/productlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Products</Link>
+                                </div>
+                            )}
                             <Link to="/profile" className="flex items-center space-x-2 hover:text-primary transition-colors">
                                 <FaUser size={18} />
                                 <span className="hidden sm:inline text-sm font-medium">{userInfo.name}</span>

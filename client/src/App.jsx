@@ -21,6 +21,10 @@ import RegisterScreen from "./pages/RegisterScreen";
 import ShopScreen from "./pages/ShopScreen";
 import NewArrivalsScreen from "./pages/NewArrivalsScreen";
 import ProfileScreen from "./pages/ProfileScreen";
+import UserListScreen from "./pages/admin/UserListScreen";
+import UserEditScreen from "./pages/admin/UserEditScreen";
+import ProductListScreen from "./pages/admin/ProductListScreen";
+import ProductEditScreen from "./pages/admin/ProductEditScreen";
 
 function App() {
   return (
@@ -49,7 +53,10 @@ function App() {
 
             {/* Admin Users Only */}
             <Route element={<AdminRoute />}>
-                {/* Admin routes will go here in the next steps */}
+                <Route path="/admin/userlist" element={<UserListScreen />} />
+                <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+                <Route path="/admin/productlist" element={<ProductListScreen />} />
+                <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
             </Route>
           </Routes>
         </main>
