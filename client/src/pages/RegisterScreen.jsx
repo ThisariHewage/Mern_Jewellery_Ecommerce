@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../redux/slices/authSlice";
 import api from "../services/api";
-import { Mail, Lock, User, ArrowRight, LogIn } from "lucide-react";
+import { X } from "lucide-react";
 
 const RegisterScreen = () => {
     const [name, setName] = useState("");
@@ -12,6 +12,7 @@ const RegisterScreen = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [registerError, setRegisterError] = useState("");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,8 +31,10 @@ const RegisterScreen = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setRegisterError("");
+        
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match");
+            setRegisterError("Passwords do not match");
             return;
         }
 
@@ -42,110 +45,117 @@ const RegisterScreen = () => {
             navigate(redirect);
             toast.success("Account created successfully!");
         } catch (err) {
-            toast.error(err?.data?.message || err.message || "Registration failed");
+            setRegisterError(err?.response?.data?.message || err.message || "Registration failed");
+            toast.error(err?.response?.data?.message || err.message || "Registration failed");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-[90vh] flex items-center justify-center px-4 py-12">
-            <div className="bg-white rounded-[3rem] p-8 sm:p-16 shadow-2xl shadow-gray-200/50 border border-gray-100 max-w-xl w-full">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-serif font-bold text-gray-900 mb-3 tracking-tight">Create Account</h1>
-                    <p className="text-gray-500 uppercase tracking-widest text-[10px] font-bold">Join the FashionHub community</p>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
+            <div className="bg-white p-8 sm:p-12 w-full max-w-lg shadow-sm border border-gray-100 relative">
+                {/* Header with X */}
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-4xl font-serif tracking-tighter font-bold text-gray-900">Register</h1>
+                    <Link to="/" className="text-gray-900 hover:text-gray-500 transition-colors">
+                        <X size={28} />
+                    </Link>
                 </div>
 
+                {/* Error Banner */}
+                {registerError && (
+                    <div className="bg-red-50 border border-red-100 p-4 mb-8 text-center text-red-500 text-sm">
+                        <span className="inline-block w-1 h-1 bg-red-500 rounded-full mr-2 mb-[2px]"></span>
+                        {registerError}
+                    </div>
+                )}
+
                 <form onSubmit={submitHandler} className="space-y-6">
-                    <div className="space-y-4">
-                        {/* Name Field */}
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 ml-1">Full Name</label>
-                            <div className="relative group">
-                                <User size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="text"
-                                    placeholder="John Doe"
-                                    value={name}
-                                    required
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Email Field */}
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 ml-1">Email Address</label>
-                            <div className="relative group">
-                                <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="email"
-                                    placeholder="your@email.com"
-                                    value={email}
-                                    required
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Password Field */}
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 ml-1">Password</label>
-                            <div className="relative group">
-                                <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    required
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
-
-                        {/* Confirm Password Field */}
-                        <div className="space-y-2">
-                            <label className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400 ml-1">Confirm Password</label>
-                            <div className="relative group">
-                                <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
-                                <input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={confirmPassword}
-                                    required
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium"
-                                />
-                            </div>
-                        </div>
+                    {/* Name Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Full Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Full Name"
+                            value={name}
+                            required
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
                     </div>
 
+                    {/* Email Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            placeholder="Email Address"
+                            value={email}
+                            required
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
+                    </div>
+
+                    {/* Password Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
+                    </div>
+
+                    {/* Confirm Password Field */}
+                    <div className="space-y-2">
+                        <label className="block text-gray-700 font-medium">
+                            Confirm Password <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            required
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full px-4 py-4 border border-gray-300 focus:border-black outline-none transition-all placeholder:text-gray-300"
+                        />
+                    </div>
+
+                    {/* Register Button */}
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-5 bg-black text-white rounded-2xl font-bold text-lg hover:bg-gray-800 transition-all active:scale-[0.98] shadow-xl shadow-black/10 flex items-center justify-center gap-3 group mt-4"
+                        className="w-full py-5 mt-4 bg-primary text-white font-bold text-xl uppercase tracking-widest hover:bg-black transition-all disabled:opacity-50"
                     >
-                        {loading ? "Creating Account..." : (
-                            <>
-                                Create Account
-                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                            </>
-                        )}
+                        {loading ? "Creating Account..." : "CREATE ACCOUNT"}
                     </button>
                 </form>
 
-                <div className="mt-10 pt-10 border-t border-gray-100 text-center">
-                    <p className="text-gray-500 text-sm mb-4">Already have an account?</p>
-                    <Link 
-                        to={redirect !== "/" ? `/login?redirect=${redirect}` : "/login"}
-                        className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-bold text-black hover:text-gray-600 transition-colors"
-                    >
-                        <LogIn size={16} />
-                        Sign In Instead
-                    </Link>
+                {/* Footer Links */}
+                <div className="mt-8 text-center space-y-6">
+                    <p className="text-gray-700 font-medium">
+                        Already have an account?
+                    </p>
+
+                    <div className="pt-4">
+                        <Link 
+                            to={redirect !== "/" ? `/login?redirect=${redirect}` : "/login"}
+                            className="inline-block w-full py-4 border border-primary text-primary font-bold text-xl uppercase tracking-widest hover:bg-primary hover:text-white transition-all text-center"
+                        >
+                            LOG IN INSTEAD
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
