@@ -68,6 +68,16 @@ const OrderScreen = () => {
             });
     }
 
+    const deliverOrderHandler = async () => {
+        try {
+            await api.put(`/api/orders/${orderId}/deliver`);
+            toast.success("Order marked as delivered");
+            dispatch(getOrderDetails(orderId));
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message);
+        }
+    };
+
     if (loading) return <div className="py-20 text-center uppercase tracking-widest animate-pulse">Loading Order Details...</div>;
     if (error) return <div className="py-20 text-center text-red-500">{error}</div>;
 
@@ -197,9 +207,12 @@ const OrderScreen = () => {
                             </div>
                         )}
                         
-                        {/* Admin Mark as Delivered Placeholder */}
+                        {/* Admin Mark as Delivered */}
                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                            <button className="w-full py-4 mt-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all">
+                            <button 
+                                onClick={deliverOrderHandler}
+                                className="w-full py-4 mt-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all"
+                            >
                                 Mark As Delivered
                             </button>
                         )}

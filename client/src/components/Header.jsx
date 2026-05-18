@@ -57,6 +57,7 @@ const Header = () => {
                                 <div className="hidden lg:flex items-center space-x-4 mr-4 pr-4 border-r border-gray-200">
                                     <Link to="/admin/userlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Users</Link>
                                     <Link to="/admin/productlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Products</Link>
+                                    <Link to="/admin/orderlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Orders</Link>
                                 </div>
                             )}
                             <Link to="/profile" className="flex items-center space-x-2 hover:text-primary transition-colors">
