@@ -26,7 +26,7 @@ const Header = () => {
             <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="text-2xl font-serif font-bold tracking-tighter text-primary">
-                    FASHION<span className="text-accent">HUB</span>
+                    AURA <span className="text-accent">JEWELLERS</span>
                 </Link>
 
                 {/* Desktop Navigation */}

@@ -49,7 +49,7 @@ const LoginScreen = () => {
             <div className="bg-white p-8 sm:p-12 w-full max-w-lg shadow-sm border border-gray-100 relative">
                 {/* Header with X */}
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-medium text-gray-900">Login</h1>
+                    <h1 className="text-4xl font-serif tracking-tighter font-bold text-gray-900">Login</h1>
                     <Link to="/" className="text-gray-900 hover:text-gray-500 transition-colors">
                         <X size={28} />
                     </Link>
@@ -98,7 +98,7 @@ const LoginScreen = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-5 bg-[#001569] text-white font-bold text-xl uppercase tracking-widest hover:bg-[#000d4d] transition-all disabled:opacity-50"
+                        className="w-full py-5 bg-primary text-white font-bold text-xl uppercase tracking-widest hover:bg-black transition-all disabled:opacity-50"
                     >
                         {loading ? "Logging In..." : "LOG IN"}
                     </button>
@@ -113,7 +113,7 @@ const LoginScreen = () => {
                     <div className="pt-4">
                         <Link 
                             to={redirect !== "/" ? `/register?redirect=${redirect}` : "/register"}
-                            className="inline-block w-full py-4 border border-[#001569] text-[#001569] font-bold text-xl uppercase tracking-widest hover:bg-[#001569] hover:text-white transition-all text-center"
+                            className="inline-block w-full py-4 border border-primary text-primary font-bold text-xl uppercase tracking-widest hover:bg-primary hover:text-white transition-all text-center"
                         >
                             CREATE ACCOUNT
                         </Link>

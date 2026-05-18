@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* Custom Theme Variables for a Premium Fashion Look */
+/* Custom Theme Variables for Raja Jewellers Inspired Look */
 @theme {
-  --color-primary: #1a1a1a;
-  --color-secondary: #f5f5f5;
-  --color-accent: #d4af37;
+  --color-primary: #800020; /* Deep Maroon */
+  --color-secondary: #fdfbf7; /* Off-white luxury background */
+  --color-accent: #d4af37; /* Luxury Gold */
   
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", system-ui, sans-serif;

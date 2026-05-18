@@ -16,10 +16,10 @@ const HomeScreen = () => {
             {/* Hero Section */}
             <div className="text-center mb-20">
                 <h1 className="text-6xl mb-4 text-primary uppercase tracking-tighter font-serif">
-                    The New Collection
+                    Monarch of The Gold World
                 </h1>
                 <p className="text-gray-500 mb-8 max-w-lg mx-auto leading-relaxed text-sm uppercase tracking-widest">
-                    Crafted for the modern silhouette. Redefining elegance for 2026.
+                    Crafted for the modern silhouette. Redefining elegance with premium 22k gold and diamond collections.
                 </p>
                 <div className="h-[1px] w-20 bg-accent mx-auto" />
             </div>
