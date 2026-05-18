@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
  */
 const ProductCard = ({ product }) => {
     return (
-        <div className="group border border-gray-100 overflow-hidden bg-white hover:shadow-2xl transition-all duration-500">
+        <div className="group border border-gray-100 overflow-hidden bg-white hover:shadow-2xl hover:border-accent/40 transition-all duration-500">
             {/* Image Wrapper */}
-            <Link to={`/product/${product._id}`} className="relative block aspect-[3/4] overflow-hidden bg-gray-100">
+            <Link to={`/product/${product._id}`} className="relative block aspect-square overflow-hidden bg-secondary">
                 <img 
                     src={product.image} 
                     alt={product.name} 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* Quick Add Overlay (Optional) */}
-                <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-colors duration-500" />
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500" />
             </Link>
 
             {/* Product Details */}

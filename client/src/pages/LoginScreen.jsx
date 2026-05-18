@@ -106,9 +106,9 @@ const LoginScreen = () => {
 
                 {/* Footer Links */}
                 <div className="mt-8 text-center space-y-6">
-                    <a href="#" className="block text-gray-700 underline text-lg font-medium hover:text-black transition-colors">
+                    <Link to="/forgotpassword" className="block text-gray-700 underline text-lg font-medium hover:text-black transition-colors">
                         Forgot your password?
-                    </a>
+                    </Link>
 
                     <div className="pt-4">
                         <Link 

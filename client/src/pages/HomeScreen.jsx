@@ -14,14 +14,14 @@ const HomeScreen = () => {
     return (
         <div className="py-12">
             {/* Hero Section */}
-            <div className="text-center mb-20">
-                <h1 className="text-6xl mb-4 text-primary uppercase tracking-tighter font-serif">
+            <div className="text-center mb-20 bg-secondary py-16 rounded-3xl border border-accent/20 shadow-sm mx-4 lg:mx-0">
+                <h1 className="text-5xl md:text-6xl mb-6 text-primary uppercase tracking-tighter font-serif">
                     Monarch of The Gold World
                 </h1>
-                <p className="text-gray-500 mb-8 max-w-lg mx-auto leading-relaxed text-sm uppercase tracking-widest">
+                <p className="text-primary/70 mb-8 max-w-lg mx-auto leading-relaxed text-sm uppercase tracking-[0.2em] font-medium">
                     Crafted for the modern silhouette. Redefining elegance with premium 22k gold and diamond collections.
                 </p>
-                <div className="h-[1px] w-20 bg-accent mx-auto" />
+                <div className="h-[2px] w-24 bg-accent mx-auto" />
             </div>
 
             {/* Product Grid */}

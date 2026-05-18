@@ -26,6 +26,8 @@ import UserEditScreen from "./pages/admin/UserEditScreen";
 import ProductListScreen from "./pages/admin/ProductListScreen";
 import ProductEditScreen from "./pages/admin/ProductEditScreen";
 import OrderListScreen from "./pages/admin/OrderListScreen";
+import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
+import ResetPasswordScreen from "./pages/ResetPasswordScreen";
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
             <Route path="/" element={<HomeScreen />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
+            <Route path="/resetpassword/:token" element={<ResetPasswordScreen />} />
             <Route path="/shop" element={<ShopScreen />} />
             <Route path="/new-arrivals" element={<NewArrivalsScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />

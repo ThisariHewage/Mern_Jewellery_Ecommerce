@@ -22,8 +22,8 @@ const Header = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 glass">
-            <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-50 bg-secondary border-b border-accent/20 shadow-sm">
+            <div className="container mx-auto px-6 py-5 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="text-2xl font-serif font-bold tracking-tighter text-primary">
                     AURA <span className="text-accent">JEWELLERS</span>

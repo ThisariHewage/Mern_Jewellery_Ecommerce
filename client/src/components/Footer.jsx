@@ -23,25 +23,33 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Quick Links */}
+                {/* Contact Info */}
                 <div>
-                    <h4 className="text-sm uppercase tracking-widest font-bold mb-6">Quick Links</h4>
-                    <ul className="space-y-4 text-sm text-gray-400">
-                        <li><Link to="/shop" className="hover:text-white transition-colors">Shop All</Link></li>
-                        <li><Link to="/new-arrivals" className="hover:text-white transition-colors">New Arrivals</Link></li>
-                        <li><Link to="/categories" className="hover:text-white transition-colors">Categories</Link></li>
-                        <li><Link to="/sales" className="hover:text-white transition-colors">Flash Sale</Link></li>
+                    <h4 className="text-sm uppercase tracking-widest font-bold mb-6 text-accent">Contact Us</h4>
+                    <ul className="space-y-4 text-sm text-gray-300">
+                        <li className="flex items-start gap-3">
+                            <span className="text-accent mt-1">📍</span>
+                            <span>123 Luxury Avenue,<br />Colombo 03, Sri Lanka</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <span className="text-accent">📞</span>
+                            <span>+94 11 234 5678</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <span className="text-accent">✉️</span>
+                            <span>info@aurajewellers.com</span>
+                        </li>
                     </ul>
                 </div>
 
-                {/* Customer Service */}
+                {/* Customer Care */}
                 <div>
-                    <h4 className="text-sm uppercase tracking-widest font-bold mb-6">Customer Service</h4>
-                    <ul className="space-y-4 text-sm text-gray-400">
-                        <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-                        <li><Link to="/shipping" className="hover:text-white transition-colors">Shipping Policy</Link></li>
-                        <li><Link to="/returns" className="hover:text-white transition-colors">Returns & Exchanges</Link></li>
-                        <li><Link to="/faq" className="hover:text-white transition-colors">FAQs</Link></li>
+                    <h4 className="text-sm uppercase tracking-widest font-bold mb-6 text-accent">Customer Care</h4>
+                    <ul className="space-y-4 text-sm text-gray-300">
+                        <li><Link to="/shipping" className="hover:text-accent transition-colors">Shipping Policy</Link></li>
+                        <li><Link to="/returns" className="hover:text-accent transition-colors">Returns & Exchanges</Link></li>
+                        <li><Link to="/warranty" className="hover:text-accent transition-colors">Lifetime Warranty</Link></li>
+                        <li><Link to="/faq" className="hover:text-accent transition-colors">FAQs</Link></li>
                     </ul>
                 </div>
 
@@ -50,9 +58,9 @@ const Footer = () => {
                     <h4 className="text-sm uppercase tracking-widest font-bold mb-6">Join Our Club</h4>
                     <p className="text-sm text-gray-400 mb-4">Subscribe to get special offers and first look at new collections.</p>
                     <form className="flex flex-col space-y-2">
-                        <input 
-                            type="email" 
-                            placeholder="Your email address" 
+                        <input
+                            type="email"
+                            placeholder="Your email address"
                             className="bg-gray-800 border-none px-4 py-3 text-sm focus:ring-1 focus:ring-accent outline-none"
                         />
                         <button className="btn-premium py-2 text-xs">Subscribe</button>

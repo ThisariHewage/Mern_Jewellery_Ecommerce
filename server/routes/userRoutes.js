@@ -9,6 +9,8 @@ import {
     getUserById,
     deleteUser,
     updateUser,
+    forgotPassword,
+    resetPassword
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -18,6 +20,8 @@ router.route("/").post(registerUser).get(protect, admin, getUsers);
 router.post("/login", authUser);
 router.post("/logout", logoutUser);
 router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile);
+router.post("/forgotpassword", forgotPassword);
+router.put("/resetpassword/:token", resetPassword);
 router.route("/:id")
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)
