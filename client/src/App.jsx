@@ -19,7 +19,11 @@ import OrderScreen from "./pages/OrderScreen";
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
 import ShopScreen from "./pages/ShopScreen";
-import NewArrivalsScreen from "./pages/NewArrivalsScreen";
+import JewelleryScreen from "./pages/JewelleryScreen";
+import AboutScreen from "./pages/AboutScreen";
+import ServicesScreen from "./pages/ServicesScreen";
+import PromotionsScreen from "./pages/PromotionsScreen";
+import ContactScreen from "./pages/ContactScreen";
 import ProfileScreen from "./pages/ProfileScreen";
 import UserListScreen from "./pages/admin/UserListScreen";
 import UserEditScreen from "./pages/admin/UserEditScreen";
@@ -43,7 +47,11 @@ function App() {
             <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
             <Route path="/resetpassword/:token" element={<ResetPasswordScreen />} />
             <Route path="/shop" element={<ShopScreen />} />
-            <Route path="/new-arrivals" element={<NewArrivalsScreen />} />
+            <Route path="/jewellery" element={<JewelleryScreen />} />
+            <Route path="/about" element={<AboutScreen />} />
+            <Route path="/services" element={<ServicesScreen />} />
+            <Route path="/promotions" element={<PromotionsScreen />} />
+            <Route path="/contact" element={<ContactScreen />} />
             <Route path="/product/:id" element={<ProductScreen />} />
             <Route path="/cart" element={<CartScreen />} />
             
