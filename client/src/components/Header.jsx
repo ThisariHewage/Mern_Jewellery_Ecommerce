@@ -32,8 +32,11 @@ const Header = () => {
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium text-gray-600">
                     <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-                    <Link to="/shop" className="hover:text-primary transition-colors">Shop</Link>
-                    <Link to="/new-arrivals" className="hover:text-primary transition-colors">New Arrivals</Link>
+                    <Link to="/about" className="hover:text-primary transition-colors">About Us</Link>
+                    <Link to="/shop" className="hover:text-primary transition-colors">Jewellery</Link>
+                    <Link to="/services" className="hover:text-primary transition-colors">Services</Link>
+                    <Link to="/promotions" className="hover:text-primary transition-colors">Promotions</Link>
+                    <Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
                 </nav>
 
                 {/* Icons */}
