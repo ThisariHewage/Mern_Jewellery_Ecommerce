@@ -12,15 +12,20 @@ const Header = () => {
     const navigate = useNavigate();
 
     const [jewelleryOpen, setJewelleryOpen] = useState(false);
+    const [profileOpen, setProfileOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mobileJewelleryOpen, setMobileJewelleryOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const profileDropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
         const handler = (e) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setJewelleryOpen(false);
+            }
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target)) {
+                setProfileOpen(false);
             }
         };
         document.addEventListener("mousedown", handler);
@@ -37,179 +42,243 @@ const Header = () => {
         }
     };
 
-    const navLinkClass = "hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full";
+    const navLinkClass = "hover:text-accent transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full";
 
     return (
-        <header className="sticky top-0 z-50 bg-secondary border-b border-accent/20 shadow-sm">
-            <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+        <div className="sticky top-0 z-50">
+            {/* Premium Top Announcement Bar */}
+            <div className="bg-primary text-accent text-[9px] tracking-[0.25em] font-extrabold uppercase py-2.5 px-4 text-center border-b border-accent/20 shadow-inner select-none flex items-center justify-center gap-2">
+                <span className="animate-pulse">✨</span>
+                <span>COMPLIMENTARY ROYAL INSURED SHIPPING ON ALL ORDERS • SECURE HAND-DELIVERY</span>
+                <span className="animate-pulse">✨</span>
+            </div>
 
-                {/* Logo */}
-                <Link to="/" className="text-2xl font-serif font-bold tracking-tighter text-primary flex-shrink-0">
-                    AURA <span className="text-accent">JEWELLERS</span>
-                </Link>
+            <header className="bg-secondary/95 backdrop-blur-md border-b border-accent/10 shadow-sm py-1">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center space-x-8 text-sm uppercase tracking-widest font-medium text-gray-600">
-                    <Link to="/" id="nav-home" className={navLinkClass}>Home</Link>
-                    <Link to="/about" id="nav-about" className={navLinkClass}>About Us</Link>
-
-                    {/* Jewellery Dropdown */}
-                    <div className="relative" ref={dropdownRef}>
-                        <button
-                            id="nav-jewellery"
-                            onClick={() => setJewelleryOpen((o) => !o)}
-                            className={`flex items-center gap-1.5 cursor-pointer ${navLinkClass} ${jewelleryOpen ? "text-primary" : ""}`}
-                        >
-                            Jewellery
-                            <FaChevronDown size={10} className={`transition-transform duration-300 ${jewelleryOpen ? "rotate-180" : ""}`} />
-                        </button>
-
-                        {jewelleryOpen && (
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden min-w-[200px] animate-fade-in">
-                                {/* Dropdown header */}
-                                <div className="px-5 py-3 border-b border-gray-100">
-                                    <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">Shop by</p>
-                                </div>
-                                <Link
-                                    to="/jewellery"
-                                    id="nav-jewellery-all"
-                                    onClick={() => setJewelleryOpen(false)}
-                                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors group"
-                                >
-                                    <span className="text-lg">💎</span>
-                                    <div>
-                                        <p className="text-sm font-bold text-gray-800 group-hover:text-purple-800 transition-colors uppercase tracking-wider">All Jewellery</p>
-                                        <p className="text-[10px] text-gray-400">Browse the full collection</p>
-                                    </div>
-                                </Link>
-                                <Link
-                                    to="/jewellery?category=Men"
-                                    id="nav-jewellery-men"
-                                    onClick={() => setJewelleryOpen(false)}
-                                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors group border-t border-gray-50"
-                                >
-                                    <span className="text-lg">👔</span>
-                                    <div>
-                                        <p className="text-sm font-bold text-gray-800 group-hover:text-purple-800 transition-colors uppercase tracking-wider">Men's</p>
-                                        <p className="text-[10px] text-gray-400">Rings, chains & cufflinks</p>
-                                    </div>
-                                </Link>
-                                <Link
-                                    to="/jewellery?category=Women"
-                                    id="nav-jewellery-women"
-                                    onClick={() => setJewelleryOpen(false)}
-                                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors group border-t border-gray-50"
-                                >
-                                    <span className="text-lg">👑</span>
-                                    <div>
-                                        <p className="text-sm font-bold text-gray-800 group-hover:text-purple-800 transition-colors uppercase tracking-wider">Women's</p>
-                                        <p className="text-[10px] text-gray-400">Necklaces, earrings & bracelets</p>
-                                    </div>
-                                </Link>
-                            </div>
-                        )}
-                    </div>
-
-                    <Link to="/services" id="nav-services" className={navLinkClass}>Services</Link>
-                    <Link to="/promotions" id="nav-promotions" className={navLinkClass}>Promotions</Link>
-                    <Link to="/contact" id="nav-contact" className={navLinkClass}>Contact Us</Link>
-                </nav>
-
-                {/* Right Icons */}
-                <div className="flex items-center space-x-5 text-gray-700">
-                    <button id="header-search-btn" className="hidden md:block hover:text-primary transition-colors cursor-pointer">
-                        <FaSearch size={16} />
-                    </button>
-
-                    <Link to="/cart" id="header-cart-btn" className="relative hover:text-primary transition-colors">
-                        <FaShoppingCart size={20} />
-                        {cartItems.length > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                                {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                            </span>
-                        )}
+                    {/* Left Side: Brand Logo */}
+                    <Link to="/" className="text-xl font-serif font-bold tracking-[0.05em] text-primary flex-shrink-0 mr-4 transition-transform hover:scale-[1.01]">
+                        DEWORA <span className="text-accent font-medium">JEWELLERS</span>
                     </Link>
 
-                    {userInfo ? (
-                        <div className="hidden md:flex items-center space-x-4">
-                            {userInfo.isAdmin && (
-                                <div className="hidden lg:flex items-center space-x-4 mr-4 pr-4 border-r border-gray-200">
-                                    <Link to="/admin/userlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Users</Link>
-                                    <Link to="/admin/productlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Products</Link>
-                                    <Link to="/admin/orderlist" className="text-xs uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors">Orders</Link>
+                    {/* Center: Main Navigation */}
+                    <nav className="hidden lg:flex items-center space-x-6 lg:space-x-8 text-[11px] uppercase tracking-[0.2em] font-bold text-gray-500 flex-grow justify-center">
+                        <Link to="/" id="nav-home" className={navLinkClass}>Home</Link>
+                        <Link to="/about" id="nav-about" className={navLinkClass}>About Us</Link>
+
+                        {/* Jewellery Dropdown */}
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                id="nav-jewellery"
+                                onClick={() => setJewelleryOpen((o) => !o)}
+                                className={`flex items-center gap-1.5 cursor-pointer uppercase tracking-[0.2em] ${navLinkClass} ${jewelleryOpen ? "text-accent" : ""}`}
+                            >
+                                JEWELLERY
+                                <FaChevronDown size={8} className={`transition-transform duration-300 ${jewelleryOpen ? "rotate-180 text-accent" : ""}`} />
+                            </button>
+
+                            {jewelleryOpen && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 bg-secondary rounded-2xl shadow-2xl border border-accent/20 overflow-hidden min-w-[240px] z-50 animate-fade-in">
+                                    <div className="px-5 py-3 border-b border-accent/10 bg-primary/5">
+                                        <p className="text-[9px] uppercase tracking-[0.3em] font-extrabold text-accent">Shop by category</p>
+                                    </div>
+                                    <Link
+                                        to="/jewellery"
+                                        id="nav-jewellery-all"
+                                        onClick={() => setJewelleryOpen(false)}
+                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group"
+                                    >
+                                        <span className="text-lg">💎</span>
+                                        <div>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">All Jewellery</p>
+                                            <p className="text-[10px] text-gray-400">Browse full collections</p>
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        to="/jewellery?category=Men"
+                                        id="nav-jewellery-men"
+                                        onClick={() => setJewelleryOpen(false)}
+                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
+                                    >
+                                        <span className="text-lg">👔</span>
+                                        <div>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">For Him</p>
+                                            <p className="text-[10px] text-gray-400">Rings, chains & details</p>
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        to="/jewellery?category=Women"
+                                        id="nav-jewellery-women"
+                                        onClick={() => setJewelleryOpen(false)}
+                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
+                                    >
+                                        <span className="text-lg">👑</span>
+                                        <div>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">For Her</p>
+                                            <p className="text-[10px] text-gray-400">Necklaces, earrings & sets</p>
+                                        </div>
+                                    </Link>
                                 </div>
                             )}
-                            <Link to="/profile" className="flex items-center space-x-2 hover:text-primary transition-colors">
-                                <FaUser size={16} />
-                                <span className="hidden sm:inline text-sm font-medium">{userInfo.name}</span>
-                            </Link>
-                            <button
-                                onClick={logoutHandler}
-                                className="flex items-center space-x-1 hover:text-red-500 transition-colors text-sm font-bold uppercase tracking-widest cursor-pointer"
-                            >
-                                <FaSignOutAlt size={14} />
-                                <span className="hidden sm:inline">Logout</span>
-                            </button>
                         </div>
-                    ) : (
-                        <Link to="/login" id="header-login-btn" className="hidden md:flex items-center space-x-2 hover:text-primary transition-colors">
-                            <FaUser size={16} />
-                            <span className="hidden sm:inline text-sm font-medium uppercase tracking-widest">Login</span>
-                        </Link>
-                    )}
 
-                    {/* Mobile Hamburger */}
-                    <button
-                        id="mobile-menu-btn"
-                        className="md:hidden hover:text-primary transition-colors cursor-pointer"
-                        onClick={() => setMobileOpen((o) => !o)}
-                    >
-                        {mobileOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
-                    </button>
+                        <Link to="/services" id="nav-services" className={navLinkClass}>Services</Link>
+                        <Link to="/promotions" id="nav-promotions" className={navLinkClass}>Promotions</Link>
+                        <Link to="/contact" id="nav-contact" className={navLinkClass}>Contact Us</Link>
+                    </nav>
+
+                    {/* Right Side: Action Icons + Premium Profile Dropdown */}
+                    <div className="flex items-center space-x-5 text-gray-700 flex-shrink-0 ml-4">
+                        <button id="header-search-btn" className="hidden lg:block hover:text-accent transition-colors cursor-pointer p-2">
+                            <FaSearch size={15} />
+                        </button>
+
+                        <Link to="/cart" id="header-cart-btn" className="relative hover:text-accent transition-colors p-2 flex items-center">
+                            <FaShoppingCart size={18} />
+                            {cartItems.length > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-accent text-primary text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold shadow-md animate-pulse">
+                                    {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                                </span>
+                            )}
+                        </Link>
+
+                        {/* Authentication & Profile Dropdown */}
+                        {userInfo ? (
+                            <div className="relative" ref={profileDropdownRef}>
+                                <button
+                                    onClick={() => setProfileOpen((o) => !o)}
+                                    className="flex items-center gap-2 hover:text-accent transition-colors p-1"
+                                >
+                                    <div className="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent flex items-center justify-center text-xs font-bold shadow-sm">
+                                        {userInfo.name.charAt(0).toUpperCase()}
+                                    </div>
+                                    <span className="hidden xl:inline text-xs uppercase tracking-widest font-bold text-primary">{userInfo.name}</span>
+                                    <FaChevronDown size={8} className={`text-accent/60 transition-transform duration-300 ${profileOpen ? "rotate-180 text-accent" : ""}`} />
+                                </button>
+
+                                {profileOpen && (
+                                    <div className="absolute right-0 top-full mt-4 bg-secondary rounded-2xl shadow-2xl border border-accent/20 overflow-hidden min-w-[240px] z-50 animate-fade-in">
+                                        {/* Account Header */}
+                                        <div className="px-5 py-4 bg-primary/5 border-b border-accent/10">
+                                            <p className="text-xs font-bold text-primary truncate">{userInfo.name}</p>
+                                            <p className="text-[10px] text-gray-400 truncate mt-0.5">{userInfo.email}</p>
+                                            {userInfo.isAdmin && (
+                                                <span className="inline-block mt-2 px-2.5 py-0.5 bg-accent/20 border border-accent/35 text-accent text-[8px] uppercase tracking-widest font-extrabold rounded-md">
+                                                    Admin Partner
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Admin Specific Actions */}
+                                        {userInfo.isAdmin && (
+                                            <div className="py-2 border-b border-accent/10">
+                                                <p className="px-5 py-1 text-[8px] uppercase tracking-[0.25em] font-extrabold text-accent">Management</p>
+                                                <Link
+                                                    to="/admin/userlist"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
+                                                >
+                                                    👥 Manage Users
+                                                </Link>
+                                                <Link
+                                                    to="/admin/productlist"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
+                                                >
+                                                    📦 Manage Products
+                                                </Link>
+                                                <Link
+                                                    to="/admin/orderlist"
+                                                    onClick={() => setProfileOpen(false)}
+                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
+                                                >
+                                                    📜 Manage Orders
+                                                </Link>
+                                            </div>
+                                        )}
+
+                                        {/* Profile & Logout */}
+                                        <div className="py-2">
+                                            <Link
+                                                to="/profile"
+                                                onClick={() => setProfileOpen(false)}
+                                                className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
+                                            >
+                                                👤 My Profile
+                                            </Link>
+                                            <button
+                                                onClick={() => {
+                                                    setProfileOpen(false);
+                                                    logoutHandler();
+                                                }}
+                                                className="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50/50 transition-colors text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-wider cursor-pointer"
+                                            >
+                                                🚪 Logout
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <Link to="/login" id="header-login-btn" className="hidden lg:flex items-center gap-2 hover:text-accent transition-colors text-xs font-bold uppercase tracking-widest text-gray-500 p-1">
+                                <FaUser size={14} className="text-gray-400" />
+                                <span>Login</span>
+                            </Link>
+                        )}
+
+                        {/* Mobile Hamburger Menu */}
+                        <button
+                            id="mobile-menu-btn"
+                            className="lg:hidden hover:text-accent transition-colors cursor-pointer p-1 text-primary"
+                            onClick={() => setMobileOpen((o) => !o)}
+                        >
+                            {mobileOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </header>
 
             {/* Mobile Menu */}
             {mobileOpen && (
-                <div className="md:hidden bg-white border-t border-gray-100 shadow-xl px-6 py-6 space-y-1 animate-fade-in">
-                    <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary border-b border-gray-50 transition-colors">Home</Link>
-                    <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary border-b border-gray-50 transition-colors">About Us</Link>
+                <div className="lg:hidden bg-secondary border-t border-accent/10 shadow-xl px-6 py-6 space-y-1 animate-fade-in">
+                    <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Home</Link>
+                    <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">About Us</Link>
 
                     {/* Mobile Jewellery Accordion */}
-                    <div className="border-b border-gray-50">
+                    <div className="border-b border-accent/10">
                         <button
                             onClick={() => setMobileJewelleryOpen((o) => !o)}
-                            className="flex items-center justify-between w-full py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary transition-colors cursor-pointer"
+                            className="flex items-center justify-between w-full py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors cursor-pointer"
                         >
-                            Jewellery
+                            JEWELLERY
                             <FaChevronDown size={10} className={`transition-transform duration-300 ${mobileJewelleryOpen ? "rotate-180" : ""}`} />
                         </button>
                         {mobileJewelleryOpen && (
                             <div className="pl-4 pb-3 space-y-2">
-                                <Link to="/jewellery" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-primary transition-colors">💎 All Jewellery</Link>
-                                <Link to="/jewellery?category=Men" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-primary transition-colors">👔 Men's</Link>
-                                <Link to="/jewellery?category=Women" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-primary transition-colors">👑 Women's</Link>
+                                <Link to="/jewellery" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">💎 All Jewellery</Link>
+                                <Link to="/jewellery?category=Men" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👔 Men's</Link>
+                                <Link to="/jewellery?category=Women" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👑 Women's</Link>
                             </div>
                         )}
                     </div>
 
-                    <Link to="/services" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary border-b border-gray-50 transition-colors">Services</Link>
-                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary border-b border-gray-50 transition-colors">Promotions</Link>
-                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary border-b border-gray-50 transition-colors">Contact Us</Link>
+                    <Link to="/services" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Services</Link>
+                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Promotions</Link>
+                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Contact Us</Link>
 
                     {userInfo ? (
                         <div className="pt-4 space-y-2">
-                            <Link to="/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary transition-colors"><FaUser size={14} /> {userInfo.name}</Link>
+                            <Link to="/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors"><FaUser size={14} /> {userInfo.name}</Link>
                             <button onClick={() => { logoutHandler(); setMobileOpen(false); }} className="flex items-center gap-2 py-2 text-sm font-bold uppercase tracking-widest text-red-500 cursor-pointer"><FaSignOutAlt size={14} /> Logout</button>
                         </div>
                     ) : (
                         <div className="pt-4">
-                            <Link to="/login" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-primary transition-colors"><FaUser size={14} /> Login</Link>
+                            <Link to="/login" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors"><FaUser size={14} /> Login</Link>
                         </div>
                     )}
                 </div>
             )}
-        </header>
+        </div>
     );
 };
 

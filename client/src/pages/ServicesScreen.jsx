@@ -5,7 +5,7 @@ const ServicesScreen = () => {
         { icon: "💍", title: "Custom Design", subtitle: "Bespoke Creation", desc: "Work one-on-one with our master jewellers to bring your dream piece to life. From initial sketch to final polish, every detail is yours to decide.", highlight: "Starting from consultation" },
         { icon: "🔧", title: "Jewellery Repair", subtitle: "Restoration & Repair", desc: "Breathing new life into beloved pieces. We expertly repair broken clasps, resize rings, re-tip prongs, and restore antique jewellery.", highlight: "Same-day assessment" },
         { icon: "📜", title: "Appraisal", subtitle: "Official Valuation", desc: "Receive a certified appraisal document for insurance, estate, or resale purposes by our GIA-trained gemologists.", highlight: "Certified documentation" },
-        { icon: "✨", title: "Professional Cleaning", subtitle: "Ultrasonic & Polish", desc: "Restore brilliance with our professional ultrasonic cleaning. Complimentary for all Aura pieces.", highlight: "Free for Aura clients" },
+        { icon: "✨", title: "Professional Cleaning", subtitle: "Ultrasonic & Polish", desc: "Restore brilliance with our professional ultrasonic cleaning. Complimentary for all Dewora pieces.", highlight: "Free for Dewora clients" },
         { icon: "💎", title: "Gemstone Sourcing", subtitle: "Custom Gem Selection", desc: "Access our exclusive network of global suppliers to source rare, certified, and ethically mined gemstones.", highlight: "Ethically certified" },
         { icon: "🎁", title: "Gift Concierge", subtitle: "Personal Shopping", desc: "Our personal styling team will help you select the perfect gift with complimentary gift wrapping.", highlight: "Premium gift wrapping" },
     ];

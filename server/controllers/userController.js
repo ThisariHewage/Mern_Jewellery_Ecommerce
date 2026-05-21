@@ -234,7 +234,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     try {
         await sendEmail({
             email: user.email,
-            subject: "Aura Jewellers - Password Reset Token",
+            subject: "Dewora Jewellers - Password Reset Token",
             message,
         });
 

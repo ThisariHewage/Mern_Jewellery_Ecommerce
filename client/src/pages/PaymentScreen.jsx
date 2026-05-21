@@ -101,7 +101,7 @@ const PaymentScreen = () => {
 
                     <button
                         type="submit"
-                        className="w-full py-5 bg-black text-white rounded-2xl font-bold text-lg hover:bg-gray-800 transition-all active:scale-[0.98] mt-8"
+                        className="w-full py-4.5 bg-primary text-white border border-accent/25 uppercase tracking-widest font-bold text-sm hover:bg-black transition-all duration-300 active:scale-[0.98] mt-8 cursor-pointer shadow-md hover:shadow-lg"
                     >
                         Continue to Review
                     </button>

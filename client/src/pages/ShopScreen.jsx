@@ -15,7 +15,7 @@ const ShopScreen = () => {
         <div className="max-w-7xl mx-auto px-6 py-16">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
-                    <p className="text-primary uppercase tracking-[0.3em] text-xs font-bold mb-3 border-l-2 border-accent pl-3">Aura Collection</p>
+                    <p className="text-primary uppercase tracking-[0.3em] text-xs font-bold mb-3 border-l-2 border-accent pl-3">Dewora Collection</p>
                     <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-900 tracking-tighter">Shop Fine Jewellery</h1>
                 </div>
                 <div className="flex items-center gap-4 text-xs uppercase tracking-widest font-bold text-gray-400">

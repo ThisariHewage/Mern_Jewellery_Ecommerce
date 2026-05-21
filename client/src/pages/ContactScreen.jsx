@@ -20,7 +20,7 @@ const ContactScreen = () => {
     const contactDetails = [
         { icon: "📍", label: "Visit Us", value: "123 Jewellers Lane, Colombo 03, Sri Lanka" },
         { icon: "📞", label: "Call Us", value: "+94 11 234 5678" },
-        { icon: "✉️", label: "Email Us", value: "hello@aurajewellers.lk" },
+        { icon: "✉️", label: "Email Us", value: "hello@deworajewellers.lk" },
         { icon: "🕐", label: "Hours", value: "Mon–Sat: 9am – 7pm\nSun: 10am – 5pm" },
     ];
 

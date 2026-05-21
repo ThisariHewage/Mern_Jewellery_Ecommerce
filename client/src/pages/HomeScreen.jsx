@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/slices/productSlice";
@@ -18,34 +18,75 @@ const StatBadge = ({ value, label }) => (
     </div>
 );
 
-const CategoryCard = ({ emoji, title, subtitle, to, id }) => (
-    <Link
-        to={to}
-        id={id}
-        className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block"
-        style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 100%)" }}
-    >
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-            style={{ backgroundImage: "radial-gradient(ellipse at top right, #c9a84c 0%, transparent 70%)" }} />
-        <div className="relative z-10 p-10 flex flex-col items-start gap-4 min-h-[220px] justify-end">
-            <span className="text-5xl">{emoji}</span>
-            <div>
-                <p className="text-xs uppercase tracking-[0.35em] font-bold mb-1"
-                    style={{ color: "#c9a84c" }}>{subtitle}</p>
-                <h3 className="text-2xl font-serif font-bold text-white group-hover:text-amber-200 transition-colors">
-                    {title}
-                </h3>
+const CategoryCard = ({ emoji, title, subtitle, to, id, video }) => {
+    const videoRef = useRef(null);
+
+    const handleMouseEnter = () => {
+        if (videoRef.current) {
+            videoRef.current.play().catch(() => {});
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+        }
+    };
+
+    return (
+        <Link
+            to={to}
+            id={id}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block min-h-[280px]"
+            style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 100%)" }}
+        >
+            {/* Background Video */}
+            {video && (
+                <video
+                    ref={videoRef}
+                    src={video}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                />
+            )}
+
+            {/* Dark overlay — always visible, stronger on hover */}
+            <div
+                className="absolute inset-0 transition-opacity duration-500"
+                style={{
+                    background: "linear-gradient(135deg, rgba(26,5,51,0.92) 0%, rgba(45,10,94,0.85) 100%)",
+                }}
+            />
+            {/* Gold shimmer on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-25 transition-opacity duration-500"
+                style={{ backgroundImage: "radial-gradient(ellipse at top right, #c9a84c 0%, transparent 70%)" }} />
+
+            {/* Content */}
+            <div className="relative z-10 p-10 flex flex-col items-start gap-4 min-h-[280px] justify-end">
+                <span className="text-5xl drop-shadow-lg">{emoji}</span>
+                <div>
+                    <p className="text-xs uppercase tracking-[0.35em] font-bold mb-1"
+                        style={{ color: "#c9a84c" }}>{subtitle}</p>
+                    <h3 className="text-2xl font-serif font-bold text-white group-hover:text-amber-200 transition-colors drop-shadow">
+                        {title}
+                    </h3>
+                </div>
+                <span className="text-xs uppercase tracking-widest font-bold text-white/50 group-hover:text-amber-400 transition-colors flex items-center gap-2">
+                    Explore Collection
+                    <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </span>
             </div>
-            <span className="text-xs uppercase tracking-widest font-bold text-white/40 group-hover:text-amber-400 transition-colors flex items-center gap-2">
-                Explore Collection
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </span>
-        </div>
-        {/* Bottom gold bar */}
-        <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[3px] transition-all duration-500"
-            style={{ background: "linear-gradient(90deg, #c9a84c, #f0d080)" }} />
-    </Link>
-);
+            {/* Bottom gold bar */}
+            <div className="absolute bottom-0 left-0 w-0 group-hover:w-full h-[3px] transition-all duration-500"
+                style={{ background: "linear-gradient(90deg, #c9a84c, #f0d080)" }} />
+        </Link>
+    );
+};
 
 const ServicePill = ({ icon, text }) => (
     <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white border border-gray-100 shadow-sm">
@@ -93,7 +134,7 @@ const HomeScreen = () => {
                 style={{ background: "linear-gradient(120deg, #0d0d14 0%, #12101e 50%, #1a1828 100%)" }}
             >
                 {/* Left — Text Content */}
-                <div className="relative z-10 w-full md:w-1/2 px-10 md:px-16 lg:px-24 py-24 flex flex-col justify-center">
+                <div className="relative z-20 w-full md:w-1/2 px-10 md:px-16 lg:px-24 py-24 flex flex-col justify-center">
                     {/* Pre-title */}
                     <div className="flex items-center gap-3 mb-8">
                         <div className="w-8 h-[1px]" style={{ background: "#c9a84c" }} />
@@ -106,7 +147,7 @@ const HomeScreen = () => {
                     <h1 className="font-serif font-bold text-white leading-[1.05] tracking-tight mb-6"
                         style={{ fontSize: "clamp(2.8rem, 5vw, 5rem)" }}>
                         Timeless<br />
-                        Elegance, Inspired<br />
+                        <span className="whitespace-nowrap">Elegance, Inspired</span><br />
                         <span className="text-transparent bg-clip-text"
                             style={{ backgroundImage: "linear-gradient(90deg, #c9a84c, #f0d080)" }}>
                             By Heritage
@@ -176,10 +217,9 @@ const HomeScreen = () => {
                         <img
                             key={src}
                             src={src}
-                            alt="Aura Jewellers — Timeless Elegance"
-                            className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 pointer-events-none ${
-                                index === currentImageIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
-                            }`}
+                            alt="Dewora Jewellers — Timeless Elegance"
+                            className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-1000 pointer-events-none ${index === currentImageIndex ? "opacity-100 z-0" : "opacity-0 -z-10"
+                                }`}
                             style={{ filter: "brightness(0.92) contrast(1.05)" }}
                         />
                     ))}
@@ -190,11 +230,10 @@ const HomeScreen = () => {
                             <button
                                 key={idx}
                                 onClick={() => setCurrentImageIndex(idx)}
-                                className={`w-3 h-3 rounded-full transition-all duration-300 border ${
-                                    idx === currentImageIndex 
-                                        ? "border-transparent scale-125 shadow-[0_0_10px_rgba(201,168,76,0.6)]" 
-                                        : "bg-transparent border-[#c9a84c]/60 hover:border-[#c9a84c] hover:bg-white/10"
-                                }`}
+                                className={`w-3 h-3 rounded-full transition-all duration-300 border ${idx === currentImageIndex
+                                    ? "border-transparent scale-125 shadow-[0_0_10px_rgba(201,168,76,0.6)]"
+                                    : "bg-transparent border-[#c9a84c]/60 hover:border-[#c9a84c] hover:bg-white/10"
+                                    }`}
                                 style={idx === currentImageIndex ? { background: "linear-gradient(90deg, #c9a84c, #f0d080)" } : {}}
                                 aria-label={`Go to slide ${idx + 1}`}
                             />
@@ -236,9 +275,30 @@ const HomeScreen = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <CategoryCard emoji="👑" title="Women's Jewellery" subtitle="For Her" to="/jewellery?category=Women" id="home-cat-women" />
-                    <CategoryCard emoji="👔" title="Men's Jewellery" subtitle="For Him" to="/jewellery?category=Men" id="home-cat-men" />
-                    <CategoryCard emoji="💍" title="Bridal Collection" subtitle="New Beginnings" to="/jewellery" id="home-cat-bridal" />
+                    <CategoryCard
+                        emoji="👑"
+                        title="Women's Jewellery"
+                        subtitle="For Her"
+                        to="/jewellery?category=Women"
+                        id="home-cat-women"
+                        video="https://videos.pexels.com/video-files/5585310/5585310-hd_1920_1080_30fps.mp4"
+                    />
+                    <CategoryCard
+                        emoji="👔"
+                        title="Men's Jewellery"
+                        subtitle="For Him"
+                        to="/jewellery?category=Men"
+                        id="home-cat-men"
+                        video="https://videos.pexels.com/video-files/3209828/3209828-uhd_2560_1440_30fps.mp4"
+                    />
+                    <CategoryCard
+                        emoji="💍"
+                        title="Bridal Collection"
+                        subtitle="New Beginnings"
+                        to="/jewellery"
+                        id="home-cat-bridal"
+                        video="https://videos.pexels.com/video-files/5948100/5948100-hd_1080_1920_25fps.mp4"
+                    />
                 </div>
             </section>
 
@@ -327,7 +387,7 @@ const HomeScreen = () => {
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
                         <p className="text-xs uppercase tracking-[0.4em] font-bold mb-3" style={{ color: "#c9a84c" }}>
-                            The Aura Promise
+                            The Dewora Promise
                         </p>
                         <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 tracking-tighter">
                             Why Our Clients Love Us

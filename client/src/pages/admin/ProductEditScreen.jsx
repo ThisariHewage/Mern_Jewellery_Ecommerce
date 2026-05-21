@@ -1,16 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ChevronLeft, Package, DollarSign, Image as ImageIcon, Tag, Hash, AlignLeft, Check } from "lucide-react";
+import { ChevronLeft, Package, DollarSign, Image as ImageIcon, Tag, Hash, AlignLeft, Check, Upload, X } from "lucide-react";
 import api from "../../services/api";
 
 const ProductEditScreen = () => {
     const { id: productId } = useParams();
     const navigate = useNavigate();
+    const fileInputRef = useRef(null);
 
     const [name, setName] = useState("");
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState("");
+    const [imageError, setImageError] = useState(false);
+    const [showUrlInput, setShowUrlInput] = useState(false);
     const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState(0);
@@ -18,7 +21,12 @@ const ProductEditScreen = () => {
     
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        setImageError(false);
+    }, [image]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -42,6 +50,27 @@ const ProductEditScreen = () => {
         fetchProduct();
     }, [productId]);
 
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            setUploading(true);
+            const { data } = await api.post("/api/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            setImage(data.url);
+            toast.success("Image uploaded successfully!");
+        } catch (err) {
+            toast.error(err?.response?.data?.message || "Image upload failed");
+        } finally {
+            setUploading(false);
+        }
+    };
+
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
@@ -63,6 +92,8 @@ const ProductEditScreen = () => {
             setUpdating(false);
         }
     };
+
+    const hasValidImage = image && image !== "" && image !== "/images/sample.jpg" && !imageError;
 
     return (
         <div className="max-w-3xl mx-auto px-6 py-16">
@@ -134,18 +165,122 @@ const ProductEditScreen = () => {
                             </div>
                         </div>
 
-                        {/* Image URL */}
+                        {/* Image Upload */}
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Image URL</label>
-                            <div className="relative group">
-                                <ImageIcon size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
+                            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Product Image</label>
+                            
+                            {/* Preview + Upload Area */}
+                            <div className="relative">
                                 <input
-                                    type="text"
-                                    value={image}
-                                    required
-                                    onChange={(e) => setImage(e.target.value)}
-                                    className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium text-sm"
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                                    onChange={uploadFileHandler}
+                                    className="hidden"
                                 />
+
+                                {hasValidImage ? (
+                                    /* Premium Image Card with Hover-to-Replace & Top-Right Delete */
+                                    <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 h-64 group">
+                                        <img 
+                                            src={image} 
+                                            alt="Product preview" 
+                                            onError={() => setImageError(true)}
+                                            className="w-full h-full object-contain bg-white transition-transform duration-700 group-hover:scale-102"
+                                        />
+                                        
+                                        {/* Glassmorphic replace overlay on hover */}
+                                        <div 
+                                            onClick={() => fileInputRef.current?.click()}
+                                            className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 text-white cursor-pointer backdrop-blur-[2px]"
+                                        >
+                                            <div className="w-12 h-12 rounded-full bg-white/20 border border-white/40 flex items-center justify-center shadow-lg backdrop-blur-md animate-pulse">
+                                                <Upload size={20} className="text-white" />
+                                            </div>
+                                            <span className="text-[10px] uppercase tracking-widest font-bold">Click to replace photo</span>
+                                        </div>
+
+                                        {/* Top-Right Remove Button */}
+                                        <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setImage("");
+                                            }}
+                                            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-red-600 hover:scale-105 active:scale-95 transition-all z-10 shadow-lg hover:shadow-red-500/20"
+                                            title="Remove Image"
+                                        >
+                                            <X size={16} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    /* Premium dashed Upload Drop Zone */
+                                    <div
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className={`relative cursor-pointer border-2 border-dashed rounded-3xl p-10 text-center transition-all duration-300 ${
+                                            uploading
+                                                ? "border-amber-400 bg-amber-50"
+                                                : "border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-100/70"
+                                        }`}
+                                    >
+                                        {uploading ? (
+                                            <div className="flex flex-col items-center gap-4 py-4">
+                                                <div className="w-10 h-10 rounded-full border-3 border-amber-400 border-t-transparent animate-spin" />
+                                                <p className="text-xs uppercase tracking-widest font-bold text-amber-600 animate-pulse">Uploading to Cloudinary...</p>
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-col items-center gap-4">
+                                                <div className="w-16 h-16 rounded-2xl bg-white border border-gray-200 flex items-center justify-center shadow-sm text-gray-400 group-hover:text-black transition-colors">
+                                                    <Upload size={24} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-gray-700">
+                                                        {imageError ? "Image failed to load. Click to upload new image" : "Click to upload from device"}
+                                                    </p>
+                                                    <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-1.5">
+                                                        JPG, PNG or WebP — Max 5MB
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* Manual URL input option for developers/admins */}
+                                <div className="mt-4">
+                                    {!showUrlInput ? (
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowUrlInput(true)}
+                                            className="text-[9px] uppercase tracking-widest font-bold text-gray-400 hover:text-black transition-colors ml-1"
+                                        >
+                                            Or enter image URL manually
+                                        </button>
+                                    ) : (
+                                        <div className="space-y-2 pt-2 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-[9px] uppercase tracking-widest font-bold text-gray-400">Direct Image URL</label>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowUrlInput(false)}
+                                                    className="text-[9px] uppercase tracking-widest font-bold text-gray-400 hover:text-black transition-colors"
+                                                >
+                                                    Hide Manual Input
+                                                </button>
+                                            </div>
+                                            <div className="relative group">
+                                                <ImageIcon size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
+                                                <input
+                                                    type="text"
+                                                    placeholder="https://example.com/image.jpg"
+                                                    value={image}
+                                                    onChange={(e) => setImage(e.target.value)}
+                                                    className="w-full pl-14 pr-6 py-3.5 bg-white border border-gray-200/60 rounded-xl focus:border-black outline-none transition-all font-medium text-xs shadow-sm"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -198,7 +333,7 @@ const ProductEditScreen = () => {
 
                         <button
                             type="submit"
-                            disabled={updating}
+                            disabled={updating || uploading}
                             className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
                         >
                             {updating ? "Saving Changes..." : (
@@ -215,3 +350,4 @@ const ProductEditScreen = () => {
 };
 
 export default ProductEditScreen;
+

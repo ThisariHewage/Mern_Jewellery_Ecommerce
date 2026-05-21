@@ -10,7 +10,7 @@ const Footer = () => {
                 {/* Brand & About */}
                 <div className="space-y-6">
                     <h3 className="text-2xl font-serif font-bold tracking-tighter">
-                        AURA <span className="text-accent">JEWELLERS</span>
+                        DEWORA <span className="text-accent">JEWELLERS</span>
                     </h3>
                     <p className="text-gray-400 text-sm leading-relaxed">
                         Elevating your style with curated premium jewellery collections. Experience the perfect blend of luxury and elegance.
@@ -37,7 +37,7 @@ const Footer = () => {
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="text-accent">✉️</span>
-                            <span>info@aurajewellers.com</span>
+                            <span>info@deworajewellers.com</span>
                         </li>
                     </ul>
                 </div>
@@ -69,7 +69,7 @@ const Footer = () => {
             </div>
 
             <div className="container mx-auto px-6 mt-16 pt-8 border-t border-gray-800 flex flex-col md:row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
-                <p>&copy; {currentYear} Aura Jewellers. All rights reserved.</p>
+                <p>&copy; {currentYear} Dewora Jewellers. All rights reserved.</p>
                 <div className="flex space-x-6 mt-4 md:mt-0">
                     <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
                     <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

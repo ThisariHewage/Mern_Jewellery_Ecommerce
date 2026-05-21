@@ -57,7 +57,7 @@ const JewelleryScreen = () => {
                 />
                 <div className="relative z-10 max-w-3xl mx-auto px-6">
                     <p className="text-xs uppercase tracking-[0.4em] text-amber-400 font-bold mb-4">
-                        Aura Jewellers — Curated Collection
+                        Dewora Jewellers — Curated Collection
                     </p>
                     <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-tighter mb-6">
                         Fine{" "}

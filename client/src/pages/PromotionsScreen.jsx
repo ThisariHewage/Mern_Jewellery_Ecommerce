@@ -95,7 +95,7 @@ const PromotionsScreen = () => {
                 <div className="rounded-3xl p-12 text-center border border-gray-100 shadow-sm" style={{ background: "linear-gradient(135deg, #fdf8ee, #fff)" }}>
                     <p className="text-xs uppercase tracking-[0.4em] font-bold mb-3" style={{ color: "#c9a84c" }}>Never Miss a Deal</p>
                     <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 tracking-tighter mb-4">Get Exclusive Offers First</h2>
-                    <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">Subscribe to the Aura insider list and receive early access to promotions, new arrivals, and VIP events.</p>
+                    <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">Subscribe to the Dewora insider list and receive early access to promotions, new arrivals, and VIP events.</p>
                     <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                         <input id="promo-email-input" type="email" placeholder="your@email.com" className="flex-1 px-5 py-3.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:border-transparent" style={{ "--tw-ring-color": "#c9a84c" }} />
                         <button id="promo-subscribe-btn" className="px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest whitespace-nowrap transition-all hover:scale-105" style={{ background: "linear-gradient(90deg, #2d0a5e, #c9a84c)", color: "#fff" }}>

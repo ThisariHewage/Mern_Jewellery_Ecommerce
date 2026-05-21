@@ -45,7 +45,7 @@ const CartScreen = () => {
                     </p>
                     <Link 
                         to="/" 
-                        className="inline-flex items-center justify-center px-8 py-3 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all active:scale-95"
+                        className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white border border-accent/20 uppercase tracking-widest font-bold text-xs hover:bg-black transition-all duration-300 active:scale-95"
                     >
                         Start Shopping
                     </Link>
@@ -147,7 +147,7 @@ const CartScreen = () => {
                             <button 
                                 onClick={checkoutHandler}
                                 disabled={cartItems.length === 0}
-                                className="w-full py-4 bg-black text-white rounded-full font-bold text-lg hover:bg-gray-800 transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100"
+                                className="w-full py-4 bg-primary text-white border border-accent/25 uppercase tracking-widest font-bold text-sm hover:bg-black transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:active:scale-100 cursor-pointer shadow-md hover:shadow-lg"
                             >
                                 Checkout Now
                             </button>

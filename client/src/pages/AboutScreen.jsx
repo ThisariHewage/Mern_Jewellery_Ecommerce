@@ -23,11 +23,11 @@ const AboutScreen = () => {
     ];
 
     const milestones = [
-        { year: "2004", event: "Aura Jewellers founded in Colombo by the Perera family." },
+        { year: "2004", event: "Dewora Jewellers founded in Colombo by the Perera family." },
         { year: "2010", event: "Expanded to three flagship stores across Sri Lanka." },
         { year: "2016", event: "Launched our first signature 22k Gold Bridal Collection." },
         { year: "2020", event: "Introduced bespoke custom design consultations." },
-        { year: "2024", event: "Brought the Aura experience online to reach jewellery lovers worldwide." },
+        { year: "2024", event: "Brought the Dewora experience online to reach jewellery lovers worldwide." },
     ];
 
     return (
@@ -55,7 +55,7 @@ const AboutScreen = () => {
                             className="text-transparent bg-clip-text"
                             style={{ backgroundImage: "linear-gradient(90deg, #c9a84c, #f0d080)" }}
                         >
-                            Aura Jewellers
+                            Dewora Jewellers
                         </span>
                     </h1>
                     <p className="text-white/60 max-w-xl mx-auto leading-relaxed text-sm">
@@ -71,7 +71,7 @@ const AboutScreen = () => {
                     "We believe jewellery is more than adornment — it is a story, a memory, a legacy passed through generations."
                 </p>
                 <p className="mt-8 text-sm uppercase tracking-[0.3em] text-gray-400 font-bold">
-                    — Aura Jewellers Founding Principle
+                    — Dewora Jewellers Founding Principle
                 </p>
                 <div className="h-[1px] w-16 mx-auto mt-12" style={{ background: "#c9a84c" }} />
             </div>

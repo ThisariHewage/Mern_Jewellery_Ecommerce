@@ -4,7 +4,7 @@ const jewelleryProducts = [
     image: "/images/necklace.png",
     description:
       "Exquisite 22k gold bridal necklace with intricate detailing, perfect for your special day. A true masterpiece inspired by ancient traditions.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Necklaces",
     price: 2500.0,
     countInStock: 5,
@@ -16,7 +16,7 @@ const jewelleryProducts = [
     image: "/images/ring.png",
     description:
       "Stunning 1-carat diamond solitaire ring set in a premium platinum band. The ultimate symbol of everlasting love and commitment.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Rings",
     price: 3200.0,
     countInStock: 3,
@@ -28,7 +28,7 @@ const jewelleryProducts = [
     image: "/images/bangles.png",
     description:
       "A set of four meticulously crafted 22k gold bangles. Features traditional floral motifs and a brilliant polished finish.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Bangles",
     price: 1800.0,
     countInStock: 10,
@@ -40,7 +40,7 @@ const jewelleryProducts = [
     image: "/images/earrings.png",
     description:
       "Elegant drop earrings featuring lustrous South Sea pearls accented with a halo of brilliant-cut diamonds in 18k white gold.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Earrings",
     price: 950.0,
     countInStock: 7,
@@ -52,7 +52,7 @@ const jewelleryProducts = [
     image: "/images/band.png",
     description:
       "A sleek and modern men's wedding band forged from solid platinum. Features a brushed matte finish with beveled edges.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Rings",
     price: 1200.0,
     countInStock: 8,
@@ -64,7 +64,7 @@ const jewelleryProducts = [
     image: "/images/pendant.png",
     description:
       "A timeless 24k pure gold coin pendant set in a 22k gold decorative bezel. A perfect investment piece and heirloom.",
-    brand: "Aura Jewellers",
+    brand: "Dewora Jewellers",
     category: "Pendants",
     price: 850.0,
     countInStock: 12,

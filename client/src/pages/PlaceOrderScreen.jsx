@@ -153,12 +153,12 @@ const PlaceOrderScreen = () => {
                             type="button"
                             disabled={cart.cartItems.length === 0 || loading}
                             onClick={placeOrderHandler}
-                            className="w-full py-5 bg-black text-white rounded-2xl font-bold text-lg hover:bg-gray-800 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 group"
+                            className="w-full py-4.5 bg-primary text-white border border-accent/25 uppercase tracking-widest font-bold text-sm hover:bg-black transition-all duration-300 active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 group cursor-pointer shadow-md hover:shadow-lg"
                         >
                             {loading ? "Processing..." : (
                                 <>
                                     Place Order 
-                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform text-accent" />
                                 </>
                             )}
                         </button>
