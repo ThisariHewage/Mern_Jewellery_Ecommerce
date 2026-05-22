@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,6 +7,7 @@ import api from "../../services/api";
 
 const ProductEditScreen = () => {
     const { id: productId } = useParams();
+    const isCreate = !productId;
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
 
@@ -29,6 +31,10 @@ const ProductEditScreen = () => {
     }, [image]);
 
     useEffect(() => {
+        if (!productId) {
+            setLoading(false);
+            return;
+        }
         const fetchProduct = async () => {
             try {
                 setLoading(true);
@@ -46,7 +52,6 @@ const ProductEditScreen = () => {
                 setLoading(false);
             }
         };
-
         fetchProduct();
     }, [productId]);
 
@@ -75,17 +80,30 @@ const ProductEditScreen = () => {
         e.preventDefault();
         try {
             setUpdating(true);
-            await api.put(`/api/products/${productId}`, {
-                name,
-                price,
-                image,
-                brand,
-                category,
-                countInStock,
-                description,
-            });
-            toast.success("Product updated successfully");
-            navigate("/admin/productlist");
+            if (isCreate) {
+                await api.post('/api/products', {
+                    name,
+                    price,
+                    image,
+                    brand,
+                    category,
+                    countInStock,
+                    description,
+                });
+                toast.success('Product created successfully');
+            } else {
+                await api.put(`/api/products/${productId}`, {
+                    name,
+                    price,
+                    image,
+                    brand,
+                    category,
+                    countInStock,
+                    description,
+                });
+                toast.success('Product updated successfully');
+            }
+            navigate('/admin/productlist');
         } catch (err) {
             toast.error(err?.response?.data?.message || err.message);
         } finally {
@@ -106,7 +124,7 @@ const ProductEditScreen = () => {
             </Link>
 
             <div className="mb-12 text-center">
-                <h1 className="text-4xl font-serif font-bold text-gray-900 tracking-tighter">Edit Product</h1>
+                <h1 className="text-4xl font-serif font-bold text-gray-900 tracking-tighter">{isCreate ? 'Create Product' : 'Edit Product'}</h1>
                 <p className="text-gray-500 uppercase tracking-[0.2em] text-[10px] font-bold mt-2">Update product details</p>
             </div>
 

@@ -360,12 +360,14 @@ const OrderScreen = () => {
                     {/* Payment Status */}
                     <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-900"><CreditCard size={24} /></div>
+                                <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-900"><CreditCard size={24} /></div>
                             <div className="flex-1"><h2 className="text-xl font-bold text-gray-900">Payment</h2><p className="text-sm text-gray-500">Method: {order.paymentMethod}</p></div>
                         </div>
                         <div className="pl-16 space-y-4">
                             {order.isPaid ? (
-                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest"><CheckCircle size={14} /> Paid on {new Date(order.paidAt).toLocaleDateString()}</div>
+                                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest">
+                                    <CheckCircle size={14} /> Paid on {order.paidAt ? new Date(order.paidAt).toLocaleDateString() : 'N/A'}
+                                </div>
                             ) : (
                                 <>
                                     {order.paymentMethod === "Stripe" ? (

@@ -53,7 +53,7 @@ const OrderListScreen = () => {
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Delivered</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 text-right">Details</th>
+
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
@@ -84,15 +84,6 @@ const OrderListScreen = () => {
                                                     <XCircle size={12} /> No
                                                 </span>
                                             )}
-                                        </td>
-                                        <td className="px-6 py-5 text-right">
-                                            <Link 
-                                                to={`/order/${order._id}`} 
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all group-hover:translate-x-1"
-                                            >
-                                                View
-                                                <ChevronRight size={14} />
-                                            </Link>
                                         </td>
                                     </tr>
                                 ))}

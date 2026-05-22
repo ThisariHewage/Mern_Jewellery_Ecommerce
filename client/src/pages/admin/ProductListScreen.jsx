@@ -40,17 +40,8 @@ const ProductListScreen = () => {
     };
 
     const createProductHandler = async () => {
-        if (window.confirm("Are you sure you want to create a new sample product?")) {
-            try {
-                setLoadingCreate(true);
-                const { data } = await api.post("/api/products", {});
-                toast.success("Sample product created");
-                navigate(`/admin/product/${data._id}/edit`);
-            } catch (err) {
-                toast.error(err?.response?.data?.message || err.message);
-            } finally {
-                setLoadingCreate(false);
-            }
+        if (window.confirm("Are you sure you want to create a new product?")) {
+            navigate(`/admin/product/create`);
         }
     };
 
