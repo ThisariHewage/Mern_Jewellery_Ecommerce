@@ -77,6 +77,10 @@ const orderSlice = createSlice({
             state.loadingPay = false;
             state.successPay = false;
         },
+        payReset: (state) => {
+            state.loadingPay = false;
+            state.successPay = false;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -117,5 +121,5 @@ const orderSlice = createSlice({
     },
 });
 
-export const { resetOrder } = orderSlice.actions;
+export const { resetOrder, payReset } = orderSlice.actions;
 export default orderSlice.reducer;

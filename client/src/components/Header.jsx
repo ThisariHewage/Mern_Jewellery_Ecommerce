@@ -102,8 +102,8 @@ const Header = () => {
                                     >
                                         <span className="text-lg">👔</span>
                                         <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">For Him</p>
-                                            <p className="text-[10px] text-gray-400">Rings, chains & details</p>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">MEN</p>
+                                            <p className="text-[10px] text-gray-400">Rings, Chains, Bracelets & details</p>
                                         </div>
                                     </Link>
                                     <Link
@@ -114,13 +114,26 @@ const Header = () => {
                                     >
                                         <span className="text-lg">👑</span>
                                         <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">For Her</p>
-                                            <p className="text-[10px] text-gray-400">Necklaces, earrings & sets</p>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">WOMEN</p>
+                                            <p className="text-[10px] text-gray-400">Necklaces, earrings, Bracelets, Bangles & sets</p>
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        to="/jewellery?category=Bridal"
+                                        id="nav-jewellery-bridal"
+                                        onClick={() => setJewelleryOpen(false)}
+                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
+                                    >
+                                        <span className="text-lg">💍</span>
+                                        <div>
+                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">BRIDAL</p>
+                                            <p className="text-[10px] text-gray-400">Bridal sets &amp; accessories</p>
                                         </div>
                                     </Link>
                                 </div>
                             )}
                         </div>
+
 
                         <Link to="/services" id="nav-services" className={navLinkClass}>Services</Link>
                         <Link to="/promotions" id="nav-promotions" className={navLinkClass}>Promotions</Link>
@@ -258,6 +271,7 @@ const Header = () => {
                                 <Link to="/jewellery" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">💎 All Jewellery</Link>
                                 <Link to="/jewellery?category=Men" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👔 Men's</Link>
                                 <Link to="/jewellery?category=Women" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👑 Women's</Link>
+                                <Link to="/jewellery?category=Bridal" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">💍 Bridal</Link>
                             </div>
                         )}
                     </div>

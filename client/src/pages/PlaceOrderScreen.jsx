@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -6,6 +6,7 @@ import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder, resetOrder } from "../redux/slices/orderSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import { MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
+import SuccessAlert from "../components/SuccessAlert";
 
 const PlaceOrderScreen = () => {
     const navigate = useNavigate();
@@ -21,17 +22,24 @@ const PlaceOrderScreen = () => {
 
     const orderCreate = useSelector((state) => state.orders);
     const { order, success, error, loading } = orderCreate;
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     useEffect(() => {
         if (success) {
-            navigate(`/order/${order._id}`);
-            dispatch(resetOrder());
-            dispatch(clearCartItems());
+            toast.success('Order placed successfully!');
+            setShowSuccessAlert(true);
         }
         if (error) {
             toast.error(error);
         }
-    }, [navigate, success, order, error, dispatch]);
+    }, [success, error]);
+
+    const handleAlertClose = () => {
+        setShowSuccessAlert(false);
+        navigate('/');
+        dispatch(resetOrder());
+        dispatch(clearCartItems());
+    };
 
     const placeOrderHandler = () => {
         dispatch(
@@ -49,6 +57,9 @@ const PlaceOrderScreen = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
+            {showSuccessAlert && (
+                <SuccessAlert show={showSuccessAlert} onClose={handleAlertClose} />
+            )}
             <CheckoutSteps step1 step2 step3 step4 />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-8">
@@ -99,7 +110,7 @@ const PlaceOrderScreen = () => {
                                 <p className="text-xs uppercase tracking-widest text-gray-400 font-medium">Your selection</p>
                             </div>
                         </div>
-                        
+
                         <div className="space-y-6">
                             {cart.cartItems.length === 0 ? (
                                 <p className="text-gray-500 italic">Your cart is empty</p>
@@ -129,7 +140,7 @@ const PlaceOrderScreen = () => {
                 <div className="lg:col-span-4">
                     <div className="bg-gray-50 rounded-[2.5rem] p-10 sticky top-24 border border-gray-100 shadow-xl shadow-gray-200/50">
                         <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
-                        
+
                         <div className="space-y-4 mb-10">
                             <div className="flex justify-between text-gray-500">
                                 <span className="font-medium tracking-wide">Items Subtotal</span>
@@ -157,7 +168,7 @@ const PlaceOrderScreen = () => {
                         >
                             {loading ? "Processing..." : (
                                 <>
-                                    Place Order 
+                                    Place Order
                                     <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform text-accent" />
                                 </>
                             )}
@@ -165,7 +176,7 @@ const PlaceOrderScreen = () => {
 
                         <div className="mt-8 p-4 bg-white/50 rounded-2xl border border-dashed border-gray-200">
                             <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest font-bold">
-                                By placing your order, you agree to our <br/> Terms of Service & Privacy Policy
+                                By placing your order, you agree to our <br /> Terms of Service & Privacy Policy
                             </p>
                         </div>
                     </div>

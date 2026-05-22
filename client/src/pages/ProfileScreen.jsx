@@ -13,6 +13,7 @@ const ProfileScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [orders, setOrders] = useState([]);
     const [loadingOrders, setLoadingOrders] = useState(true);
+    const [expandedOrderId, setExpandedOrderId] = useState(null);
     const [updating, setUpdating] = useState(false);
 
     const dispatch = useDispatch();
@@ -171,7 +172,7 @@ const ProfileScreen = () => {
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Delivered</th>
-                                            <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500"></th>
+
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-50">
@@ -183,7 +184,7 @@ const ProfileScreen = () => {
                                                 <td className="px-6 py-5">
                                                     {order.isPaid ? (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
-                                                            <CheckCircle size={12} /> {order.paidAt.substring(0, 10)}
+                                                            <CheckCircle size={12} /> Paid on {order.paidAt.substring(0, 10)} OK ✅
                                                         </span>
                                                     ) : (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-widest">
@@ -202,12 +203,7 @@ const ProfileScreen = () => {
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-5 text-right">
-                                                    <Link to={`/order/${order._id}`} className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-black transition-all group-hover:translate-x-1">
-                                                        Details
-                                                        <ChevronRight size={14} />
-                                                    </Link>
-                                                </td>
+
                                             </tr>
                                         ))}
                                     </tbody>

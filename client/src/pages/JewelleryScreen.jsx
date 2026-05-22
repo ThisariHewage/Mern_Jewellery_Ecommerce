@@ -37,7 +37,7 @@ const JewelleryScreen = () => {
         );
     });
 
-    const filters = ["All", "Men", "Women"];
+    const filters = ["All", "Men", "Women", "Bridal"];
 
     return (
         <div className="min-h-screen bg-white">
@@ -81,17 +81,16 @@ const JewelleryScreen = () => {
                                 key={filter}
                                 id={`jewellery-filter-${filter.toLowerCase()}`}
                                 onClick={() => handleFilter(filter)}
-                                className={`px-7 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${
-                                    activeFilter === filter
+                                className={`px-7 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${activeFilter === filter
                                         ? "text-white shadow-lg"
                                         : "text-gray-500 hover:text-gray-900"
-                                }`}
+                                    }`}
                                 style={
                                     activeFilter === filter
                                         ? {
-                                              background:
-                                                  "linear-gradient(135deg, #2d0a5e, #c9a84c)",
-                                          }
+                                            background:
+                                                "linear-gradient(135deg, #2d0a5e, #c9a84c)",
+                                        }
                                         : {}
                                 }
                             >

@@ -23,7 +23,7 @@ const CategoryCard = ({ emoji, title, subtitle, to, id, video }) => {
 
     const handleMouseEnter = () => {
         if (videoRef.current) {
-            videoRef.current.play().catch(() => {});
+            videoRef.current.play().catch(() => { });
         }
     };
 
@@ -281,7 +281,7 @@ const HomeScreen = () => {
                         subtitle="For Her"
                         to="/jewellery?category=Women"
                         id="home-cat-women"
-                        video="https://videos.pexels.com/video-files/5585310/5585310-hd_1920_1080_30fps.mp4"
+                        video="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-woman-wearing-golden-earrings-44031-large.mp4"
                     />
                     <CategoryCard
                         emoji="👔"
@@ -289,15 +289,15 @@ const HomeScreen = () => {
                         subtitle="For Him"
                         to="/jewellery?category=Men"
                         id="home-cat-men"
-                        video="https://videos.pexels.com/video-files/3209828/3209828-uhd_2560_1440_30fps.mp4"
+                        video="https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-golden-makeup-40283-large.mp4"
                     />
                     <CategoryCard
                         emoji="💍"
                         title="Bridal Collection"
                         subtitle="New Beginnings"
-                        to="/jewellery"
+                        to="/jewellery?category=Bridal"
                         id="home-cat-bridal"
-                        video="https://videos.pexels.com/video-files/5948100/5948100-hd_1080_1920_25fps.mp4"
+                        video="https://assets.mixkit.co/videos/preview/mixkit-hands-holding-and-showing-luxury-gold-jewelry-44026-large.mp4"
                     />
                 </div>
             </section>

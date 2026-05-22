@@ -55,3 +55,17 @@
   border-radius: 0px !important;
   font-family: var(--font-sans) !important;
 }
+
+/* Premium 3D Card Flip Utilities */
+.perspective {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.my-rotate-y-180 {
+  transform: rotateY(180deg);
+}

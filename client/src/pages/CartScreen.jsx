@@ -134,12 +134,14 @@ const CartScreen = () => {
                                 </div>
                                 <div className="flex justify-between text-gray-600">
                                     <span>Estimated Tax</span>
-                                    <span className="font-semibold text-gray-900">$0.00</span>
+                                    <span className="font-semibold text-gray-900">
+                                        ${ (cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 0.15).toFixed(2) }
+                                    </span>
                                 </div>
                                 <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
                                     <span className="text-lg font-bold text-gray-900">Total</span>
                                     <span className="text-2xl font-bold text-gray-900">
-                                        ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+                                        ${ (cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 1.15).toFixed(2) }
                                     </span>
                                 </div>
                             </div>

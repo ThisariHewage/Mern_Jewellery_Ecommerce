@@ -68,35 +68,36 @@ const PaymentScreen = () => {
                             />
                         </label>
 
-                        {/* Stripe/Credit Card Option (Stub) */}
-                        <label 
-                            className={`flex items-center justify-between p-6 rounded-2xl border-2 transition-all cursor-pointer group opacity-50 ${
-                                paymentMethod === "Stripe" 
-                                    ? "border-black bg-gray-50" 
-                                    : "border-gray-100 hover:border-gray-200"
-                            }`}
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                                    paymentMethod === "Stripe" ? "bg-black text-white" : "bg-gray-100 text-gray-400"
-                                }`}>
-                                    <CreditCard size={24} />
+                        <div className={`p-6 rounded-2xl border-2 transition-all ${paymentMethod === "Stripe" ? "border-black bg-gray-50" : "border-gray-100"}`}>
+                            <label className="flex items-center justify-between cursor-pointer mb-6">
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${paymentMethod === "Stripe" ? "bg-black text-white" : "bg-gray-100 text-gray-400"}`}>
+                                        <CreditCard size={24} />
+                                    </div>
+                                    <div>
+                                        <span className="block font-bold text-gray-900">Direct Credit Card</span>
+                                        <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Stripe Secure</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span className="block font-bold text-gray-900">Direct Credit Card</span>
-                                    <span className="text-xs text-gray-500 uppercase tracking-widest font-medium">Coming Soon</span>
+                                <input
+                                    type="radio"
+                                    className="w-5 h-5 accent-black cursor-pointer"
+                                    name="paymentMethod"
+                                    value="Stripe"
+                                    checked={paymentMethod === "Stripe"}
+                                    onChange={(e) => setPaymentMethod(e.target.value)}
+                                />
+                            </label>
+                            {paymentMethod === "Stripe" && (
+                                <div className="mt-4 pt-4 border-t border-gray-200 space-y-4">
+                                    <input type="text" placeholder="Card Number" className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black" />
+                                    <div className="flex gap-4">
+                                        <input type="text" placeholder="MM/YY" className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black" />
+                                        <input type="text" placeholder="CVC" className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:border-black" />
+                                    </div>
                                 </div>
-                            </div>
-                            <input
-                                type="radio"
-                                className="w-5 h-5 accent-black"
-                                name="paymentMethod"
-                                value="Stripe"
-                                disabled
-                                checked={paymentMethod === "Stripe"}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                            />
-                        </label>
+                            )}
+                        </div>
                     </div>
 
                     <button
