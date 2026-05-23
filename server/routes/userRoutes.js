@@ -21,7 +21,7 @@ router.post("/login", authUser);
 router.post("/logout", logoutUser);
 router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile);
 router.post("/forgotpassword", forgotPassword);
-router.put("/resetpassword/:token", resetPassword);
+router.post("/resetpassword", resetPassword);
 router.route("/:id")
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)

@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { clearCartItems } from "../redux/slices/cartSlice";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+
 import { toast } from "react-toastify";
 import api from "../services/api";
 import { getOrderDetails, payOrder, payReset } from "../redux/slices/orderSlice";
@@ -16,6 +18,12 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
     const dispatch = useDispatch();
+    const location = useLocation();
+
+    const queryParams = new URLSearchParams(location.search);
+    const isSuccess = queryParams.get("success") === "true";
+    const isCanceled = queryParams.get("canceled") === "true";
+
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     const { order, loading, error, successPay, loadingPay } = useSelector((state) => state.orders);
     const { userInfo } = useSelector((state) => state.auth);
@@ -49,6 +57,24 @@ const OrderScreen = () => {
             }
         }
     }, [dispatch, orderId, successPay, order, paypalDispatch]);
+
+    useEffect(() => {
+        if (isSuccess && order && !order.isPaid) {
+            const details = {
+                id: "STRIPE_CHECKOUT",
+                status: "COMPLETED",
+                update_time: new Date().toISOString(),
+                payer: { email_address: order.user.email },
+            };
+            dispatch(payOrder({ orderId, details }));
+            dispatch(clearCartItems());
+            toast.success("Payment Received Successfully!");
+        }
+
+        if (isCanceled) {
+            toast.error("Payment was canceled.");
+        }
+    }, [isSuccess, isCanceled, order, orderId, dispatch]);
 
     function onApprove(data, actions) {
         return actions.order.capture().then(async function (details) {

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CheckoutSteps from "../components/CheckoutSteps";
+import api from "../services/api";
 import { createOrder, resetOrder } from "../redux/slices/orderSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import { MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
@@ -26,13 +27,22 @@ const PlaceOrderScreen = () => {
 
     useEffect(() => {
         if (success) {
-            toast.success('Order placed successfully!');
-            setShowSuccessAlert(true);
+            const createCheckoutSession = async () => {
+                try {
+                    const { data } = await api.post("/api/stripe/create-checkout-session", {
+                        orderId: order._id,
+                    });
+                    window.location.href = data.url;
+                } catch (err) {
+                    toast.error(err?.response?.data?.message || err.message);
+                }
+            };
+            createCheckoutSession();
         }
         if (error) {
             toast.error(error);
         }
-    }, [success, error]);
+    }, [success, error, order, navigate]);
 
     const handleAlertClose = () => {
         setShowSuccessAlert(false);
@@ -57,9 +67,7 @@ const PlaceOrderScreen = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
-            {showSuccessAlert && (
-                <SuccessAlert show={showSuccessAlert} onClose={handleAlertClose} />
-            )}
+
             <CheckoutSteps step1 step2 step3 step4 />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mt-8">

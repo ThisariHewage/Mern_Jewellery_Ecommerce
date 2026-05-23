@@ -22,8 +22,8 @@ const userSchema = mongoose.Schema(
             required: true,
             default: false,
         },
-        resetPasswordToken: String,
-        resetPasswordExpire: Date,
+        resetPasswordOTP: String,
+        resetPasswordOTPExpire: Date,
     },
     {
         timestamps: true,
@@ -35,25 +35,25 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Generate and hash password token
-userSchema.methods.getResetPasswordToken = function () {
-    // Generate token
-    const resetToken = crypto.randomBytes(20).toString("hex");
+// Generate and hash password OTP
+userSchema.methods.getResetPasswordOTP = function () {
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Hash token and set to resetPasswordToken field
-    this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    // Hash OTP and set to resetPasswordOTP field
+    this.resetPasswordOTP = crypto.createHash("sha256").update(otp).digest("hex");
 
     // Set expire (10 minutes)
-    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    this.resetPasswordOTPExpire = Date.now() + 10 * 60 * 1000;
 
-    return resetToken;
+    return otp;
 };
 
 // Middleware to hash password before saving to database
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
     // Only hash the password if it's being modified (or is new)
     if (!this.isModified("password")) {
-        next();
+        return;
     }
 
     const salt = await bcrypt.genSalt(10);

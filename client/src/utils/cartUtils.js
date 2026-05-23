@@ -27,7 +27,13 @@ export const updateCart = (state) => {
         Number(state.taxPrice)
     ).toFixed(2);
 
-    localStorage.setItem("cart", JSON.stringify(state));
+    // Use user-specific key if logged in
+    const userInfo = localStorage.getItem("userInfo")
+        ? JSON.parse(localStorage.getItem("userInfo"))
+        : null;
+    const cartKey = userInfo ? `cart_${userInfo._id}` : "cart";
+
+    localStorage.setItem(cartKey, JSON.stringify(state));
 
     return state;
 };

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../redux/slices/authSlice";
+import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
 import { X } from "lucide-react";
 
@@ -34,6 +35,7 @@ const LoginScreen = () => {
         try {
             const res = await api.post("/api/users/login", { email, password });
             dispatch(setCredentials({ ...res.data }));
+            dispatch(resetCart());
             navigate(redirect);
             toast.success("Welcome back!");
         } catch (err) {
@@ -111,7 +113,7 @@ const LoginScreen = () => {
                     </Link>
 
                     <div className="pt-4">
-                        <Link 
+                        <Link
                             to={redirect !== "/" ? `/register?redirect=${redirect}` : "/register"}
                             className="inline-block w-full py-4 border border-primary text-primary font-bold text-xl uppercase tracking-widest hover:bg-primary hover:text-white transition-all text-center"
                         >

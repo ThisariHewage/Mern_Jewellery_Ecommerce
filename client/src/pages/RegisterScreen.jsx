@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../redux/slices/authSlice";
+import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
 import { X } from "lucide-react";
 
@@ -32,7 +33,7 @@ const RegisterScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setRegisterError("");
-        
+
         if (password !== confirmPassword) {
             setRegisterError("Passwords do not match");
             return;
@@ -42,6 +43,7 @@ const RegisterScreen = () => {
         try {
             const res = await api.post("/api/users", { name, email, password });
             dispatch(setCredentials({ ...res.data }));
+            dispatch(resetCart());
             navigate(redirect);
             toast.success("Account created successfully!");
         } catch (err) {
@@ -149,7 +151,7 @@ const RegisterScreen = () => {
                     </p>
 
                     <div className="pt-4">
-                        <Link 
+                        <Link
                             to={redirect !== "/" ? `/login?redirect=${redirect}` : "/login"}
                             className="inline-block w-full py-4 border border-primary text-primary font-bold text-xl uppercase tracking-widest hover:bg-primary hover:text-white transition-all text-center"
                         >

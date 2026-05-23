@@ -216,37 +216,40 @@ const forgotPassword = asyncHandler(async (req, res) => {
         throw new Error("There is no user with that email");
     }
 
-    // Get reset token
-    const resetToken = user.getResetPasswordToken();
+    // Get reset OTP
+    const otp = user.getResetPasswordOTP();
 
     await user.save({ validateBeforeSave: false });
 
-    // Create reset url
-    const resetUrl = `http://localhost:5173/resetpassword/${resetToken}`;
+    const message = `Your password reset code is: ${otp}\n\nThis code will expire in 10 minutes.`;
 
-    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
-
-    // For testing: always log the URL so it works even without email credentials
+    // For dev testing: log the OTP
     console.log("-----------------------------------------");
-    console.log("PASSWORD RESET URL:", resetUrl);
+    console.log("PASSWORD RESET OTP:", otp);
     console.log("-----------------------------------------");
 
     try {
-        await sendEmail({
+        const emailSent = await sendEmail({
             email: user.email,
-            subject: "Dewora Jewellers - Password Reset Token",
+            subject: "Dewora Jewellers - Password Reset Code",
             message,
         });
 
+        if (!emailSent) {
+            res.status(500);
+            throw new Error("Email could not be sent");
+        }
+
         res.status(200).json({ success: true, data: "Email sent" });
     } catch (err) {
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
+        if (user) {
+            user.resetPasswordOTP = undefined;
+            user.resetPasswordOTPExpire = undefined;
+            await user.save({ validateBeforeSave: false });
+        }
 
-        await user.save({ validateBeforeSave: false });
-
-        res.status(500);
-        throw new Error("Email could not be sent");
+        res.status(res.statusCode === 200 ? 500 : res.statusCode);
+        throw new Error(err.message || "Email could not be sent");
     }
 });
 
@@ -256,33 +259,36 @@ const forgotPassword = asyncHandler(async (req, res) => {
  * @access  Public
  */
 const resetPassword = asyncHandler(async (req, res) => {
-    // Get hashed token
-    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const { email, otp, password } = req.body;
+
+    // Get hashed OTP
+    const resetPasswordOTP = crypto.createHash("sha256").update(otp).digest("hex");
 
     const user = await User.findOne({
-        resetPasswordToken,
-        resetPasswordExpire: { $gt: Date.now() },
+        email,
+        resetPasswordOTP,
+        resetPasswordOTPExpire: { $gt: Date.now() },
     });
 
     if (!user) {
         res.status(400);
-        throw new Error("Invalid or expired token");
+        throw new Error("Invalid or expired code");
     }
 
     // Set new password
-    user.password = req.body.password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    user.password = password;
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordOTPExpire = undefined;
     await user.save();
 
     res.status(200).json({ success: true, data: "Password reset successfully" });
 });
 
-export { 
-    authUser, 
-    registerUser, 
-    logoutUser, 
-    getUserProfile, 
+export {
+    authUser,
+    registerUser,
+    logoutUser,
+    getUserProfile,
     updateUserProfile,
     getUsers,
     getUserById,

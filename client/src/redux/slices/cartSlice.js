@@ -3,9 +3,15 @@ import { updateCart } from "../../utils/cartUtils";
 
 const getInitialState = () => {
     try {
-        const cartFromStorage = localStorage.getItem("cart");
-        return cartFromStorage 
-            ? JSON.parse(cartFromStorage) 
+        const userInfo = localStorage.getItem("userInfo")
+            ? JSON.parse(localStorage.getItem("userInfo"))
+            : null;
+
+        const cartKey = userInfo ? `cart_${userInfo._id}` : "cart";
+        const cartFromStorage = localStorage.getItem(cartKey);
+
+        return cartFromStorage
+            ? JSON.parse(cartFromStorage)
             : { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
     } catch (error) {
         return { cartItems: [], shippingAddress: {}, paymentMethod: "PayPal" };
@@ -49,6 +55,17 @@ const cartSlice = createSlice({
             state.cartItems = [];
             return updateCart(state);
         },
+        // Reset cart state when user logs in/out
+        resetCart: (state) => {
+            const newState = getInitialState();
+            state.cartItems = newState.cartItems;
+            state.shippingAddress = newState.shippingAddress;
+            state.paymentMethod = newState.paymentMethod;
+            state.itemsPrice = newState.itemsPrice;
+            state.shippingPrice = newState.shippingPrice;
+            state.taxPrice = newState.taxPrice;
+            state.totalPrice = newState.totalPrice;
+        },
     },
 });
 
@@ -58,6 +75,7 @@ export const {
     saveShippingAddress,
     savePaymentMethod,
     clearCartItems,
+    resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

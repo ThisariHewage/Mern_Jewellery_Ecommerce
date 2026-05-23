@@ -83,8 +83,28 @@ const CartScreen = () => {
                         <div className="bg-gray-50 rounded-3xl p-8 sticky top-24">
                             <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
                             <div className="space-y-4 mb-8">
-                                <div className="flex justify-between text-gray-600"><span>Subtotal</span><span className="font-semibold text-gray-900">${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}</span></div>
-                                <div className="pt-4 border-t border-gray-200 flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total</span><span className="text-2xl font-bold text-gray-900">${(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 1.15).toFixed(2)}</span></div>
+                                <div className="flex justify-between text-gray-600">
+                                    <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</span>
+                                    <span className="font-semibold text-gray-900">
+                                        ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between text-gray-600">
+                                    <span>Shipping</span>
+                                    <span className="font-semibold text-green-600">Free</span>
+                                </div>
+                                <div className="flex justify-between text-gray-600">
+                                    <span>Estimated Tax (15%)</span>
+                                    <span className="font-semibold text-gray-900">
+                                        ${(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 0.15).toFixed(2)}
+                                    </span>
+                                </div>
+                                <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
+                                    <span className="text-lg font-bold text-gray-900">Total</span>
+                                    <span className="text-2xl font-bold text-gray-900">
+                                        ${(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 1.15).toFixed(2)}
+                                    </span>
+                                </div>
                             </div>
                             <button onClick={checkoutHandler} disabled={cartItems.length === 0} className="w-full py-4 bg-primary text-white uppercase tracking-widest font-bold text-sm hover:bg-black transition-all">Checkout Now</button>
                         </div>

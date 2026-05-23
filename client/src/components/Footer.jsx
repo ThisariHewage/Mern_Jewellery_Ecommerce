@@ -33,11 +33,11 @@ const Footer = () => {
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="text-accent">📞</span>
-                            <span>+94 11 234 5678</span>
+                            <span>+94 70 198 4663</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="text-accent">✉️</span>
-                            <span>info@deworajewellers.com</span>
+                            <span>ureshathisari@gmail.com</span>
                         </li>
                     </ul>
                 </div>
