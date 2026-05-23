@@ -30,6 +30,7 @@ import UserEditScreen from "./pages/admin/UserEditScreen";
 import ProductListScreen from "./pages/admin/ProductListScreen";
 import ProductEditScreen from "./pages/admin/ProductEditScreen";
 import OrderListScreen from "./pages/admin/OrderListScreen";
+import AdminDashboardScreen from "./pages/admin/AdminDashboardScreen";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
 
             {/* Admin Users Only */}
             <Route element={<AdminRoute />}>
+              <Route path="/admin/dashboard" element={<AdminDashboardScreen />} />
               <Route path="/admin/userlist" element={<UserListScreen />} />
               <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
               <Route path="/admin/productlist" element={<ProductListScreen />} />

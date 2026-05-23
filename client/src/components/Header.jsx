@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
-import { FaShoppingCart, FaUser, FaSearch, FaSignOutAlt, FaChevronDown, FaBars, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaSearch, FaSignOutAlt, FaChevronDown, FaBars, FaTimes, FaUsers, FaBoxOpen, FaScroll, FaUserCircle, FaTachometerAlt } from "react-icons/fa";
 
 const Header = () => {
     const { userInfo } = useSelector((state) => state.auth);
@@ -13,11 +13,9 @@ const Header = () => {
     const navigate = useNavigate();
 
     const [jewelleryOpen, setJewelleryOpen] = useState(false);
-    const [profileOpen, setProfileOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mobileJewelleryOpen, setMobileJewelleryOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const profileDropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -25,8 +23,8 @@ const Header = () => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setJewelleryOpen(false);
             }
-            if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target)) {
-                setProfileOpen(false);
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+                setJewelleryOpen(false);
             }
         };
         document.addEventListener("mousedown", handler);
@@ -135,82 +133,18 @@ const Header = () => {
                             )}
                         </Link>
 
-                        {/* Authentication & Profile Dropdown */}
+                        {/* Authentication & Profile Link */}
                         {userInfo ? (
-                            <div className="relative" ref={profileDropdownRef}>
+                            <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => setProfileOpen((o) => !o)}
-                                    className="flex items-center gap-2 hover:text-accent transition-colors p-1"
+                                    onClick={() => navigate(userInfo.isAdmin ? "/admin/dashboard" : "/profile")}
+                                    className="flex items-center gap-2 hover:text-accent transition-colors p-1 cursor-pointer group"
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent flex items-center justify-center text-xs font-bold shadow-sm">
+                                    <div className="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent flex items-center justify-center text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
                                         {userInfo.name.charAt(0).toUpperCase()}
                                     </div>
-                                    <span className="hidden xl:inline text-xs uppercase tracking-widest font-bold text-primary">{userInfo.name}</span>
-                                    <FaChevronDown size={8} className={`text-accent/60 transition-transform duration-300 ${profileOpen ? "rotate-180 text-accent" : ""}`} />
+                                    <span className="hidden xl:inline text-xs uppercase tracking-widest font-bold text-primary group-hover:text-accent transition-colors">{userInfo.name}</span>
                                 </button>
-
-                                {profileOpen && (
-                                    <div className="absolute right-0 top-full mt-4 bg-secondary rounded-2xl shadow-2xl border border-accent/20 overflow-hidden min-w-[240px] z-50 animate-fade-in">
-                                        {/* Account Header */}
-                                        <div className="px-5 py-4 bg-primary/5 border-b border-accent/10">
-                                            <p className="text-xs font-bold text-primary truncate">{userInfo.name}</p>
-                                            <p className="text-[10px] text-gray-400 truncate mt-0.5">{userInfo.email}</p>
-                                            {userInfo.isAdmin && (
-                                                <span className="inline-block mt-2 px-2.5 py-0.5 bg-accent/20 border border-accent/35 text-accent text-[8px] uppercase tracking-widest font-extrabold rounded-md">
-                                                    Admin Partner
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Admin Specific Actions */}
-                                        {userInfo.isAdmin && (
-                                            <div className="py-2 border-b border-accent/10">
-                                                <p className="px-5 py-1 text-[8px] uppercase tracking-[0.25em] font-extrabold text-accent">Management</p>
-                                                <Link
-                                                    to="/admin/userlist"
-                                                    onClick={() => setProfileOpen(false)}
-                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
-                                                >
-                                                    👥 Manage Users
-                                                </Link>
-                                                <Link
-                                                    to="/admin/productlist"
-                                                    onClick={() => setProfileOpen(false)}
-                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
-                                                >
-                                                    📦 Manage Products
-                                                </Link>
-                                                <Link
-                                                    to="/admin/orderlist"
-                                                    onClick={() => setProfileOpen(false)}
-                                                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
-                                                >
-                                                    📜 Manage Orders
-                                                </Link>
-                                            </div>
-                                        )}
-
-                                        {/* Profile & Logout */}
-                                        <div className="py-2">
-                                            <Link
-                                                to="/profile"
-                                                onClick={() => setProfileOpen(false)}
-                                                className="flex items-center gap-3 px-5 py-2.5 hover:bg-primary/5 transition-colors text-xs font-bold text-gray-600 hover:text-primary uppercase tracking-wider"
-                                            >
-                                                👤 My Profile
-                                            </Link>
-                                            <button
-                                                onClick={() => {
-                                                    setProfileOpen(false);
-                                                    logoutHandler();
-                                                }}
-                                                className="w-full text-left flex items-center gap-3 px-5 py-2.5 hover:bg-red-50/50 transition-colors text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-wider cursor-pointer"
-                                            >
-                                                🚪 Logout
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         ) : (
                             <Link to="/login" id="header-login-btn" className="hidden lg:flex items-center gap-2 hover:text-accent transition-colors text-xs font-bold uppercase tracking-widest text-gray-500 p-1">
