@@ -20,21 +20,26 @@ const createPaymentIntent = asyncHandler(async (req, res) => {
     const order = await Order.findById(orderId);
 
     if (order) {
-        // Create a PaymentIntent with the order amount and currency
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: Math.round(order.totalPrice * 100), // Stripe expects amount in cents
-            currency: "usd",
-            automatic_payment_methods: {
-                enabled: true,
-            },
-            metadata: {
-                orderId: order._id.toString(),
-            },
-        });
+        try {
+            // Create a PaymentIntent with the order amount and currency
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: Math.round(order.totalPrice * 100), // Stripe expects amount in cents
+                currency: "usd",
+                automatic_payment_methods: {
+                    enabled: true,
+                },
+                metadata: {
+                    orderId: order._id.toString(),
+                },
+            });
 
-        res.send({
-            clientSecret: paymentIntent.client_secret,
-        });
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+            });
+        } catch (error) {
+            console.error("Stripe Payment Intent Error:", error);
+            res.status(500).json({ message: error.message });
+        }
     } else {
         res.status(404);
         throw new Error("Order not found");
@@ -91,19 +96,24 @@ const createCheckoutSession = asyncHandler(async (req, res) => {
         });
     }
 
-    const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items,
-        mode: "payment",
-        success_url: `http://localhost:5173/order/${order._id}?success=true`,
-        cancel_url: `http://localhost:5173/order/${order._id}?canceled=true`,
-        customer_email: order.user.email,
-        metadata: {
-            orderId: order._id.toString(),
-        },
-    });
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items,
+            mode: "payment",
+            success_url: `${process.env.FRONTEND_URL || "http://localhost:5173"}/order/${order._id}?success=true`,
+            cancel_url: `${process.env.FRONTEND_URL || "http://localhost:5173"}/order/${order._id}?canceled=true`,
+            customer_email: order.user.email,
+            metadata: {
+                orderId: order._id.toString(),
+            },
+        });
 
-    res.json({ url: session.url });
+        res.json({ url: session.url });
+    } catch (error) {
+        console.error("Stripe Session Creation Error:", error);
+        res.status(500).json({ message: error.message });
+    }
 });
 
 router.post("/create-payment-intent", createPaymentIntent);

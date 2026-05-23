@@ -2,18 +2,11 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCartItems } from "../redux/slices/cartSlice";
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-
 import { toast } from "react-toastify";
 import api from "../services/api";
 import { getOrderDetails, payOrder, payReset } from "../redux/slices/orderSlice";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import { MapPin, CreditCard, ShoppingBag, CheckCircle, Clock, Lock } from "lucide-react";
-import CheckoutForm from "../components/CheckoutForm";
-
-// Load stripe outside of component to avoid recreating it
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "");
+import { MapPin, CreditCard, ShoppingBag, CheckCircle, Clock } from "lucide-react";
+import SuccessAlert from "../components/SuccessAlert";
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -24,10 +17,9 @@ const OrderScreen = () => {
     const isSuccess = queryParams.get("success") === "true";
     const isCanceled = queryParams.get("canceled") === "true";
 
-    const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-    const { order, loading, error, successPay, loadingPay } = useSelector((state) => state.orders);
+    const { order, loading, error, successPay } = useSelector((state) => state.orders);
     const { userInfo } = useSelector((state) => state.auth);
-    const [clientSecret, setClientSecret] = useState("");
+    const [showSuccess, setShowSuccess] = useState(false);
 
     useEffect(() => {
         if (!order || successPay || order._id !== orderId) {
@@ -36,27 +28,11 @@ const OrderScreen = () => {
                 dispatch(payReset());
             }
         } else if (!order.isPaid) {
-            if (order.paymentMethod === "PayPal") {
-                if (!window.paypal) {
-                    const loadPayPalScript = async () => {
-                        const { data: clientId } = await api.get("/api/config/paypal");
-                        paypalDispatch({
-                            type: "resetOptions",
-                            value: { "client-id": clientId, currency: "USD" },
-                        });
-                        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
-                    };
-                    loadPayPalScript();
-                }
-            } else if (order.paymentMethod === "Stripe") {
-                const getClientSecret = async () => {
-                    const { data } = await api.post("/api/stripe/create-payment-intent", { orderId });
-                    setClientSecret(data.clientSecret);
-                };
-                getClientSecret();
+            if (order.paymentMethod === "Stripe") {
+                // Payment Intent logic can be added here if needed for embedded forms
             }
         }
-    }, [dispatch, orderId, successPay, order, paypalDispatch]);
+    }, [dispatch, orderId, successPay, order]);
 
     useEffect(() => {
         if (isSuccess && order && !order.isPaid) {
@@ -68,42 +44,13 @@ const OrderScreen = () => {
             };
             dispatch(payOrder({ orderId, details }));
             dispatch(clearCartItems());
-            toast.success("Payment Received Successfully!");
+            setShowSuccess(true);
         }
 
         if (isCanceled) {
             toast.error("Payment was canceled.");
         }
     }, [isSuccess, isCanceled, order, orderId, dispatch]);
-
-    function onApprove(data, actions) {
-        return actions.order.capture().then(async function (details) {
-            try {
-                dispatch(payOrder({ orderId, details }));
-                toast.success("Order is paid");
-            } catch (err) {
-                toast.error(err?.data?.message || err.message);
-            }
-        });
-    }
-
-    function onError(err) {
-        toast.error(err.message);
-    }
-
-    function createOrder(data, actions) {
-        return actions.order
-            .create({
-                purchase_units: [
-                    {
-                        amount: { value: order.totalPrice },
-                    },
-                ],
-            })
-            .then((orderId) => {
-                return orderId;
-            });
-    }
 
     const deliverOrderHandler = async () => {
         try {
@@ -117,9 +64,11 @@ const OrderScreen = () => {
 
     if (loading) return <div className="py-20 text-center uppercase tracking-widest animate-pulse">Loading Order Details...</div>;
     if (error) return <div className="py-20 text-center text-red-500">{error}</div>;
+    if (!order) return null;
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
+            <SuccessAlert show={showSuccess} onClose={() => setShowSuccess(false)} />
             <div className="mb-12">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">Order #{order._id}</h1>
                 <p className="text-gray-500 uppercase tracking-widest text-xs font-medium">Thank you for your purchase</p>
@@ -156,24 +105,10 @@ const OrderScreen = () => {
                                 </div>
                             ) : (
                                 <>
-                                    {order.paymentMethod === "Stripe" ? (
-                                        clientSecret && (
-                                            <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                                <CheckoutForm
-                                                    order={order}
-                                                    orderId={orderId}
-                                                    userInfo={userInfo}
-                                                    dispatch={dispatch}
-                                                    payOrder={payOrder}
-                                                    loadingPay={loadingPay}
-                                                />
-                                            </Elements>
-                                        )
-                                    ) : (
-                                        <>
-                                            {isPending && <div className="text-center py-4 font-bold text-xs uppercase tracking-widest text-gray-400">Connecting to PayPal...</div>}
-                                            {!isPending && <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError} />}
-                                        </>
+                                    {order.paymentMethod === "Stripe" && (
+                                        <div className="p-4 bg-gray-50 rounded-2xl text-center">
+                                            <p className="text-sm text-gray-500 font-medium">Please proceed to Stripe for payment.</p>
+                                        </div>
                                     )}
                                 </>
                             )}
