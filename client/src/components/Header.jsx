@@ -78,58 +78,36 @@ const Header = () => {
                             </button>
 
                             {jewelleryOpen && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 bg-secondary rounded-2xl shadow-2xl border border-accent/20 overflow-hidden min-w-[240px] z-50 animate-fade-in">
-                                    <div className="px-5 py-3 border-b border-accent/10 bg-primary/5">
-                                        <p className="text-[9px] uppercase tracking-[0.3em] font-extrabold text-accent">Shop by category</p>
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 bg-secondary rounded-3xl shadow-2xl border border-accent/20 overflow-hidden min-w-[800px] z-50 animate-fade-in p-8 grid grid-cols-3 gap-16">
+                                    {/* Column 1: Categories */}
+                                    <div>
+                                        <h4 className="text-[10px] uppercase tracking-[0.3em] font-extrabold text-accent mb-4 border-b border-accent/20 pb-2">By Category</h4>
+                                        <div className="flex flex-col gap-3.5">
+                                            <Link to="/jewellery" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">All Jewellery</Link>
+                                            <Link to="/jewellery?category=Men" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">Men's</Link>
+                                            <Link to="/jewellery?category=Women" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">Women's</Link>
+                                            <Link to="/jewellery?category=Bridal" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">Bridal's</Link>
+                                        </div>
                                     </div>
-                                    <Link
-                                        to="/jewellery"
-                                        id="nav-jewellery-all"
-                                        onClick={() => setJewelleryOpen(false)}
-                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group"
-                                    >
-                                        <span className="text-lg">💎</span>
-                                        <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">All Jewellery</p>
-                                            <p className="text-[10px] text-gray-400">Browse full collections</p>
+
+                                    {/* Column 2: Products */}
+                                    <div>
+                                        <h4 className="text-[10px] uppercase tracking-[0.3em] font-extrabold text-accent mb-4 border-b border-accent/20 pb-2">By Product</h4>
+                                        <div className="grid grid-cols-2 gap-y-3.5 gap-x-8">
+                                            {["All", "Anklet", "Bangle", "Bracelet", "Chain", "Earrings", "Necklace", "Ring", "Pendant"].map(p => (
+                                                <Link key={p} to={`/jewellery?product=${p}`} onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">{p}</Link>
+                                            ))}
                                         </div>
-                                    </Link>
-                                    <Link
-                                        to="/jewellery?category=Men"
-                                        id="nav-jewellery-men"
-                                        onClick={() => setJewelleryOpen(false)}
-                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
-                                    >
-                                        <span className="text-lg">👔</span>
-                                        <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">MEN</p>
-                                            <p className="text-[10px] text-gray-400">Rings, Chains, Bracelets & details</p>
+                                    </div>
+
+                                    {/* Column 3: Price / Sorting */}
+                                    <div>
+                                        <h4 className="text-[10px] uppercase tracking-[0.3em] font-extrabold text-accent mb-4 border-b border-accent/20 pb-2">By Price</h4>
+                                        <div className="flex flex-col gap-3.5">
+                                            <Link to="/jewellery?sort=price_asc" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">Low to High</Link>
+                                            <Link to="/jewellery?sort=price_desc" onClick={() => setJewelleryOpen(false)} className="text-xs font-bold text-primary hover:text-accent transition-colors">High to Low</Link>
                                         </div>
-                                    </Link>
-                                    <Link
-                                        to="/jewellery?category=Women"
-                                        id="nav-jewellery-women"
-                                        onClick={() => setJewelleryOpen(false)}
-                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
-                                    >
-                                        <span className="text-lg">👑</span>
-                                        <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">WOMEN</p>
-                                            <p className="text-[10px] text-gray-400">Necklaces, earrings, Bracelets, Bangles & sets</p>
-                                        </div>
-                                    </Link>
-                                    <Link
-                                        to="/jewellery?category=Bridal"
-                                        id="nav-jewellery-bridal"
-                                        onClick={() => setJewelleryOpen(false)}
-                                        className="flex items-center gap-3.5 px-5 py-4 hover:bg-primary/5 transition-colors group border-t border-accent/10"
-                                    >
-                                        <span className="text-lg">💍</span>
-                                        <div>
-                                            <p className="text-xs font-bold text-primary group-hover:text-accent transition-colors uppercase tracking-wider">BRIDAL</p>
-                                            <p className="text-[10px] text-gray-400">Bridal sets &amp; accessories</p>
-                                        </div>
-                                    </Link>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -267,11 +245,31 @@ const Header = () => {
                             <FaChevronDown size={10} className={`transition-transform duration-300 ${mobileJewelleryOpen ? "rotate-180" : ""}`} />
                         </button>
                         {mobileJewelleryOpen && (
-                            <div className="pl-4 pb-3 space-y-2">
-                                <Link to="/jewellery" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">💎 All Jewellery</Link>
-                                <Link to="/jewellery?category=Men" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👔 Men's</Link>
-                                <Link to="/jewellery?category=Women" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">👑 Women's</Link>
-                                <Link to="/jewellery?category=Bridal" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 py-2 text-sm text-gray-600 hover:text-accent transition-colors">💍 Bridal</Link>
+                            <div className="pl-4 pb-3 space-y-5">
+                                <div>
+                                    <p className="text-[9px] uppercase tracking-[0.2em] text-accent font-bold mb-3 border-b border-accent/10 pb-1 inline-block">Categories</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Link to="/jewellery" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">All Jewellery</Link>
+                                        <Link to="/jewellery?category=Men" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">Men's</Link>
+                                        <Link to="/jewellery?category=Women" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">Women's</Link>
+                                        <Link to="/jewellery?category=Bridal" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">Bridal's</Link>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] uppercase tracking-[0.2em] text-accent font-bold mb-3 border-b border-accent/10 pb-1 inline-block">Products</p>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {["All", "Anklet", "Bangle", "Bracelet", "Chain", "Earrings", "Necklace", "Ring", "Pendant"].map(p => (
+                                            <Link key={p} to={`/jewellery?product=${p}`} onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">{p}</Link>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-[9px] uppercase tracking-[0.2em] text-accent font-bold mb-3 border-b border-accent/10 pb-1 inline-block">Sort By Price</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Link to="/jewellery?sort=price_asc" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">Low to High</Link>
+                                        <Link to="/jewellery?sort=price_desc" onClick={() => setMobileOpen(false)} className="text-xs text-gray-600 hover:text-accent transition-colors">High to Low</Link>
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
