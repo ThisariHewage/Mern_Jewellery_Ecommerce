@@ -88,6 +88,7 @@ const ProductListScreen = () => {
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">ID</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Name</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Price</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Stock</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Category</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Brand</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 text-right">Actions</th>
@@ -99,6 +100,13 @@ const ProductListScreen = () => {
                                         <td className="px-6 py-5 font-mono text-[10px] text-gray-400">{product._id.substring(0, 10)}...</td>
                                         <td className="px-6 py-5 text-sm font-medium text-gray-700">{product.name}</td>
                                         <td className="px-6 py-5 text-sm font-bold text-gray-900">${product.price}</td>
+                                        <td className="px-6 py-5 text-sm font-bold">
+                                            {product.countInStock <= 5 ? (
+                                                <span className="text-rose-600 bg-rose-50 px-2 py-1 rounded-md">{product.countInStock}</span>
+                                            ) : (
+                                                <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{product.countInStock}</span>
+                                            )}
+                                        </td>
                                         <td className="px-6 py-5 text-sm text-gray-500">{product.category}</td>
                                         <td className="px-6 py-5 text-sm text-gray-500">{product.brand}</td>
                                         <td className="px-6 py-5 text-right space-x-3">
