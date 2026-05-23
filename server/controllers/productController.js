@@ -93,10 +93,30 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
 });
 
+/**
+ * @desc    Update product stock (Public)
+ * @route   PATCH /api/products/:id/stock
+ * @access  Public
+ */
+const updateProductStock = asyncHandler(async (req, res) => {
+    const { qty } = req.body; // qty can be positive (to restore) or negative (to decrease)
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+        product.countInStock = Math.max(0, product.countInStock + qty);
+        const updatedProduct = await product.save();
+        res.json(updatedProduct);
+    } else {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+});
+
 export {
     getProducts,
     getProductById,
     createProduct,
     updateProduct,
     deleteProduct,
+    updateProductStock,
 };

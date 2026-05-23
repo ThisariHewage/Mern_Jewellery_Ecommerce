@@ -30,7 +30,7 @@ const PaymentScreen = () => {
     return (
         <div className="max-w-4xl mx-auto px-4 py-12">
             <CheckoutSteps step1 step2 step3 />
-            
+
             <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 max-w-2xl mx-auto">
                 <div className="mb-12">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Payment Method</h1>
@@ -40,17 +40,15 @@ const PaymentScreen = () => {
                 <form onSubmit={submitHandler} className="space-y-6">
                     <div className="space-y-4">
                         {/* PayPal Option */}
-                        <label 
-                            className={`flex items-center justify-between p-6 rounded-2xl border-2 transition-all cursor-pointer group ${
-                                paymentMethod === "PayPal" 
-                                    ? "border-black bg-gray-50" 
-                                    : "border-gray-100 hover:border-gray-200"
-                            }`}
+                        <label
+                            className={`flex items-center justify-between p-6 rounded-2xl border-2 transition-all cursor-pointer group ${paymentMethod === "PayPal"
+                                ? "border-black bg-gray-50"
+                                : "border-gray-100 hover:border-gray-200"
+                                }`}
                         >
                             <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                                    paymentMethod === "PayPal" ? "bg-black text-white" : "bg-gray-100 text-gray-400"
-                                }`}>
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${paymentMethod === "PayPal" ? "bg-black text-white" : "bg-gray-100 text-gray-400"
+                                    }`}>
                                     <Wallet size={24} />
                                 </div>
                                 <div>

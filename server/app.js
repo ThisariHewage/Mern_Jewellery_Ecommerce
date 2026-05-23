@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import stripeRoutes from "./routes/stripeRoutes.js";
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/stripe", stripeRoutes);
 
 // Register Error Middleware
 app.use(notFound);

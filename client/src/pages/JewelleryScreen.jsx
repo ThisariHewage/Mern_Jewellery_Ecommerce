@@ -8,36 +8,72 @@ const JewelleryScreen = () => {
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state) => state.products);
     const [searchParams, setSearchParams] = useSearchParams();
-    const [activeFilter, setActiveFilter] = useState(searchParams.get("category") || "All");
+    const categoryFilter = searchParams.get("category") || "All";
+    const productFilter = searchParams.get("product") || "All";
+    const sortFilter = searchParams.get("sort") || "";
 
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
 
-    // Sync tab with URL param on load / back-navigation
-    useEffect(() => {
-        const cat = searchParams.get("category");
-        setActiveFilter(cat || "All");
-    }, [searchParams]);
-
-    const handleFilter = (filter) => {
-        setActiveFilter(filter);
+    const handleCategoryChange = (filter) => {
+        const newParams = new URLSearchParams(searchParams);
         if (filter === "All") {
-            setSearchParams({});
+            newParams.delete("category");
         } else {
-            setSearchParams({ category: filter });
+            newParams.set("category", filter);
         }
+        setSearchParams(newParams);
     };
 
-    const filteredProducts = products.filter((p) => {
-        if (activeFilter === "All") return true;
-        return (
-            p.category?.toLowerCase() === activeFilter.toLowerCase() ||
-            p.gender?.toLowerCase() === activeFilter.toLowerCase()
-        );
+    const handleProductChange = (e) => {
+        const filter = e.target.value;
+        const newParams = new URLSearchParams(searchParams);
+        if (filter === "All") {
+            newParams.delete("product");
+        } else {
+            newParams.set("product", filter);
+        }
+        setSearchParams(newParams);
+    };
+
+    const handleSortChange = (e) => {
+        const filter = e.target.value;
+        const newParams = new URLSearchParams(searchParams);
+        if (filter === "") {
+            newParams.delete("sort");
+        } else {
+            newParams.set("sort", filter);
+        }
+        setSearchParams(newParams);
+    };
+
+    let filteredProducts = products.filter((p) => {
+        let matchCat = true;
+        if (categoryFilter !== "All") {
+            matchCat = p.category?.toLowerCase() === categoryFilter.toLowerCase() ||
+                       p.gender?.toLowerCase() === categoryFilter.toLowerCase();
+        }
+
+        let matchProd = true;
+        if (productFilter !== "All") {
+            const term = productFilter.toLowerCase();
+            matchProd = p.category?.toLowerCase().includes(term) ||
+                        p.name?.toLowerCase().includes(term) ||
+                        p.brand?.toLowerCase().includes(term);
+        }
+
+        return matchCat && matchProd;
     });
 
-    const filters = ["All", "Men", "Women", "Bridal"];
+    if (sortFilter === "price_asc") {
+        filteredProducts.sort((a, b) => a.price - b.price);
+    } else if (sortFilter === "price_desc") {
+        filteredProducts.sort((a, b) => b.price - a.price);
+    }
+
+    const categories = ["All", "Men", "Women", "Bridal"];
+    const productTypes = ["All", "Anklet", "Bangle", "Bracelet", "Chain", "Earrings", "Necklace", "Ring", "Pendant"];
 
     return (
         <div className="min-h-screen bg-white">
@@ -73,35 +109,10 @@ const JewelleryScreen = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 py-16">
-                {/* Filter Tabs */}
-                <div className="flex items-center justify-between mb-14 flex-wrap gap-6">
-                    <div className="flex items-center gap-2 bg-gray-100 rounded-full p-1">
-                        {filters.map((filter) => (
-                            <button
-                                key={filter}
-                                id={`jewellery-filter-${filter.toLowerCase()}`}
-                                onClick={() => handleFilter(filter)}
-                                className={`px-7 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 cursor-pointer ${activeFilter === filter
-                                        ? "text-white shadow-lg"
-                                        : "text-gray-500 hover:text-gray-900"
-                                    }`}
-                                style={
-                                    activeFilter === filter
-                                        ? {
-                                            background:
-                                                "linear-gradient(135deg, #2d0a5e, #c9a84c)",
-                                        }
-                                        : {}
-                                }
-                            >
-                                {filter === "All" ? "All Jewellery" : `${filter}'s`}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="text-xs uppercase tracking-widest font-bold text-gray-400">
-                        {filteredProducts.length}{" "}
-                        {filteredProducts.length === 1 ? "Piece" : "Pieces"} Found
-                    </div>
+                <div className="flex justify-end mb-8">
+                    <p className="text-xs uppercase tracking-widest font-bold text-gray-400">
+                        {filteredProducts.length} {filteredProducts.length === 1 ? "Piece" : "Pieces"} Found
+                    </p>
                 </div>
 
                 {/* Product Grid */}
@@ -123,14 +134,14 @@ const JewelleryScreen = () => {
                     <div className="py-32 text-center">
                         <p className="text-4xl mb-4">💎</p>
                         <p className="text-gray-400 text-sm uppercase tracking-widest font-bold">
-                            No {activeFilter !== "All" ? `${activeFilter}'s` : ""} pieces found
+                            No pieces found matching your filters
                         </p>
                         <button
-                            onClick={() => handleFilter("All")}
+                            onClick={() => setSearchParams({})}
                             className="mt-6 text-xs uppercase tracking-widest font-bold underline underline-offset-4 cursor-pointer"
                             style={{ color: "#c9a84c" }}
                         >
-                            View All Jewellery
+                            Clear All Filters
                         </button>
                     </div>
                 ) : (

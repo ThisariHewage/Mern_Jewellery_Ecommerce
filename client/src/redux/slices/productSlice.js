@@ -27,7 +27,15 @@ const productSlice = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        updateProductStock: (state, action) => {
+            const { productId, countInStock } = action.payload;
+            const product = state.products.find((p) => p._id === productId);
+            if (product) {
+                product.countInStock = countInStock;
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.pending, (state) => {
@@ -44,4 +52,5 @@ const productSlice = createSlice({
     },
 });
 
+export const { updateProductStock } = productSlice.actions;
 export default productSlice.reducer;
