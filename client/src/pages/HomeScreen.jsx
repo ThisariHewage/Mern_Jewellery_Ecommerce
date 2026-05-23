@@ -40,7 +40,7 @@ const CategoryCard = ({ emoji, title, subtitle, to, id, video }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 block min-h-[280px]"
-            style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 100%)" }}
+            style={{ background: video ? "#000" : "linear-gradient(135deg, #1a0533 0%, #2d0a5e 100%)" }}
         >
             {/* Background Video */}
             {video && (
@@ -50,21 +50,21 @@ const CategoryCard = ({ emoji, title, subtitle, to, id, video }) => {
                     muted
                     loop
                     playsInline
-                    preload="metadata"
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                    preload="auto"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-700"
                 />
             )}
 
-            {/* Dark overlay — always visible, stronger on hover */}
+            {/* Subtle bottom gradient for text readability — always visible */}
             <div
-                className="absolute inset-0 transition-opacity duration-500"
+                className="absolute inset-0 z-0 transition-opacity duration-500"
                 style={{
-                    background: "linear-gradient(135deg, rgba(26,5,51,0.92) 0%, rgba(45,10,94,0.85) 100%)",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%)",
                 }}
             />
-            {/* Gold shimmer on hover */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-25 transition-opacity duration-500"
-                style={{ backgroundImage: "radial-gradient(ellipse at top right, #c9a84c 0%, transparent 70%)" }} />
+            {/* Subtle inner glow on hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none"
+                style={{ backgroundImage: "radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.4) 100%)" }} />
 
             {/* Content */}
             <div className="relative z-10 p-10 flex flex-col items-start gap-4 min-h-[280px] justify-end">
@@ -276,28 +276,25 @@ const HomeScreen = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <CategoryCard
-                        emoji="👑"
                         title="Women's Jewellery"
                         subtitle="For Her"
                         to="/jewellery?category=Women"
                         id="home-cat-women"
-                        video="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-woman-wearing-golden-earrings-44031-large.mp4"
+                        video="/videos/cat-women.mp4"
                     />
                     <CategoryCard
-                        emoji="👔"
                         title="Men's Jewellery"
                         subtitle="For Him"
                         to="/jewellery?category=Men"
                         id="home-cat-men"
-                        video="https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-golden-makeup-40283-large.mp4"
+                        video="/videos/cat-men.mp4"
                     />
                     <CategoryCard
-                        emoji="💍"
                         title="Bridal Collection"
                         subtitle="New Beginnings"
                         to="/jewellery?category=Bridal"
                         id="home-cat-bridal"
-                        video="https://assets.mixkit.co/videos/preview/mixkit-hands-holding-and-showing-luxury-gold-jewelry-44026-large.mp4"
+                        video="/videos/cat-bridal.mp4"
                     />
                 </div>
             </section>

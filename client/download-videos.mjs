@@ -14,22 +14,21 @@ const files = [
     name: 'cat-women.mp4',
     // Woman wearing earrings / luxury fashion close-up
     urls: [
-      'https://www.pexels.com/video/5585310/download/?fps=30&h=720&w=1280',
-      'https://upload.wikimedia.org/wikipedia/commons/transcoded/c/c0/Big_Buck_Bunny_4K.webm/Big_Buck_Bunny_4K.webm.360p.webm',
+      'https://www.pexels.com/video/10737829/download',
     ],
   },
   {
     name: 'cat-men.mp4',
-    // Elegant man in suit
+    // Elegant diamond ring on rustic background
     urls: [
-      'https://www.pexels.com/video/3209828/download/?fps=30&h=720&w=1280',
+      'https://www.pexels.com/video/31757666/download',
     ],
   },
   {
     name: 'cat-bridal.mp4',
-    // Bridal / rings / wedding jewellery
+    // Woman with jewellery on hands
     urls: [
-      'https://www.pexels.com/video/5948100/download/?fps=25&h=1080&w=1080',
+      'https://www.pexels.com/video/11122341/download',
     ],
   },
 ];
@@ -40,14 +39,15 @@ function download(url, dest) {
     const lib = url.startsWith('https') ? https : http;
 
     const req = lib.get(url, { headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://www.pexels.com/' } }, (res) => {
-      if (res.statusCode === 301 || res.statusCode === 302) {
+      if ([301, 302, 307, 308].includes(res.statusCode)) {
         file.close();
-        fs.unlink(dest, () => {});
-        return download(res.headers.location, dest).then(resolve).catch(reject);
+        fs.unlink(dest, () => { });
+        const redirectUrl = new URL(res.headers.location, url).href;
+        return download(redirectUrl, dest).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         file.close();
-        fs.unlink(dest, () => {});
+        fs.unlink(dest, () => { });
         return reject(new Error(`HTTP ${res.statusCode}`));
       }
       const total = parseInt(res.headers['content-length'] || '0', 10);
@@ -59,7 +59,7 @@ function download(url, dest) {
       res.pipe(file);
       file.on('finish', () => { file.close(); process.stdout.write('\n'); resolve(); });
     });
-    req.on('error', (err) => { fs.unlink(dest, () => {}); reject(err); });
+    req.on('error', (err) => { fs.unlink(dest, () => { }); reject(err); });
   });
 }
 
