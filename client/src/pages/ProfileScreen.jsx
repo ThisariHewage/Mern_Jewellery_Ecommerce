@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setCredentials } from "../redux/slices/authSlice";
 import api from "../services/api";
-import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle } from "lucide-react";
+import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 
 const ProfileScreen = () => {
     const [name, setName] = useState("");
@@ -64,6 +64,18 @@ const ProfileScreen = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-16">
+            {userInfo && userInfo.isAdmin && (
+                <Link
+                    to="/admin/dashboard"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 bg-white border border-gray-100 rounded-full text-[10px] uppercase tracking-[0.2em] font-black text-gray-500 hover:text-black hover:bg-gray-50 hover:shadow-lg hover:shadow-gray-200/50 transition-all mb-10 group w-fit"
+                >
+                    <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
+                        <ArrowLeft size={12} strokeWidth={3} />
+                    </div>
+                    <span>Back to Dashboard</span>
+                </Link>
+            )}
+
             <div className="mb-16">
                 <h1 className="text-5xl font-serif font-bold text-gray-900 tracking-tighter">Your Profile</h1>
                 <p className="text-gray-500 uppercase tracking-[0.3em] text-[10px] font-bold mt-2">Manage your account and orders</p>
