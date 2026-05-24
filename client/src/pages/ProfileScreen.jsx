@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setCredentials } from "../redux/slices/authSlice";
+import { setCredentials, logout } from "../redux/slices/authSlice";
+import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
-import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle, ArrowLeft, LogOut } from "lucide-react";
 
 const ProfileScreen = () => {
     const [name, setName] = useState("");
@@ -17,7 +18,19 @@ const ProfileScreen = () => {
     const [updating, setUpdating] = useState(false);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { userInfo } = useSelector((state) => state.auth);
+
+    const logoutHandler = async () => {
+        try {
+            await api.post("/api/users/logout");
+            dispatch(logout());
+            dispatch(resetCart());
+            navigate("/login");
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
         if (userInfo) {
@@ -150,6 +163,14 @@ const ProfileScreen = () => {
                                 className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
                             >
                                 {updating ? "Updating..." : "Update Profile"}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={logoutHandler}
+                                className="w-full py-4 bg-white border border-red-100 text-red-500 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-red-50 hover:border-red-200 transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 mt-4"
+                            >
+                                <LogOut size={16} />
+                                Logout
                             </button>
                         </form>
                     </div>
