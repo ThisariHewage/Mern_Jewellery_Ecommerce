@@ -54,15 +54,22 @@ const Header = () => {
             </div>
 
             <header className="bg-secondary/95 backdrop-blur-md border-b border-accent/10 shadow-sm py-1">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
 
                     {/* Left Side: Brand Logo */}
-                    <Link to="/" className="text-xl font-serif font-bold tracking-[0.05em] text-primary flex-shrink-0 mr-4 transition-transform hover:scale-[1.01]">
-                        DEWORA <span className="text-accent font-medium">JEWELLERS</span>
+                    <Link to="/" className="flex items-center gap-2 text-lg xl:text-xl font-serif font-bold tracking-[0.04em] text-primary flex-shrink-0 mr-2 -ml-5 sm:-ml-8 lg:-ml-10 transition-transform hover:scale-[1.01]">
+                        <img
+                            src="/dewora-diamond-logo.svg"
+                            alt="Dewora Jewellers logo"
+                            className="h-8 w-auto object-contain sm:h-9 xl:h-10"
+                        />
+                        <span className="leading-none">
+                            DEWORA <span className="text-accent font-medium">JEWELLERS</span>
+                        </span>
                     </Link>
 
                     {/* Center: Main Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-6 lg:space-x-8 text-[11px] uppercase tracking-[0.2em] font-bold text-gray-500 flex-grow justify-center">
+                    <nav className="hidden lg:flex items-center space-x-4 xl:space-x-6 text-[11px] uppercase tracking-[0.16em] xl:tracking-[0.2em] font-bold text-gray-500 flex-grow justify-center whitespace-nowrap">
                         <Link to="/" id="nav-home" className={navLinkClass}>Home</Link>
                         <Link to="/about" id="nav-about" className={navLinkClass}>About Us</Link>
 
