@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -34,66 +34,70 @@ import AdminDashboardScreen from "./pages/admin/AdminDashboardScreen";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
 
 function App() {
+  const location = useLocation();
+  const hideFooterRoutes = ["/shipping", "/payment", "/placeorder", "/order/"];
+  const showFooter = !hideFooterRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
+
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Header />
+    <div className="flex flex-col min-h-screen">
+      <Header />
 
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/register" element={<RegisterScreen />} />
-            <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/register" element={<RegisterScreen />} />
+          <Route path="/forgotpassword" element={<ForgotPasswordScreen />} />
 
-            <Route path="/shop" element={<ShopScreen />} />
-            <Route path="/jewellery" element={<JewelleryScreen />} />
-            <Route path="/about" element={<AboutScreen />} />
-            <Route path="/services" element={<ServicesScreen />} />
-            <Route path="/promotions" element={<PromotionsScreen />} />
-            <Route path="/contact" element={<ContactScreen />} />
-            <Route path="/product/:id" element={<ProductScreen />} />
-            <Route path="/cart" element={<CartScreen />} />
+          <Route path="/shop" element={<ShopScreen />} />
+          <Route path="/jewellery" element={<JewelleryScreen />} />
+          <Route path="/about" element={<AboutScreen />} />
+          <Route path="/services" element={<ServicesScreen />} />
+          <Route path="/promotions" element={<PromotionsScreen />} />
+          <Route path="/contact" element={<ContactScreen />} />
+          <Route path="/product/:id" element={<ProductScreen />} />
+          <Route path="/cart" element={<CartScreen />} />
 
-            {/* Registered Users Only */}
-            <Route element={<PrivateRoute />}>
-              <Route path="/shipping" element={<ShippingScreen />} />
-              <Route path="/payment" element={<PaymentScreen />} />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route path="/order/:id" element={<OrderScreen />} />
-              <Route path="/profile" element={<ProfileScreen />} />
-            </Route>
+          {/* Registered Users Only */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/shipping" element={<ShippingScreen />} />
+            <Route path="/payment" element={<PaymentScreen />} />
+            <Route path="/placeorder" element={<PlaceOrderScreen />} />
+            <Route path="/order/:id" element={<OrderScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+          </Route>
 
-            {/* Admin Users Only */}
-            <Route element={<AdminRoute />}>
-              <Route path="/admin/dashboard" element={<AdminDashboardScreen />} />
-              <Route path="/admin/userlist" element={<UserListScreen />} />
-              <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
-              <Route path="/admin/productlist" element={<ProductListScreen />} />
-              <Route path="/admin/product/create" element={<ProductEditScreen />} />
-              <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
-              <Route path="/admin/orderlist" element={<OrderListScreen />} />
-            </Route>
-          </Routes>
-        </main>
+          {/* Admin Users Only */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardScreen />} />
+            <Route path="/admin/userlist" element={<UserListScreen />} />
+            <Route path="/admin/user/:id/edit" element={<UserEditScreen />} />
+            <Route path="/admin/productlist" element={<ProductListScreen />} />
+            <Route path="/admin/product/create" element={<ProductEditScreen />} />
+            <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
+            <Route path="/admin/orderlist" element={<OrderListScreen />} />
+          </Route>
+        </Routes>
+      </main>
 
-        <Footer />
+      {showFooter && <Footer />}
 
-        {/* Global Toast Notifications */}
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </div>
-    </Router>
+      {/* Global Toast Notifications */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+    </div>
   );
 }
 

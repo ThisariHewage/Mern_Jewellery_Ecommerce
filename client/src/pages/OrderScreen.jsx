@@ -20,6 +20,7 @@ const OrderScreen = () => {
     const { order, loading, error, successPay } = useSelector((state) => state.orders);
     const { userInfo } = useSelector((state) => state.auth);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [successProcessed, setSuccessProcessed] = useState(false);
 
     useEffect(() => {
         if (!order || successPay || order._id !== orderId) {
@@ -35,7 +36,23 @@ const OrderScreen = () => {
     }, [dispatch, orderId, successPay, order]);
 
     useEffect(() => {
-        if (isSuccess && order && !order.isPaid) {
+        if (isSuccess && !successProcessed) {
+            setShowSuccess(true);
+            setSuccessProcessed(true);
+            if (order && !order.isPaid) {
+                const details = {
+                    id: "STRIPE_CHECKOUT",
+                    status: "COMPLETED",
+                    update_time: new Date().toISOString(),
+                    payer: { email_address: order.user.email },
+                };
+                dispatch(payOrder({ orderId, details }));
+                dispatch(clearCartItems());
+            }
+        }
+
+        if (isSuccess && successProcessed && order && !order.isPaid) {
+            // This handles the case where order details arrive AFTER success was processed
             const details = {
                 id: "STRIPE_CHECKOUT",
                 status: "COMPLETED",
@@ -44,13 +61,12 @@ const OrderScreen = () => {
             };
             dispatch(payOrder({ orderId, details }));
             dispatch(clearCartItems());
-            setShowSuccess(true);
         }
 
         if (isCanceled) {
             toast.error("Payment was canceled.");
         }
-    }, [isSuccess, isCanceled, order, orderId, dispatch]);
+    }, [isSuccess, isCanceled, order, orderId, dispatch, successProcessed]);
 
     const deliverOrderHandler = async () => {
         try {
@@ -131,17 +147,25 @@ const OrderScreen = () => {
                     </div>
                 </div>
                 <div className="lg:col-span-4">
-                    <div className="bg-gray-50 rounded-[2.5rem] p-10 sticky top-24 border border-gray-100 shadow-xl shadow-gray-200/50">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
-                        <div className="space-y-4 mb-10 text-sm">
-                            <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Items</span><span className="font-bold">${order.itemsPrice}</span></div>
-                            <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Shipping</span><span className="font-bold text-gray-900 text-green-600">Free</span></div>
-                            <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Estimated Tax</span><span className="font-bold">${order.taxPrice}</span></div>
-                            <div className="pt-4 border-t border-gray-200 flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total</span><span className="text-2xl font-bold text-gray-900">${order.totalPrice}</span></div>
+                    <div className="sticky top-24 space-y-6">
+                        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
+                            <div className="space-y-4 mb-10 text-sm">
+                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Items</span><span className="font-bold">${order.itemsPrice}</span></div>
+                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Shipping</span><span className="font-bold text-gray-900 text-green-600">Free</span></div>
+                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Estimated Tax</span><span className="font-bold">${order.taxPrice}</span></div>
+                                <div className="pt-4 border-t border-gray-200 flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total</span><span className="text-2xl font-bold text-gray-900">${order.totalPrice}</span></div>
+                            </div>
+                            {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                <button onClick={deliverOrderHandler} className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all">Mark As Delivered</button>
+                            )}
                         </div>
-                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                            <button onClick={deliverOrderHandler} className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all">Mark As Delivered</button>
-                        )}
+                        <Link
+                            to="/shop"
+                            className="block w-full py-4 bg-gray-900 text-white rounded-[1.5rem] font-bold uppercase tracking-widest text-xs hover:bg-black hover:scale-105 active:scale-95 transition-all duration-300 text-center shadow-lg hover:shadow-xl shadow-gray-200/50"
+                        >
+                            Continue Shopping
+                        </Link>
                     </div>
                 </div>
             </div>
