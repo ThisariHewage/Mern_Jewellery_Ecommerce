@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Package, Edit, Trash2, Plus, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
 
+
 const ProductListScreen = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
@@ -70,6 +71,7 @@ const ProductListScreen = () => {
                     disabled={loadingCreate}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-gray-800 transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
                 >
+                    
                     <Plus size={16} />
                     Create Product
                 </button>

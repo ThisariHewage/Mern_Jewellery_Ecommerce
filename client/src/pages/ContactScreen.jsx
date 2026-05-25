@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useEffect } from "react";
 
 const ContactScreen = () => {
+    useEffect(() => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }, []);
     const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
     const [status, setStatus] = useState(null); // null | "sending" | "success" | "error"
 

@@ -229,7 +229,7 @@ const HomeScreen = () => {
                     repeat: Infinity,
                 }}
             >
-                ✦
+                
             </motion.span>
 
             View Jewellery
@@ -282,7 +282,7 @@ const HomeScreen = () => {
                     repeat: Infinity,
                 }}
             >
-                ✦
+                
             </motion.span>
 
             Our Story

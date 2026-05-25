@@ -5,6 +5,9 @@ import { fetchProducts } from "../redux/slices/productSlice";
 import ProductCard from "../components/ProductCard";
 
 const JewelleryScreen = () => {
+    useEffect(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }, []);
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state) => state.products);
     const [searchParams, setSearchParams] = useSearchParams();

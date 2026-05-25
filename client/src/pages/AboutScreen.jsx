@@ -1,4 +1,8 @@
+import { useEffect } from "react";
 const AboutScreen = () => {
+    useEffect(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }, []);
     const values = [
         {
             icon: "💎",
