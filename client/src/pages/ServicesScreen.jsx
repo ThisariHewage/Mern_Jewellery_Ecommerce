@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const ServicesScreen = () => {
+    useEffect(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }, []);
     const services = [
         { icon: "💍", title: "Custom Design", subtitle: "Bespoke Creation", desc: "Work one-on-one with our master jewellers to bring your dream piece to life. From initial sketch to final polish, every detail is yours to decide.", highlight: "Starting from consultation" },
         { icon: "🔧", title: "Jewellery Repair", subtitle: "Restoration & Repair", desc: "Breathing new life into beloved pieces. We expertly repair broken clasps, resize rings, re-tip prongs, and restore antique jewellery.", highlight: "Same-day assessment" },

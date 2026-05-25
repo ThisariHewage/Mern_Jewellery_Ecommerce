@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const PromotionsScreen = () => {
+    useEffect(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }, []);
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
     // Countdown to end of month
