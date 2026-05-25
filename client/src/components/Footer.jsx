@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaTwitter, FaPinterest } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import api from "../services/api";
 
 const Footer = () => {
@@ -48,10 +48,10 @@ const Footer = () => {
                         Elevating your style with curated premium jewellery collections. Experience the perfect blend of luxury and elegance.
                     </p>
                     <div className="flex space-x-4">
-                        <a href="#" className="text-gray-400 hover:text-accent transition-colors"><FaFacebook size={20} /></a>
-                        <a href="#" className="text-gray-400 hover:text-accent transition-colors"><FaInstagram size={20} /></a>
-                        <a href="#" className="text-gray-400 hover:text-accent transition-colors"><FaTwitter size={20} /></a>
-                        <a href="#" className="text-gray-400 hover:text-accent transition-colors"><FaPinterest size={20} /></a>
+                        <a href="https://www.facebook.com/" className="text-gray-400 hover:text-accent transition-colors"><FaFacebook size={20} /></a>
+                        <a href="https://www.instagram.com/" className="text-gray-400 hover:text-accent transition-colors"><FaInstagram size={20} /></a>
+                        <a href="https://www.twitter.com/" className="text-gray-400 hover:text-accent transition-colors"><FaTwitter size={20} /></a>
+                        <a href="https://www.youtube.com/" className="text-gray-400 hover:text-accent transition-colors"><FaYoutube size={20} /></a>
                     </div>
                 </div>
 
@@ -79,7 +79,7 @@ const Footer = () => {
                     <h4 className="text-sm uppercase tracking-widest font-bold mb-6 text-accent">Customer Care</h4>
                     <ul className="space-y-4 text-sm text-gray-300">
                         <li><Link to="/privacy-policy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
-                        <li><Link to="/returns" className="hover:text-accent transition-colors">Returns & Exchanges</Link></li>
+                        <li><Link to="/terms-conditions" className="hover:text-accent transition-colors">Terms & Conditions</Link></li>
                         <li><Link to="/warranty" className="hover:text-accent transition-colors">Lifetime Warranty</Link></li>
                         <li><Link to="/faq" className="hover:text-accent transition-colors">FAQs</Link></li>
                     </ul>
@@ -118,7 +118,7 @@ const Footer = () => {
                 <p>&copy; {currentYear} Dewora Jewellers. All rights reserved.</p>
                 <div className="flex space-x-6 mt-4 md:mt-0">
                     <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                    <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                    <Link to="/terms-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
                 </div>
             </div>
         </footer>
