@@ -1,8 +1,40 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter, FaPinterest } from "react-icons/fa";
+import api from "../services/api";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        if (status !== "success") return;
+
+        const timer = setTimeout(() => {
+            setStatus("idle");
+            setMessage("");
+        }, 4000);
+
+        return () => clearTimeout(timer);
+    }, [status]);
+
+    const subscribeHandler = async (e) => {
+        e.preventDefault();
+        setStatus("sending");
+        setMessage("");
+
+        try {
+            await api.post("/api/newsletter/subscribe", { email });
+            setEmail("");
+            setStatus("success");
+            setMessage("Thank you for subscribing.");
+        } catch (err) {
+            setStatus("error");
+            setMessage(err?.response?.data?.message || "Subscription failed. Please try again.");
+        }
+    };
 
     return (
         <footer className="bg-primary text-white pt-16 pb-8">
@@ -57,13 +89,27 @@ const Footer = () => {
                 <div>
                     <h4 className="text-sm uppercase tracking-widest font-bold mb-6">Join Our Club</h4>
                     <p className="text-sm text-gray-400 mb-4">Subscribe to get special offers and first look at new collections.</p>
-                    <form className="flex flex-col space-y-2">
+                    <form onSubmit={subscribeHandler} className="flex flex-col space-y-2">
                         <input
                             type="email"
                             placeholder="Your email address"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                             className="bg-gray-800 border-none px-4 py-3 text-sm focus:ring-1 focus:ring-accent outline-none"
                         />
-                        <button className="btn-premium py-2 text-xs">Subscribe</button>
+                        <button
+                            type="submit"
+                            disabled={status === "sending"}
+                            className="btn-premium py-2 text-xs disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                            {status === "sending" ? "Sending..." : "Subscribe"}
+                        </button>
+                        {message && (
+                            <p className={`text-xs ${status === "success" ? "text-accent" : "text-red-300"}`}>
+                                {message}
+                            </p>
+                        )}
                     </form>
                 </div>
             </div>
