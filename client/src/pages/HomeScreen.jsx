@@ -1,12 +1,35 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import { fetchProducts } from "../redux/slices/productSlice";
 import ProductCard from "../components/ProductCard";
 
-/* ─────────────────────────────────────────
-   Sub-components
-───────────────────────────────────────── */
+const fadeUp = {
+    hidden: {
+        opacity: 0,
+        y: 40,
+    },
+
+    visible: {
+        opacity: 1,
+        y: 0,
+
+        transition: {
+            duration: 0.8,
+            ease: "easeOut",
+        },
+    },
+};
+
+const stagger = {
+    visible: {
+        transition: {
+            staggerChildren: 0.15,
+        },
+    },
+};
+
 
 const StatBadge = ({ value, label }) => (
     <div className="text-center">
@@ -95,9 +118,6 @@ const ServicePill = ({ icon, text }) => (
     </div>
 );
 
-/* ─────────────────────────────────────────
-   Main Component
-───────────────────────────────────────── */
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
@@ -161,38 +181,116 @@ const HomeScreen = () => {
                     {/* CTA Buttons — large rectangular sharp-cornered style */}
                     <div className="flex flex-wrap gap-5 items-center">
                         {/* Solid white button */}
-                        <Link
-                            to="/jewellery"
-                            id="hero-cta-shop"
-                            className="inline-block font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:opacity-90 active:scale-95"
-                            style={{
-                                background: "#ffffff",
-                                color: "#111111",
-                                padding: "18px 44px",
-                                fontSize: "12px",
-                                letterSpacing: "0.2em",
-                                borderRadius: "0",
-                            }}
-                        >
-                            View Jewellery
-                        </Link>
-                        {/* Outlined white button */}
-                        <Link
-                            to="/about"
-                            id="hero-cta-about"
-                            className="inline-block font-bold uppercase tracking-[0.25em] transition-all duration-300 hover:bg-white hover:text-gray-900 active:scale-95"
-                            style={{
-                                background: "transparent",
-                                color: "#ffffff",
-                                padding: "18px 44px",
-                                fontSize: "12px",
-                                letterSpacing: "0.2em",
-                                borderRadius: "0",
-                                border: "2px solid rgba(255,255,255,0.75)",
-                            }}
-                        >
-                            Our Story
-                        </Link>
+                        <motion.div
+    variants={fadeUp}
+    className="flex flex-wrap gap-5 items-center justify-center md:justify-start"
+>
+
+    {/* View Jewellery Button */}
+
+    <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.92 }}
+        className="relative overflow-hidden"
+    >
+        <motion.div
+            className="absolute inset-0 rounded-none"
+            initial={{ opacity: 0 }}
+            whileHover={{
+                opacity: 1,
+                scale: 1.2,
+            }}
+            transition={{ duration: 0.4 }}
+            style={{
+                background:
+                    "radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%)",
+            }}
+        />
+
+        <Link
+            to="/jewellery"
+            id="hero-cta-shop"
+            className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
+            style={{
+                background: "#ffffff",
+                color: "#111111",
+                padding: "18px 44px",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                borderRadius: "0",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+            }}
+        >
+            <motion.span
+                animate={{ x: [0, 3, 0] }}
+                transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                }}
+            >
+                ✦
+            </motion.span>
+
+            View Jewellery
+        </Link>
+    </motion.div>
+
+    {/* Our Story Button */}
+
+    <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.92 }}
+        className="relative overflow-hidden"
+    >
+        <motion.div
+            className="absolute inset-0 rounded-none"
+            initial={{ opacity: 0 }}
+            whileHover={{
+                opacity: 1,
+                scale: 1.2,
+            }}
+            transition={{ duration: 0.4 }}
+            style={{
+                background:
+                    "radial-gradient(circle, rgba(201,168,76,0.3) 0%, transparent 70%)",
+            }}
+        />
+
+        <Link
+            to="/about"
+            id="hero-cta-about"
+            className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
+            style={{
+                background: "transparent",
+                color: "#ffffff",
+                padding: "18px 44px",
+                fontSize: "12px",
+                letterSpacing: "0.2em",
+                borderRadius: "0",
+                border: "2px solid rgba(255,255,255,0.75)",
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+            }}
+        >
+            <motion.span
+                animate={{
+                    rotate: [0, 15, -15, 0],
+                }}
+                transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                }}
+            >
+                ✦
+            </motion.span>
+
+            Our Story
+        </Link>
+    </motion.div>
+
+</motion.div>
+                        
                     </div>
 
                     {/* Stats Row */}
