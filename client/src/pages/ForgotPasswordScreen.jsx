@@ -134,8 +134,8 @@ const ForgotPasswordScreen = () => {
                                     <ShieldCheck size={20} />
                                 </div>
                                 <div>
-                                    <p className="text-gray-900 font-bold text-xs uppercase tracking-wider mb-1">Code Sent!</p>
-                                    <p className="text-gray-500 text-[11px] leading-relaxed">
+                                    <p className="text-gray-900 font-bold text-sm uppercase tracking-wider mb-1">Code Sent!</p>
+                                    <p className="text-gray-500 text-sm leading-relaxed">
                                         We sent a code to <span className="text-gray-900 font-bold underline decoration-accent/30 underline-offset-2">{email}</span>. Please verify below.
                                     </p>
                                 </div>
