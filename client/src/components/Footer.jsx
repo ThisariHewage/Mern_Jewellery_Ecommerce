@@ -78,7 +78,7 @@ const Footer = () => {
                 <div>
                     <h4 className="text-sm uppercase tracking-widest font-bold mb-6 text-accent">Customer Care</h4>
                     <ul className="space-y-4 text-sm text-gray-300">
-                        <li><Link to="/shipping" className="hover:text-accent transition-colors">Shipping Policy</Link></li>
+                        <li><Link to="/privacy-policy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
                         <li><Link to="/returns" className="hover:text-accent transition-colors">Returns & Exchanges</Link></li>
                         <li><Link to="/warranty" className="hover:text-accent transition-colors">Lifetime Warranty</Link></li>
                         <li><Link to="/faq" className="hover:text-accent transition-colors">FAQs</Link></li>
@@ -117,7 +117,7 @@ const Footer = () => {
             <div className="container mx-auto px-6 mt-16 pt-8 border-t border-gray-800 flex flex-col md:row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
                 <p>&copy; {currentYear} Dewora Jewellers. All rights reserved.</p>
                 <div className="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                    <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
                     <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
                 </div>
             </div>

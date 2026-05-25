@@ -25,6 +25,7 @@ import ServicesScreen from "./pages/ServicesScreen";
 import PromotionsScreen from "./pages/PromotionsScreen";
 import ContactScreen from "./pages/ContactScreen";
 import ProfileScreen from "./pages/ProfileScreen";
+import PrivacyPolicyScreen from "./pages/PrivacyPolicyScreen";
 import UserListScreen from "./pages/admin/UserListScreen";
 import UserEditScreen from "./pages/admin/UserEditScreen";
 import ProductListScreen from "./pages/admin/ProductListScreen";
@@ -57,6 +58,7 @@ function App() {
           <Route path="/services" element={<ServicesScreen />} />
           <Route path="/promotions" element={<PromotionsScreen />} />
           <Route path="/contact" element={<ContactScreen />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicyScreen />} />
           <Route path="/product/:id" element={<ProductScreen />} />
           <Route path="/cart" element={<CartScreen />} />
 
