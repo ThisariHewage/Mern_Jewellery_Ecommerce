@@ -8,6 +8,9 @@ import api from "../services/api";
 import { X, Mail, Lock, Eye, EyeOff, ArrowRight, Sparkles } from "lucide-react";
 
 const LoginScreen = () => {
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);

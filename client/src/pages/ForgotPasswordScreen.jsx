@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../services/api";
 import { X, Lock, Mail, KeyRound, ArrowRight, ArrowLeft, Sparkles, ShieldCheck } from "lucide-react";
 
 const ForgotPasswordScreen = () => {
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
     const [password, setPassword] = useState("");

@@ -1,13 +1,7 @@
 import React from 'react';
 import { CheckCircle } from 'lucide-react';
 
-/**
- * A reusable success modal used after an order is placed.
- *
- * Props:
- *  - show: boolean – whether the modal is visible.
- *  - onClose: () => void – callback invoked when the user dismisses the modal.
- */
+
 const SuccessAlert = ({ show, onClose }) => {
   if (!show) return null;
   return (
