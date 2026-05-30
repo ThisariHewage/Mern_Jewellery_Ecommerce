@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { setCredentials, logout } from "../redux/slices/authSlice";
 import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
-import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle, ArrowLeft, LogOut } from "lucide-react";
+import { User, Mail, Lock, ShoppingBag, ChevronRight, CheckCircle, XCircle, ArrowLeft, LogOut, Eye } from "lucide-react";
 
 const ProfileScreen = () => {
     const [name, setName] = useState("");
@@ -97,62 +97,63 @@ const ProfileScreen = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 {/* Profile Form */}
                 <div className="lg:col-span-4">
-                    <div className="bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-gray-200/50 border border-gray-100">
-                        <h2 className="text-xl font-bold text-gray-900 mb-8 flex items-center gap-2">
-                            <User size={20} className="text-accent" />
+                    <div className="bg-white rounded-[2.5rem] p-10 shadow-2xl shadow-primary/5 border border-accent/10 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-accent/20 via-accent/60 to-accent/20"></div>
+                        <h2 className="text-2xl font-serif font-bold text-primary mb-8 flex items-center gap-3">
+                            <User size={24} className="text-accent" />
                             Account Details
                         </h2>
                         <form onSubmit={submitHandler} className="space-y-6">
                             <div className="space-y-2">
                                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
-                                <div className="relative">
-                                    <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                                <div className="relative group">
+                                    <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors" />
                                     <input
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all text-sm font-medium"
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Email Address</label>
-                                <div className="relative">
-                                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                                <div className="relative group">
+                                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors" />
                                     <input
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all text-sm font-medium"
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">New Password</label>
-                                <div className="relative">
-                                    <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                                <div className="relative group">
+                                    <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors" />
                                     <input
                                         type="password"
                                         placeholder="Leave blank to keep same"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all text-sm font-medium"
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Confirm Password</label>
-                                <div className="relative">
-                                    <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                                <div className="relative group">
+                                    <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-accent transition-colors" />
                                     <input
                                         type="password"
                                         placeholder="Confirm new password"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all text-sm font-medium"
+                                        className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-accent focus:ring-4 focus:ring-accent/10 outline-none transition-all text-sm font-medium"
                                     />
                                 </div>
                             </div>
@@ -160,7 +161,7 @@ const ProfileScreen = () => {
                             <button
                                 type="submit"
                                 disabled={updating}
-                                className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
+                                className="w-full py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl shadow-primary/20 active:scale-95 disabled:opacity-50 border border-primary"
                             >
                                 {updating ? "Updating..." : "Update Profile"}
                             </button>
@@ -206,7 +207,7 @@ const ProfileScreen = () => {
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
                                             <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Delivered</th>
-
+                                            <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-50">
@@ -214,31 +215,41 @@ const ProfileScreen = () => {
                                             <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
                                                 <td className="px-6 py-5 font-mono text-[14px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
                                                 <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.createdAt.substring(0, 10)}</td>
-                                                <td className="px-6 py-5 text-sm font-bold text-gray-900">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)}</td>
+                                                <td className="px-6 py-5 text-sm font-bold text-gray-900">
+                                                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)} items</span>
+                                                </td>
                                                 <td className="px-6 py-5 text-sm font-bold text-gray-900">${order.totalPrice}</td>
                                                 <td className="px-6 py-5">
                                                     {order.isPaid ? (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
-                                                            <CheckCircle size={12} /> Paid on {order.paidAt.substring(0, 10)} OK ✅
+                                                            {order.paidAt.substring(0, 10)}
                                                         </span>
                                                     ) : (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-widest">
-                                                            <XCircle size={12} /> No
+                                                            No
                                                         </span>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-5">
                                                     {order.isDelivered ? (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
-                                                            <CheckCircle size={12} /> {order.deliveredAt.substring(0, 10)}
+                                                            {order.deliveredAt.substring(0, 10)}
                                                         </span>
                                                     ) : (
                                                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-widest">
-                                                            <XCircle size={12} /> No
+                                                            No
                                                         </span>
                                                     )}
                                                 </td>
-
+                                                <td className="px-6 py-5 text-center">
+                                                    <Link
+                                                        to={`/order/${order._id}`}
+                                                        className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
+                                                        title="View Details"
+                                                    >
+                                                        <Eye size={16} />
+                                                    </Link>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
