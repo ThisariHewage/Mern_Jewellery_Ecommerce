@@ -7,7 +7,6 @@ import api from "../services/api";
 import { createOrder, resetOrder } from "../redux/slices/orderSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import { MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
-import SuccessAlert from "../components/SuccessAlert";
 
 const PlaceOrderScreen = () => {
     const navigate = useNavigate();
@@ -23,7 +22,6 @@ const PlaceOrderScreen = () => {
 
     const orderCreate = useSelector((state) => state.orders);
     const { order, success, error, loading } = orderCreate;
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
     useEffect(() => {
         if (success) {
@@ -43,13 +41,6 @@ const PlaceOrderScreen = () => {
             toast.error(error);
         }
     }, [success, error, order, navigate]);
-
-    const handleAlertClose = () => {
-        setShowSuccessAlert(false);
-        navigate('/');
-        dispatch(resetOrder());
-        dispatch(clearCartItems());
-    };
 
     const placeOrderHandler = () => {
         dispatch(
