@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaArrowRight } from "react-icons/fa";
 import api from "../services/api";
 
 const Footer = () => {
@@ -85,34 +85,45 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* Newsletter */}
-                <div>
-                    <h4 className="text-sm uppercase tracking-widest font-bold mb-6">Join Our Club</h4>
-                    <p className="text-sm text-gray-400 mb-4">Subscribe to get special offers and first look at new collections.</p>
-                    <form onSubmit={subscribeHandler} className="flex flex-col space-y-2">
-                        <input
-                            type="email"
-                            placeholder="Your email address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="bg-gray-800 border-none px-4 py-3 text-sm focus:ring-1 focus:ring-accent outline-none"
-                        />
-                        <button
-                            type="submit"
-                            disabled={status === "sending"}
-                            className="btn-premium py-2 text-xs disabled:opacity-60 disabled:cursor-not-allowed"
-                        >
-                            {status === "sending" ? "Sending..." : "Subscribe"}
-                        </button>
+
+                <div className="space-y-8">
+                    <div className="space-y-3">
+                        <h4 className="text-sm uppercase tracking-[0.3em] font-bold text-white px-4 border-l-2 border-white/20">Dewora Club</h4>
+                        <p className="text-[15px] text-gray-400 leading-relaxed pl-4">Join our inner circle for early access and collection previews.</p>
+                    </div>
+
+                    <form onSubmit={subscribeHandler} className="relative group pl-4">
+                        <div className="relative flex items-center">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 text-sm outline-none transition-all duration-300 focus:bg-white/10 focus:border-accent/40 focus:ring-1 focus:ring-accent/20 placeholder:text-gray-600"
+                            />
+                            <button
+                                type="submit"
+                                disabled={status === "sending"}
+                                className="absolute right-1.5 p-2.5 rounded-full bg-accent text-primary hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg"
+                            >
+                                {status === "sending" ? (
+                                    <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                                ) : (
+                                    <FaArrowRight size={14} />
+                                )}
+                            </button>
+                        </div>
+
                         {message && (
-                            <p className={`text-xs ${status === "success" ? "text-accent" : "text-red-300"}`}>
+                            <p className={`absolute -bottom-7 left-6 text-[10px] uppercase tracking-widest font-bold ${status === "success" ? "text-accent" : "text-red-400"} animate-pulse`}>
                                 {message}
                             </p>
                         )}
                     </form>
                 </div>
             </div>
+
 
             <div className="container mx-auto px-6 mt-16 pt-8 border-t border-gray-800 flex flex-col md:row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
                 <p>&copy; {currentYear} Dewora Jewellers. All rights reserved.</p>
