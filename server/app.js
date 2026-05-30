@@ -9,6 +9,7 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import stripeRoutes from "./routes/stripeRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/stripe", stripeRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Register Error Middleware
 app.use(notFound);

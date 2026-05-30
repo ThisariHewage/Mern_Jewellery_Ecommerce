@@ -5,6 +5,7 @@ import {
     FaCheckCircle, FaGem, FaShieldAlt,
     FaHeadset, FaTruck
 } from "react-icons/fa";
+import api from "../services/api";
 
 
 
@@ -50,6 +51,7 @@ const ContactScreen = () => {
 
     const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
     const [status, setStatus] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
     const [focusedField, setFocusedField] = useState(null);
     const [openFaq, setOpenFaq] = useState(null);
 
@@ -58,11 +60,17 @@ const ContactScreen = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus("sending");
-        setTimeout(() => {
+        setErrorMessage("");
+
+        try {
+            await api.post("/api/contact", form);
             setStatus("success");
             setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-            setTimeout(() => setStatus(null), 7000);
-        }, 1600);
+        } catch (err) {
+            setStatus("error");
+            setErrorMessage(err?.response?.data?.message || "Something went wrong. Please try again.");
+            setTimeout(() => setStatus(null), 5000);
+        }
     };
 
     const inputBase =
@@ -316,6 +324,12 @@ const ContactScreen = () => {
                                             </>
                                         )}
                                     </button>
+
+                                    {errorMessage && (
+                                        <p className="text-center text-xs font-bold text-red-500 bg-red-50 p-3 rounded-lg border border-red-100 animate-pulse">
+                                            {errorMessage}
+                                        </p>
+                                    )}
 
                                     <p className="text-center text-[10px] text-gray-400 tracking-widest uppercase">
                                         We respect your privacy and will never share your information.
