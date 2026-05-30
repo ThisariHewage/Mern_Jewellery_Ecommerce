@@ -72,11 +72,34 @@ const orderSchema = mongoose.Schema(
         deliveredAt: {
             type: Date,
         },
+        orderNumber: {
+            type: String,
+            unique: true,
+            sparse: true,
+        },
     },
     {
         timestamps: true,
     }
 );
+
+orderSchema.pre("save", async function () {
+    if (!this.isNew) {
+        return;
+    }
+
+    const lastOrder = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+    let nextNumber = 1;
+
+    if (lastOrder && lastOrder.orderNumber) {
+        const lastNumber = parseInt(lastOrder.orderNumber.replace("CD", ""), 10);
+        if (!isNaN(lastNumber)) {
+            nextNumber = lastNumber + 1;
+        }
+    }
+
+    this.orderNumber = `CD${String(nextNumber).padStart(5, "0")}`;
+});
 
 const Order = mongoose.model("Order", orderSchema);
 

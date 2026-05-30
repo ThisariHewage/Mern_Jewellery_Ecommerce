@@ -92,7 +92,7 @@ const OrderListScreen = () => {
                             <tbody className="divide-y divide-gray-50">
                                 {orders.map((order) => (
                                     <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[10px] text-gray-400">{order._id.substring(0, 10)}...</td>
+                                        <td className="px-6 py-5 font-mono text-[12px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
                                         <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.user && order.user.name}</td>
                                         <td className="px-6 py-5 text-[12px] text-gray-500">
                                             {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.country}

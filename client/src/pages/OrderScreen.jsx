@@ -73,7 +73,7 @@ const OrderScreen = () => {
         <div className="max-w-7xl mx-auto px-4 py-12">
             <SuccessAlert show={showSuccess} onClose={() => setShowSuccess(false)} />
             <div className="mb-12">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Order #{order._id}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Order #{order.orderNumber || order._id}</h1>
                 <p className="text-gray-500 uppercase tracking-widest text-xs font-medium">Thank you for your purchase</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
