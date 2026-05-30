@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import api from "../services/api";
+import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 
 const PromotionsScreen = () => {
     useEffect(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }, []);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState(null); // 'sending', 'success', 'error'
+    const [message, setMessage] = useState("");
 
     // Countdown to end of month
     useEffect(() => {
@@ -25,6 +29,22 @@ const PromotionsScreen = () => {
         const timer = setInterval(calculateTime, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    const handleSubscribe = async (e) => {
+        e.preventDefault();
+        if (!email) return;
+
+        setStatus("sending");
+        try {
+            const { data } = await api.post("/api/newsletter/subscribe", { email });
+            setStatus("success");
+            setMessage(data.message || "Thank you for subscribing!");
+            setEmail("");
+        } catch (err) {
+            setStatus("error");
+            setMessage(err.response?.data?.message || "Something went wrong. Please try again.");
+        }
+    };
 
     const promotions = [
         { badge: "HOT DEAL", title: "Bridal Collection", discount: "20% OFF", desc: "Celebrate your forever with our handcrafted bridal sets. 22k gold rings, necklaces, and earring sets curated for your special day.", tag: "Limited Stock", gradient: "linear-gradient(135deg, #1a0533, #4a0e8f)" },
@@ -85,9 +105,6 @@ const PromotionsScreen = () => {
                                 <p className="text-white/60 text-sm leading-relaxed mb-8">{promo.desc}</p>
                                 <div className="flex items-center justify-between">
                                     <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">⏱ {promo.tag}</span>
-                                    <Link to="/jewellery" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest py-2.5 px-5 rounded-full transition-all duration-300 hover:scale-105" style={{ background: "linear-gradient(90deg, #c9a84c, #f0d080)", color: "#1a0533" }}>
-                                        Shop Now →
-                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -99,12 +116,43 @@ const PromotionsScreen = () => {
                     <p className="text-xs uppercase tracking-[0.4em] font-bold mb-3" style={{ color: "#c9a84c" }}>Never Miss a Deal</p>
                     <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 tracking-tighter mb-4">Get Exclusive Offers First</h2>
                     <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">Subscribe to the Dewora insider list and receive early access to promotions, new arrivals, and VIP events.</p>
-                    <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                        <input id="promo-email-input" type="email" placeholder="your@email.com" className="flex-1 px-5 py-3.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:border-transparent" style={{ "--tw-ring-color": "#c9a84c" }} />
-                        <button id="promo-subscribe-btn" className="px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest whitespace-nowrap transition-all hover:scale-105" style={{ background: "linear-gradient(90deg, #2d0a5e, #c9a84c)", color: "#fff" }}>
-                            Subscribe
-                        </button>
-                    </div>
+
+                    {status === "success" ? (
+                        <div className="flex flex-col items-center gap-3 animate-fade-in text-center">
+                            <FaCheckCircle className="text-green-500 text-4xl" />
+                            <p className="text-gray-800 font-bold">{message}</p>
+                            <button onClick={() => setStatus(null)} className="text-xs text-[#c9a84c] uppercase tracking-widest font-bold hover:underline">Subscribe Another</button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <input
+                                    id="promo-email-input"
+                                    type="email"
+                                    placeholder="your@email.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="flex-1 px-5 py-3.5 rounded-full border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:border-transparent"
+                                    style={{ "--tw-ring-color": "#c9a84c" }}
+                                />
+                                <button
+                                    id="promo-subscribe-btn"
+                                    disabled={status === "sending"}
+                                    className="px-8 py-3.5 rounded-full text-sm font-bold uppercase tracking-widest whitespace-nowrap transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    style={{ background: "linear-gradient(90deg, #2d0a5e, #c9a84c)", color: "#fff" }}
+                                >
+                                    {status === "sending" ? "Subscribing..." : "Subscribe"}
+                                </button>
+                            </div>
+                            {status === "error" && (
+                                <div className="mt-4 flex items-center justify-center gap-2 text-red-500 text-xs font-bold">
+                                    <FaExclamationCircle />
+                                    <span>{message}</span>
+                                </div>
+                            )}
+                        </form>
+                    )}
                 </div>
             </div>
         </div>

@@ -16,16 +16,12 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
         throw new Error("Please enter a valid email address");
     }
 
-    const adminEmail =
-        process.env.ADMIN_EMAIL ||
-        process.env.EMAIL_USERNAME ||
-        "ureshathisari@gmail.com";
-
     const emailSent = await sendEmail({
-        email: adminEmail,
+        email: process.env.EMAIL_USERNAME,
         subject: "New Dewora Newsletter Subscriber",
         message: [
-            "A new user subscribed from the Dewora Jewellers footer newsletter form.",
+            "Reason: Get Exclusive Offers",
+            "A new user has subscribed to the Dewora Jewellers insider list.",
             "",
             `Subscriber email: ${email}`,
             `Subscribed at: ${new Date().toLocaleString("en-US", {
