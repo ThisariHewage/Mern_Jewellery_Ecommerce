@@ -69,10 +69,10 @@ const Header = () => {
             </div>
 
             <header className="bg-secondary/95 backdrop-blur-md border-b border-accent/10 shadow-sm py-1">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
+                <div className="max-w-[1600px] mx-auto px-4 sm:px-10 lg:px-12 py-4 flex items-center justify-between gap-6">
 
                     {/* Left Side: Brand Logo */}
-                    <Link to="/" className="flex items-center gap-2 text-lg xl:text-xl font-serif font-bold tracking-[0.04em] text-primary flex-shrink-0 mr-2 -ml-5 sm:-ml-8 lg:-ml-10 transition-transform hover:scale-[1.01]">
+                    <Link to="/" className="flex items-center gap-2 text-lg xl:text-xl font-serif font-bold tracking-[0.04em] text-primary flex-shrink-0 transition-transform hover:scale-[1.01]">
                         <img
                             src="/dewora-diamond-logo.svg"
                             alt="Dewora Jewellers logo"
@@ -84,7 +84,7 @@ const Header = () => {
                     </Link>
 
                     {/* Center: Main Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-4 xl:space-x-6 text-[11px] uppercase tracking-[0.16em] xl:tracking-[0.2em] font-bold text-gray-500 flex-grow justify-center whitespace-nowrap">
+                    <nav className="hidden lg:flex items-center space-x-4 xl:space-x-7 text-[13px] uppercase tracking-[0.14em] xl:tracking-[0.16em] font-bold text-gray-500 flex-grow justify-center whitespace-nowrap">
                         <Link to="/" id="nav-home" className={navLinkClass}>Home</Link>
                         <Link to="/about" id="nav-about" className={navLinkClass}>About Us</Link>
 
@@ -141,7 +141,7 @@ const Header = () => {
                     </nav>
 
                     {/* Right Side: Action Icons + Premium Profile Dropdown */}
-                    <div className="flex items-center space-x-5 text-gray-700 flex-shrink-0 ml-4">
+                    <div className="flex items-center space-x-5 text-gray-700 flex-shrink-0">
                         <button id="header-search-btn" onClick={() => setSearchOpen((o) => !o)} className="hidden lg:block hover:text-accent transition-colors cursor-pointer p-2">
                             {searchOpen ? <FaTimes size={15} /> : <FaSearch size={15} />}
                         </button>
@@ -265,7 +265,7 @@ const Header = () => {
             {/* Mobile Menu */}
             {mobileOpen && (
                 <div className="lg:hidden bg-secondary border-t border-accent/10 shadow-xl px-6 py-6 space-y-1 animate-fade-in">
-                    <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Home</Link>
+                    <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Home</Link>
 
                     {/* Mobile Search */}
                     <div className="py-4 border-b border-accent/10">
@@ -283,13 +283,13 @@ const Header = () => {
                         </form>
                     </div>
 
-                    <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">About Us</Link>
+                    <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">About Us</Link>
 
                     {/* Mobile Jewellery Accordion */}
                     <div className="border-b border-accent/10">
                         <button
                             onClick={() => setMobileJewelleryOpen((o) => !o)}
-                            className="flex items-center justify-between w-full py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors cursor-pointer"
+                            className="flex items-center justify-between w-full py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors cursor-pointer"
                         >
                             JEWELLERY
                             <FaChevronDown size={10} className={`transition-transform duration-300 ${mobileJewelleryOpen ? "rotate-180" : ""}`} />
@@ -324,9 +324,9 @@ const Header = () => {
                         )}
                     </div>
 
-                    <Link to="/services" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Services</Link>
-                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Promotions</Link>
-                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Contact Us</Link>
+                    <Link to="/services" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Services</Link>
+                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Promotions</Link>
+                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Contact Us</Link>
 
                     {userInfo ? (
                         <div className="pt-4 space-y-2">
