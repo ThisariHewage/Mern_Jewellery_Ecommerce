@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaArrowRight } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import api from "../services/api";
 
 const Footer = () => {
@@ -110,7 +110,10 @@ const Footer = () => {
                                 {status === "sending" ? (
                                     <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                                 ) : (
-                                    <FaArrowRight size={14} />
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
                                 )}
                             </button>
                         </div>
@@ -132,7 +135,6 @@ const Footer = () => {
                     <Link to="/terms-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
                     <Link to="/services" className="hover:text-white transition-colors">Services</Link>
                     <Link to="/promotions" className="hover:text-white transition-colors">Promotions</Link>
-
                 </div>
             </div>
         </footer>

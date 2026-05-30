@@ -8,12 +8,16 @@ import Product from "../models/productModel.js";
  */
 const getProducts = asyncHandler(async (req, res) => {
     try {
-        console.log('GET /api/products - Fetching products...');
         const products = await Product.find({});
-        console.log(`GET /api/products - Found ${products.length} products`);
         res.json(products);
     } catch (error) {
         console.error('GET /api/products - ERROR:', error);
+
+        if (error.message.includes('getaddrinfo ENOTFOUND')) {
+            res.status(503); // Service Unavailable
+            throw new Error(`Database connection failed: The server cannot reach MongoDB. Please check your network or MONGO_URI.`);
+        }
+
         res.status(500);
         throw new Error(`Failed to fetch products: ${error.message}`);
     }
