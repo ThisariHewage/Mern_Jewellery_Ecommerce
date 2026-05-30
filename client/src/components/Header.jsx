@@ -16,6 +16,8 @@ const Header = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mobileJewelleryOpen, setMobileJewelleryOpen] = useState(false);
     const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [keyword, setKeyword] = useState("");
     const dropdownRef = useRef(null);
     const profileDropdownRef = useRef(null);
 
@@ -42,6 +44,17 @@ const Header = () => {
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const searchHandler = (e) => {
+        e.preventDefault();
+        if (keyword.trim()) {
+            navigate(`/jewellery?keyword=${encodeURIComponent(keyword.trim())}`);
+        } else {
+            navigate("/jewellery");
+        }
+        setSearchOpen(false);
+        setKeyword("");
     };
 
     const navLinkClass = "hover:text-accent transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full";
@@ -129,8 +142,8 @@ const Header = () => {
 
                     {/* Right Side: Action Icons + Premium Profile Dropdown */}
                     <div className="flex items-center space-x-5 text-gray-700 flex-shrink-0 ml-4">
-                        <button id="header-search-btn" className="hidden lg:block hover:text-accent transition-colors cursor-pointer p-2">
-                            <FaSearch size={15} />
+                        <button id="header-search-btn" onClick={() => setSearchOpen((o) => !o)} className="hidden lg:block hover:text-accent transition-colors cursor-pointer p-2">
+                            {searchOpen ? <FaTimes size={15} /> : <FaSearch size={15} />}
                         </button>
 
                         <Link to="/cart" id="header-cart-btn" className="relative hover:text-accent transition-colors p-2 flex items-center">
@@ -216,10 +229,60 @@ const Header = () => {
                 </div>
             </header>
 
+            {/* Search Bar */}
+            {searchOpen && (
+                <div className="bg-secondary/95 backdrop-blur-sm border-b border-accent/10 shadow-sm animate-fade-in relative z-40">
+                    <div className="max-w-xl mx-auto px-4 py-3">
+                        <form onSubmit={searchHandler} className="flex items-center gap-2 bg-white/50 border border-accent/20 rounded-full px-4 py-1.5 focus-within:border-accent/40 focus-within:shadow-sm transition-all">
+                            <FaSearch size={12} className="text-accent/60 flex-shrink-0" />
+                            <input
+                                type="text"
+                                value={keyword}
+                                onChange={(e) => setKeyword(e.target.value)}
+                                placeholder="Search collection..."
+                                autoFocus
+                                className="flex-grow bg-transparent text-xs text-primary placeholder:text-gray-400 outline-none font-medium tracking-wide h-7"
+                            />
+                            {keyword && (
+                                <button
+                                    type="button"
+                                    onClick={() => setKeyword("")}
+                                    className="p-1 hover:text-accent transition-colors"
+                                >
+                                    <FaTimes size={10} className="text-gray-400" />
+                                </button>
+                            )}
+                            <button
+                                type="submit"
+                                className="text-[9px] uppercase tracking-[0.1em] font-bold text-accent hover:text-primary transition-colors cursor-pointer px-3 py-1 ml-1"
+                            >
+                                search
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
             {/* Mobile Menu */}
             {mobileOpen && (
                 <div className="lg:hidden bg-secondary border-t border-accent/10 shadow-xl px-6 py-6 space-y-1 animate-fade-in">
                     <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Home</Link>
+
+                    {/* Mobile Search */}
+                    <div className="py-4 border-b border-accent/10">
+                        <form onSubmit={(e) => { e.preventDefault(); searchHandler(e); setMobileOpen(false); }} className="relative flex items-center">
+                            <input
+                                type="text"
+                                value={keyword}
+                                onChange={(e) => setKeyword(e.target.value)}
+                                placeholder="Search collection..."
+                                className="w-full bg-accent/5 border border-accent/10 rounded-full px-5 py-2.5 text-xs text-primary placeholder:text-gray-400 outline-none focus:border-accent/30 transition-all font-medium"
+                            />
+                            <button type="submit" className="absolute right-4 text-accent">
+                                <FaSearch size={12} />
+                            </button>
+                        </form>
+                    </div>
+
                     <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-sm font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">About Us</Link>
 
                     {/* Mobile Jewellery Accordion */}

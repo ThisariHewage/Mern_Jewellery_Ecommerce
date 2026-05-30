@@ -2,20 +2,24 @@
 
 /* Custom Theme Variables for Raja Jewellers Inspired Look */
 @theme {
-  --color-primary: #2A0845; /* Royal Eggplant Purple */
-  --color-secondary: #fdfbf7; /* Off-white luxury background */
-  --color-accent: #d4af37; /* Luxury Gold */
-  
+  --color-primary: #2A0845;
+  /* Royal Eggplant Purple */
+  --color-secondary: #fdfbf7;
+  /* Off-white luxury background */
+  --color-accent: #d4af37;
+  /* Luxury Gold */
+
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", system-ui, sans-serif;
-  
+
   --animate-fade-in: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  
+
   @keyframes fade-in {
     from {
       opacity: 0;
       transform: translateY(-8px) scale(0.98);
     }
+
     to {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -28,7 +32,12 @@
     @apply bg-white text-gray-900 font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif font-bold tracking-tight;
   }
 
@@ -39,6 +48,7 @@
 }
 
 @layer components {
+
   /* Reusable Premium Button Class */
   .btn-premium {
     @apply px-6 py-3 bg-primary text-white font-medium uppercase tracking-widest transition-all duration-300 hover:bg-black hover:shadow-lg active:scale-95;
@@ -60,12 +70,15 @@
 .perspective {
   perspective: 1000px;
 }
+
 .preserve-3d {
   transform-style: preserve-3d;
 }
+
 .backface-hidden {
   backface-visibility: hidden;
 }
+
 .my-rotate-y-180 {
   transform: rotateY(180deg);
 }

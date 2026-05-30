@@ -6,14 +6,15 @@ import ProductCard from "../components/ProductCard";
 
 const JewelleryScreen = () => {
     useEffect(() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }, []);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state) => state.products);
     const [searchParams, setSearchParams] = useSearchParams();
     const categoryFilter = searchParams.get("category") || "All";
     const productFilter = searchParams.get("product") || "All";
     const sortFilter = searchParams.get("sort") || "";
+    const keywordFilter = searchParams.get("keyword") || "";
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -55,18 +56,27 @@ const JewelleryScreen = () => {
         let matchCat = true;
         if (categoryFilter !== "All") {
             matchCat = p.category?.toLowerCase() === categoryFilter.toLowerCase() ||
-                       p.gender?.toLowerCase() === categoryFilter.toLowerCase();
+                p.gender?.toLowerCase() === categoryFilter.toLowerCase();
         }
 
         let matchProd = true;
         if (productFilter !== "All") {
             const term = productFilter.toLowerCase();
             matchProd = p.category?.toLowerCase().includes(term) ||
-                        p.name?.toLowerCase().includes(term) ||
-                        p.brand?.toLowerCase().includes(term);
+                p.name?.toLowerCase().includes(term) ||
+                p.brand?.toLowerCase().includes(term);
         }
 
-        return matchCat && matchProd;
+        let matchKeyword = true;
+        if (keywordFilter) {
+            const kw = keywordFilter.toLowerCase();
+            matchKeyword = p.name?.toLowerCase().includes(kw) ||
+                p.category?.toLowerCase().includes(kw) ||
+                p.brand?.toLowerCase().includes(kw) ||
+                p.description?.toLowerCase().includes(kw);
+        }
+
+        return matchCat && matchProd && matchKeyword;
     });
 
     if (sortFilter === "price_asc") {

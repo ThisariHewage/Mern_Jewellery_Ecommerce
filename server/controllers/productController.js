@@ -7,8 +7,16 @@ import Product from "../models/productModel.js";
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-    const products = await Product.find({});
-    res.json(products);
+    try {
+        console.log('GET /api/products - Fetching products...');
+        const products = await Product.find({});
+        console.log(`GET /api/products - Found ${products.length} products`);
+        res.json(products);
+    } catch (error) {
+        console.error('GET /api/products - ERROR:', error);
+        res.status(500);
+        throw new Error(`Failed to fetch products: ${error.message}`);
+    }
 });
 
 /**

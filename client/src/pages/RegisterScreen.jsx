@@ -45,11 +45,9 @@ const RegisterScreen = () => {
 
         setLoading(true);
         try {
-            const res = await api.post("/api/users", { name, email, password });
-            dispatch(setCredentials({ ...res.data }));
-            dispatch(resetCart());
-            navigate(redirect);
-            toast.success("Account created successfully!");
+            await api.post("/api/users", { name, email, password });
+            toast.success("Account created successfully! Please sign in.");
+            navigate("/login");
         } catch (err) {
             setRegisterError(err?.response?.data?.message || err.message || "Registration failed");
             toast.error(err?.response?.data?.message || err.message || "Registration failed");
