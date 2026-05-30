@@ -53,16 +53,16 @@ const PrivacyPolicyScreen = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            <div className="relative py-32 text-center overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 60%, #0d001a 100%)" }}>
+            <div className="relative py-24 text-center overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 60%, #0d001a 100%)" }}>
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
                     <p className="text-xs uppercase tracking-[0.5em] text-amber-400 font-bold mb-4">Your Data, Protected</p>
-                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-tighter mb-6">
+                    <h1 className="text-6xl md:text-7xl font-serif font-bold text-white tracking-tighter mb-4">
                         Privacy <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #c9a84c, #f0d080)" }}>Policy</span>
                     </h1>
                     <p className="text-white/60 max-w-xl mx-auto leading-relaxed text-sm">
                         We respect your privacy and handle your personal information with care while providing our jewellery, delivery, support, and newsletter services.
                     </p>
-                    <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold mt-8">
+                    <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold mt-6">
                         Last updated: May 2026
                     </p>
                 </div>
@@ -94,16 +94,16 @@ const PrivacyPolicyScreen = () => {
                 </div>
             </div>
 
-            <div className="mx-6 lg:mx-auto max-w-7xl mb-24 rounded-3xl py-20 px-8 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0533, #2d0a5e)" }}>
+            <div className="mx-6 lg:mx-auto max-w-7xl mb-12 rounded-2xl py-10 px-8 text-center relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0533, #2d0a5e)" }}>
                 <div className="relative z-10">
-                    <p className="text-xs uppercase tracking-[0.4em] text-amber-400 font-bold mb-4">Need Help?</p>
-                    <h2 className="text-4xl md:text-5xl font-serif font-bold text-white tracking-tighter mb-6">Questions About Your Data?</h2>
-                    <p className="text-white/60 max-w-lg mx-auto text-sm leading-relaxed mb-10">
+                    <p className="text-xs uppercase tracking-[0.4em] text-amber-400 font-bold mb-2">Need Help?</p>
+                    <h2 className="text-2xl md:text-3xl font-serif font-bold text-white tracking-tighter mb-3">Questions About Your Data?</h2>
+                    <p className="text-white/60 max-w-lg mx-auto text-sm leading-relaxed mb-6">
                         For privacy questions or data requests, contact Dewora Jewellers and we will help you review or update your information.
                     </p>
                     <Link
                         to="/contact"
-                        className="inline-block px-10 py-4 font-bold text-sm uppercase tracking-widest rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                        className="inline-block px-7 py-3 font-bold text-xs uppercase tracking-widest rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl"
                         style={{ background: "linear-gradient(90deg, #c9a84c, #f0d080)", color: "#1a0533" }}
                     >
                         Contact Dewora

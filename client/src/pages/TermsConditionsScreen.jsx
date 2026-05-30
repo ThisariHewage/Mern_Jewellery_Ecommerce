@@ -87,7 +87,7 @@ const TermsConditionsScreen = () => {
             <div className="relative py-24 text-center overflow-hidden border-b border-accent/20" style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 60%, #0d001a 100%)" }}>
                 <div className="relative z-10 max-w-4xl mx-auto px-6">
                     <p className="text-xs uppercase tracking-[0.5em] text-amber-400 font-bold mb-4">Dewora Purchase Guide</p>
-                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-white tracking-tighter mb-4">
+                    <h1 className="text-6xl md:text-7xl font-serif font-bold text-white tracking-tighter mb-4">
                         Terms <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #c9a84c, #f0d080)" }}>& Conditions</span>
                     </h1>
                     <p className="text-white/60 max-w-xl mx-auto leading-relaxed text-sm font-medium">
