@@ -36,28 +36,15 @@ const OrderScreen = () => {
     }, [dispatch, orderId, successPay, order]);
 
     useEffect(() => {
-        if (isSuccess && !successProcessed) {
+        if (isSuccess && !successProcessed && order && !order.isPaid) {
             setShowSuccess(true);
             setSuccessProcessed(true);
-            if (order && !order.isPaid) {
-                const details = {
-                    id: "STRIPE_CHECKOUT",
-                    status: "COMPLETED",
-                    update_time: new Date().toISOString(),
-                    payer: { email_address: order.user.email },
-                };
-                dispatch(payOrder({ orderId, details }));
-                dispatch(clearCartItems());
-            }
-        }
 
-        if (isSuccess && successProcessed && order && !order.isPaid) {
-            // This handles the case where order details arrive AFTER success was processed
             const details = {
                 id: "STRIPE_CHECKOUT",
                 status: "COMPLETED",
                 update_time: new Date().toISOString(),
-                payer: { email_address: order.user.email },
+                payer: { email_address: order.user?.email || userInfo.email },
             };
             dispatch(payOrder({ orderId, details }));
             dispatch(clearCartItems());
@@ -66,7 +53,7 @@ const OrderScreen = () => {
         if (isCanceled) {
             toast.error("Payment was canceled.");
         }
-    }, [isSuccess, isCanceled, order, orderId, dispatch, successProcessed]);
+    }, [isSuccess, isCanceled, order, orderId, dispatch, successProcessed, userInfo.email]);
 
     const deliverOrderHandler = async () => {
         try {
