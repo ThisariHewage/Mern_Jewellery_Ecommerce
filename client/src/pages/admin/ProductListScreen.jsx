@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Package, Edit, Trash2, Plus, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
+import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 
 
 const ProductListScreen = () => {
@@ -11,6 +12,8 @@ const ProductListScreen = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [loadingCreate, setLoadingCreate] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const fetchProducts = async () => {
         try {
@@ -28,22 +31,25 @@ const ProductListScreen = () => {
         fetchProducts();
     }, []);
 
-    const deleteHandler = async (id) => {
-        if (window.confirm("Are you sure you want to delete this product?")) {
-            try {
-                await api.delete(`/api/products/${id}`);
-                toast.success("Product deleted successfully");
-                fetchProducts();
-            } catch (err) {
-                toast.error(err?.response?.data?.message || err.message);
-            }
+    const deleteHandler = (id) => {
+        setSelectedProductId(id);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await api.delete(`/api/products/${selectedProductId}`);
+            toast.success("Product deleted successfully");
+            fetchProducts();
+            setShowDeleteModal(false);
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message);
+            setShowDeleteModal(false);
         }
     };
 
-    const createProductHandler = async () => {
-        if (window.confirm("Are you sure you want to create a new product?")) {
-            navigate(`/admin/product/create`);
-        }
+    const createProductHandler = () => {
+        navigate(`/admin/product/create`);
     };
 
     return (
@@ -71,7 +77,7 @@ const ProductListScreen = () => {
                     disabled={loadingCreate}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-gray-800 transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
                 >
-                    
+
                     <Plus size={16} />
                     Create Product
                 </button>
@@ -132,6 +138,14 @@ const ProductListScreen = () => {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Product"
+                message="Are you sure you want to delete this product? This action cannot be undone."
+            />
         </div>
     );
 };
