@@ -23,17 +23,10 @@ const OrderScreen = () => {
     const [successProcessed, setSuccessProcessed] = useState(false);
 
     useEffect(() => {
-        if (!order || successPay || order._id !== orderId) {
+        if (!order || order._id !== orderId) {
             dispatch(getOrderDetails(orderId));
-            if (successPay) {
-                dispatch(payReset());
-            }
-        } else if (!order.isPaid) {
-            if (order.paymentMethod === "Stripe") {
-                // Payment Intent logic can be added here if needed for embedded forms
-            }
         }
-    }, [dispatch, orderId, successPay, order]);
+    }, [dispatch, orderId, order]);
 
     useEffect(() => {
         if (isSuccess && !successProcessed && order && !order.isPaid) {
@@ -65,7 +58,7 @@ const OrderScreen = () => {
         }
     };
 
-    if (loading) return <div className="py-20 text-center uppercase tracking-widest animate-pulse">Loading Order Details...</div>;
+    if (loading && !order) return <div className="py-20 text-center uppercase tracking-widest animate-pulse">Loading Order Details...</div>;
     if (error) return <div className="py-20 text-center text-red-500">{error}</div>;
     if (!order) return null;
 

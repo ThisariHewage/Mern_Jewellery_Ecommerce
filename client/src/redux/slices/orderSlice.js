@@ -110,9 +110,13 @@ const orderSlice = createSlice({
             .addCase(payOrder.pending, (state) => {
                 state.loadingPay = true;
             })
-            .addCase(payOrder.fulfilled, (state) => {
+            .addCase(payOrder.fulfilled, (state, action) => {
                 state.loadingPay = false;
                 state.successPay = true;
+                // Merge the updated order data (isPaid, paidAt, etc.) into current order
+                if (state.order) {
+                    state.order = { ...state.order, ...action.payload };
+                }
             })
             .addCase(payOrder.rejected, (state, action) => {
                 state.loadingPay = false;
