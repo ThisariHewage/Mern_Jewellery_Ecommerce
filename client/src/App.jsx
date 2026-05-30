@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,6 +35,7 @@ import ProductEditScreen from "./pages/admin/ProductEditScreen";
 import OrderListScreen from "./pages/admin/OrderListScreen";
 import AdminDashboardScreen from "./pages/admin/AdminDashboardScreen";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
+import NotFoundScreen from "./pages/NotFoundScreen";
 
 function App() {
   const location = useLocation();
@@ -83,6 +85,9 @@ function App() {
             <Route path="/admin/product/:id/edit" element={<ProductEditScreen />} />
             <Route path="/admin/orderlist" element={<OrderListScreen />} />
           </Route>
+
+          {/* 404 Not Found */}
+          <Route path="*" element={<NotFoundScreen />} />
         </Routes>
       </main>
 
