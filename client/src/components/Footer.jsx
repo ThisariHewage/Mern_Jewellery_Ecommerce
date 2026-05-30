@@ -26,7 +26,7 @@ const Footer = () => {
         setMessage("");
 
         try {
-            await api.post("/api/newsletter/subscribe", { email });
+            await api.post("/api/newsletter/subscribe", { email, reason: "To join Dewora Club" });
             setEmail("");
             setStatus("success");
             setMessage("Thank you for subscribing.");

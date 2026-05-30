@@ -2,7 +2,8 @@ import asyncHandler from "express-async-handler";
 import sendEmail from "../utils/sendEmail.js";
 
 const subscribeNewsletter = asyncHandler(async (req, res) => {
-    const email = req.body.email?.trim().toLowerCase();
+    const { email: rawEmail, reason } = req.body;
+    const email = rawEmail?.trim().toLowerCase();
 
     if (!email) {
         res.status(400);
@@ -20,7 +21,7 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
         email: process.env.EMAIL_USERNAME,
         subject: "New Dewora Newsletter Subscriber",
         message: [
-            "Reason: Get Exclusive Offers",
+            `Reason: ${reason || "Newsletter Subscription"}`,
             "A new user has subscribed to the Dewora Jewellers insider list.",
             "",
             `Subscriber email: ${email}`,

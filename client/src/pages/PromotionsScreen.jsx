@@ -36,7 +36,7 @@ const PromotionsScreen = () => {
 
         setStatus("sending");
         try {
-            const { data } = await api.post("/api/newsletter/subscribe", { email });
+            const { data } = await api.post("/api/newsletter/subscribe", { email, reason: "TO get exclusive offers" });
             setStatus("success");
             setMessage(data.message || "Thank you for subscribing!");
             setEmail("");
