@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft } from "lucide-react";
+import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft, Trash2 } from "lucide-react";
 import api from "../../services/api";
 
 const OrderListScreen = () => {
@@ -24,6 +24,18 @@ const OrderListScreen = () => {
 
         fetchOrders();
     }, []);
+
+    const deleteHandler = async (id) => {
+        if (window.confirm("Are you sure you want to delete this order?")) {
+            try {
+                await api.delete(`/api/orders/${id}`);
+                toast.success("Order deleted successfully");
+                setOrders(orders.filter((order) => order._id !== id));
+            } catch (err) {
+                toast.error(err?.response?.data?.message || err.message);
+            }
+        }
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-16">
@@ -64,6 +76,7 @@ const OrderListScreen = () => {
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Delivered</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 text-center">Action</th>
 
                                 </tr>
                             </thead>
@@ -98,6 +111,14 @@ const OrderListScreen = () => {
                                                     <XCircle size={12} /> No
                                                 </span>
                                             )}
+                                        </td>
+                                        <td className="px-6 py-5 text-center">
+                                            <button
+                                                onClick={() => deleteHandler(order._id)}
+                                                className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
