@@ -15,7 +15,9 @@ const Header = () => {
     const [jewelleryOpen, setJewelleryOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [mobileJewelleryOpen, setMobileJewelleryOpen] = useState(false);
+    const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const profileDropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -23,8 +25,8 @@ const Header = () => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
                 setJewelleryOpen(false);
             }
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setJewelleryOpen(false);
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(e.target)) {
+                setProfileDropdownOpen(false);
             }
         };
         document.addEventListener("mousedown", handler);
@@ -142,16 +144,58 @@ const Header = () => {
 
                         {/* Authentication & Profile Link */}
                         {userInfo ? (
-                            <div className="flex items-center gap-2">
+                            <div className="relative flex items-center gap-2" ref={profileDropdownRef}>
                                 <button
-                                    onClick={() => navigate(userInfo.isAdmin ? "/admin/dashboard" : "/profile")}
+                                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                                     className="flex items-center gap-2 hover:text-accent transition-colors p-1 cursor-pointer group"
                                 >
                                     <div className="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 text-accent flex items-center justify-center text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
                                         {userInfo.name.charAt(0).toUpperCase()}
                                     </div>
                                     <span className="hidden xl:inline text-xs uppercase tracking-widest font-bold text-primary group-hover:text-accent transition-colors">{userInfo.name}</span>
+                                    <FaChevronDown size={8} className={`hidden xl:block transition-transform duration-300 text-primary group-hover:text-accent ${profileDropdownOpen ? "rotate-180" : ""}`} />
                                 </button>
+
+                                {/* Profile Dropdown */}
+                                {profileDropdownOpen && (
+                                    <div className="absolute top-full right-0 mt-4 w-48 bg-secondary rounded-2xl shadow-xl border border-accent/20 overflow-hidden z-50 animate-fade-in divide-y divide-accent/10">
+                                        <div className="px-4 py-3 bg-primary/5">
+                                            <p className="text-xs font-bold text-primary truncate">{userInfo.name}</p>
+                                            <p className="text-[10px] text-gray-500 truncate">{userInfo.email}</p>
+                                        </div>
+                                        {userInfo.isAdmin && (
+                                            <div className="py-1">
+                                                <Link
+                                                    to="/admin/dashboard"
+                                                    onClick={() => setProfileDropdownOpen(false)}
+                                                    className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-primary hover:bg-accent/10 hover:text-accent transition-colors"
+                                                >
+                                                    <FaTachometerAlt size={12} /> Dashboard
+                                                </Link>
+                                            </div>
+                                        )}
+                                        <div className="py-1">
+                                            <Link
+                                                to="/profile"
+                                                onClick={() => setProfileDropdownOpen(false)}
+                                                className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-primary hover:bg-accent/10 hover:text-accent transition-colors"
+                                            >
+                                                <FaUser size={12} /> Profile
+                                            </Link>
+                                        </div>
+                                        <div className="py-1 border-t border-accent/10">
+                                            <button
+                                                onClick={() => {
+                                                    setProfileDropdownOpen(false);
+                                                    logoutHandler();
+                                                }}
+                                                className="w-full flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-red-500 hover:bg-red-50 transition-colors cursor-pointer"
+                                            >
+                                                <FaSignOutAlt size={12} /> Logout
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <Link to="/login" id="header-login-btn" className="hidden lg:flex items-center gap-2 hover:text-accent transition-colors text-xs font-bold uppercase tracking-widest text-gray-500 p-1">
