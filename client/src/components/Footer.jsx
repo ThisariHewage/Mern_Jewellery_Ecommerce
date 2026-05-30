@@ -61,7 +61,7 @@ const Footer = () => {
                     <ul className="space-y-4 text-sm text-gray-300">
                         <li className="flex items-start gap-3">
                             <span className="text-accent mt-1">📍</span>
-                            <span>123 Luxury Avenue,<br />Colombo 03, Sri Lanka</span>
+                            <span>123 Jewellers Lane,<br />Colombo 03, Sri Lanka</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <span className="text-accent">📞</span>
