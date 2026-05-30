@@ -59,6 +59,7 @@ const OrderListScreen = () => {
                                 <tr className="bg-gray-50 border-b border-gray-100">
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">ID</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">User</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Address</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Date</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
@@ -71,6 +72,9 @@ const OrderListScreen = () => {
                                     <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
                                         <td className="px-6 py-5 font-mono text-[10px] text-gray-400">{order._id.substring(0, 10)}...</td>
                                         <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.user && order.user.name}</td>
+                                        <td className="px-6 py-5 text-[12px] text-gray-500">
+                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.country}
+                                        </td>
                                         <td className="px-6 py-5 text-sm text-gray-500">{order.createdAt.substring(0, 10)}</td>
                                         <td className="px-6 py-5 text-sm font-bold text-gray-900">${order.totalPrice}</td>
                                         <td className="px-6 py-5">
