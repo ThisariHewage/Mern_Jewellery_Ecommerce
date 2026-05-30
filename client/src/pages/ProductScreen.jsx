@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaArrowLeft, FaMinus, FaPlus, FaShieldAlt, FaShippingFast, FaUndo } from "react-icons/fa";
 import { addToCart } from "../redux/slices/cartSlice";
@@ -69,10 +69,10 @@ const ProductScreen = () => {
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-6 py-12">
-                <Link to="/jewellery" className="inline-flex items-center text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-[#c9a84c] transition-colors mb-12 group">
+                <button onClick={() => navigate(-1)} className="inline-flex items-center text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 hover:text-[#c9a84c] transition-colors mb-12 group cursor-pointer">
                     <FaArrowLeft className="mr-3 transition-transform group-hover:-translate-x-1" />
-                    Back to Collection
-                </Link>
+                    Back to Previous
+                </button>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
                     <div className="relative group lg:col-span-5 lg:pl-8">

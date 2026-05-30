@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 import { resetCart } from "../redux/slices/cartSlice";
 import api from "../services/api";
-import { FaShoppingCart, FaUser, FaSearch, FaSignOutAlt, FaChevronDown, FaBars, FaTimes, FaUsers, FaBoxOpen, FaScroll, FaUserCircle, FaTachometerAlt } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaSearch, FaSignOutAlt, FaChevronDown, FaBars, FaTimes, FaUsers, FaBoxOpen, FaScroll, FaUserCircle, FaTh } from "react-icons/fa";
 
 const Header = () => {
     const { userInfo } = useSelector((state) => state.auth);
@@ -183,7 +183,7 @@ const Header = () => {
                                                     onClick={() => setProfileDropdownOpen(false)}
                                                     className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-primary hover:bg-accent/10 hover:text-accent transition-colors"
                                                 >
-                                                    <FaTachometerAlt size={12} /> Dashboard
+                                                    <FaTh size={12} /> Dashboard
                                                 </Link>
                                             </div>
                                         )}
