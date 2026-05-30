@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/slices/authSlice";
 import { resetCart } from "../redux/slices/cartSlice";
@@ -11,6 +11,7 @@ const Header = () => {
     const { cartItems } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [jewelleryOpen, setJewelleryOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -59,6 +60,11 @@ const Header = () => {
 
     const navLinkClass = "hover:text-accent transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full";
 
+    const getActiveLinkClass = (path) => {
+        const isActive = location.pathname === path || (path !== "/" && location.pathname.startsWith(path));
+        return `${navLinkClass} ${isActive ? "text-accent after:w-full" : "text-gray-500"}`;
+    };
+
     return (
         <div className="sticky top-0 z-50">
             {/* Premium Top Announcement Bar */}
@@ -84,20 +90,22 @@ const Header = () => {
                     </Link>
 
                     {/* Center: Main Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-4 xl:space-x-7 text-[13px] uppercase tracking-[0.14em] xl:tracking-[0.16em] font-bold text-gray-500 flex-grow justify-center whitespace-nowrap">
-                        <Link to="/" id="nav-home" className={navLinkClass}>Home</Link>
-                        <Link to="/about" id="nav-about" className={navLinkClass}>About Us</Link>
+                    <nav className="hidden lg:flex items-center space-x-4 xl:space-x-7 text-[13px] uppercase tracking-[0.14em] xl:tracking-[0.16em] font-bold flex-grow justify-center whitespace-nowrap">
+                        <Link to="/" id="nav-home" className={getActiveLinkClass("/")}>Home</Link>
+                        <Link to="/about" id="nav-about" className={getActiveLinkClass("/about")}>About Us</Link>
 
                         {/* Jewellery Dropdown */}
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 id="nav-jewellery"
                                 onClick={() => setJewelleryOpen((o) => !o)}
-                                className={`flex items-center gap-1.5 cursor-pointer uppercase tracking-[0.2em] ${navLinkClass} ${jewelleryOpen ? "text-accent" : ""}`}
+                                className={`flex items-center gap-1.5 cursor-pointer uppercase tracking-[0.2em] ${navLinkClass} ${location.pathname.startsWith("/jewellery") ? "text-accent after:w-full" : "text-gray-500"}`}
                             >
                                 JEWELLERY
-                                <FaChevronDown size={8} className={`transition-transform duration-300 ${jewelleryOpen ? "rotate-180 text-accent" : ""}`} />
+                                <FaChevronDown size={8} className={`transition-transform duration-300 ${jewelleryOpen || location.pathname.startsWith("/jewellery") ? "rotate-180 text-accent" : ""}`} />
                             </button>
+
+                            {/* ... dropdown content remains same ... */}
 
                             {jewelleryOpen && (
                                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-5 bg-secondary rounded-3xl shadow-2xl border border-accent/20 overflow-hidden min-w-[800px] z-50 animate-fade-in p-8 grid grid-cols-3 gap-16">
@@ -135,9 +143,9 @@ const Header = () => {
                         </div>
 
 
-                        <Link to="/services" id="nav-services" className={navLinkClass}>Services</Link>
-                        <Link to="/promotions" id="nav-promotions" className={navLinkClass}>Promotions</Link>
-                        <Link to="/contact" id="nav-contact" className={navLinkClass}>Contact Us</Link>
+                        <Link to="/services" id="nav-services" className={getActiveLinkClass("/services")}>Services</Link>
+                        <Link to="/promotions" id="nav-promotions" className={getActiveLinkClass("/promotions")}>Promotions</Link>
+                        <Link to="/contact" id="nav-contact" className={getActiveLinkClass("/contact")}>Contact Us</Link>
                     </nav>
 
                     {/* Right Side: Action Icons + Premium Profile Dropdown */}
@@ -265,7 +273,7 @@ const Header = () => {
             {/* Mobile Menu */}
             {mobileOpen && (
                 <div className="lg:hidden bg-secondary border-t border-accent/10 shadow-xl px-6 py-6 space-y-1 animate-fade-in">
-                    <Link to="/" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Home</Link>
+                    <Link to="/" onClick={() => setMobileOpen(false)} className={`block py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors ${location.pathname === "/" ? "text-accent" : "text-gray-700 hover:text-accent"}`}>Home</Link>
 
                     {/* Mobile Search */}
                     <div className="py-4 border-b border-accent/10">
@@ -283,16 +291,16 @@ const Header = () => {
                         </form>
                     </div>
 
-                    <Link to="/about" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">About Us</Link>
+                    <Link to="/about" onClick={() => setMobileOpen(false)} className={`block py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors ${location.pathname === "/about" ? "text-accent" : "text-gray-700 hover:text-accent"}`}>About Us</Link>
 
                     {/* Mobile Jewellery Accordion */}
                     <div className="border-b border-accent/10">
                         <button
                             onClick={() => setMobileJewelleryOpen((o) => !o)}
-                            className="flex items-center justify-between w-full py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent transition-colors cursor-pointer"
+                            className={`flex items-center justify-between w-full py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors cursor-pointer ${location.pathname.startsWith("/jewellery") ? "text-accent" : "text-gray-700 hover:text-accent"}`}
                         >
                             JEWELLERY
-                            <FaChevronDown size={10} className={`transition-transform duration-300 ${mobileJewelleryOpen ? "rotate-180" : ""}`} />
+                            <FaChevronDown size={10} className={`transition-transform duration-300 ${mobileJewelleryOpen || location.pathname.startsWith("/jewellery") ? "rotate-180 text-accent" : ""}`} />
                         </button>
                         {mobileJewelleryOpen && (
                             <div className="pl-4 pb-3 space-y-5">
@@ -324,9 +332,9 @@ const Header = () => {
                         )}
                     </div>
 
-                    <Link to="/services" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Services</Link>
-                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Promotions</Link>
-                    <Link to="/contact" onClick={() => setMobileOpen(false)} className="block py-3 text-[15.5px] font-bold uppercase tracking-widest text-gray-700 hover:text-accent border-b border-accent/10 transition-colors">Contact Us</Link>
+                    <Link to="/services" onClick={() => setMobileOpen(false)} className={`block py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors ${location.pathname === "/services" ? "text-accent" : "text-gray-700 hover:text-accent"}`}>Services</Link>
+                    <Link to="/promotions" onClick={() => setMobileOpen(false)} className={`block py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors ${location.pathname === "/promotions" ? "text-accent" : "text-gray-700 hover:text-accent"}`}>Promotions</Link>
+                    <Link to="/contact" onClick={() => setMobileOpen(false)} className={`block py-3 text-[15.5px] font-bold uppercase tracking-widest border-b border-accent/10 transition-colors ${location.pathname === "/contact" ? "text-accent" : "text-gray-700 hover:text-accent"}`}>Contact Us</Link>
 
                     {userInfo ? (
                         <div className="pt-4 space-y-2">
