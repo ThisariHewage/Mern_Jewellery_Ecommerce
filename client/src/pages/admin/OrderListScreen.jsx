@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft, Trash2 } from "lucide-react";
+import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft, Trash2, Eye } from "lucide-react";
 import api from "../../services/api";
 import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 
@@ -92,13 +92,13 @@ const OrderListScreen = () => {
                             <tbody className="divide-y divide-gray-50">
                                 {orders.map((order) => (
                                     <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[12px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
+                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
                                         <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.user && order.user.name}</td>
-                                        <td className="px-6 py-5 text-[12px] text-gray-500">
-                                            {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.country}
+                                        <td className="px-6 py-5 text-[14px] text-gray-500 max-w-[200px] truncate" title={`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`}>
+                                            {order.shippingAddress.city}, {order.shippingAddress.country}
                                         </td>
                                         <td className="px-6 py-5 text-sm font-bold text-gray-900">
-                                            {order.orderItems.reduce((acc, item) => acc + item.qty, 0)}
+                                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)} items</span>
                                         </td>
                                         <td className="px-6 py-5 text-sm text-gray-500">{order.createdAt.substring(0, 10)}</td>
                                         <td className="px-6 py-5 text-sm font-bold text-gray-900">${order.totalPrice}</td>
@@ -124,10 +124,18 @@ const OrderListScreen = () => {
                                                 </span>
                                             )}
                                         </td>
-                                        <td className="px-6 py-5 text-center">
+                                        <td className="px-6 py-5 text-center space-x-3 whitespace-nowrap">
+                                            <Link
+                                                to={`/order/${order._id}`}
+                                                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
+                                                title="View Details"
+                                            >
+                                                <Eye size={16} />
+                                            </Link>
                                             <button
                                                 onClick={() => deleteHandler(order._id)}
-                                                className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                                                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors"
+                                                title="Delete Order"
                                             >
                                                 <Trash2 size={16} />
                                             </button>
