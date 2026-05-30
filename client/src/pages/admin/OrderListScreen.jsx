@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft, Trash2 } from "lucide-react";
 import api from "../../services/api";
+import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 
 const OrderListScreen = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -25,15 +28,20 @@ const OrderListScreen = () => {
         fetchOrders();
     }, []);
 
-    const deleteHandler = async (id) => {
-        if (window.confirm("Are you sure you want to delete this order?")) {
-            try {
-                await api.delete(`/api/orders/${id}`);
-                toast.success("Order deleted successfully");
-                setOrders(orders.filter((order) => order._id !== id));
-            } catch (err) {
-                toast.error(err?.response?.data?.message || err.message);
-            }
+    const deleteHandler = (id) => {
+        setSelectedOrderId(id);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await api.delete(`/api/orders/${selectedOrderId}`);
+            toast.success("Order deleted successfully");
+            setOrders(orders.filter((order) => order._id !== selectedOrderId));
+            setShowDeleteModal(false);
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message);
+            setShowDeleteModal(false);
         }
     };
 
@@ -127,6 +135,14 @@ const OrderListScreen = () => {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Order"
+                message="Are you sure you want to delete this order? This action cannot be undone."
+            />
         </div>
     );
 };
