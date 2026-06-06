@@ -11,6 +11,8 @@ import stripeRoutes from "./routes/stripeRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 
+
+const cors = require('cors');
 const app = express();
 
 // Simple Request Logging Middleware
@@ -23,6 +25,12 @@ app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
 }));
+
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
