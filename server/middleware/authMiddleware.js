@@ -12,6 +12,13 @@ const protect = asyncHandler(async (req, res, next) => {
     // Read the JWT from the 'jwt' cookie
     token = req.cookies.jwt;
 
+    if (process.env.NODE_ENV === "production") {
+        console.log(`[Auth] Path: ${req.originalUrl}, Cookie present: ${!!token}`);
+        if (!token) {
+            console.log(`[Auth] All Cookies:`, JSON.stringify(req.cookies));
+        }
+    }
+
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);

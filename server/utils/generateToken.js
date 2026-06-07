@@ -25,7 +25,7 @@ const generateToken = (req, res, userId) => {
 
     // Helpful for debugging in production (not including token itself)
     if (isProduction) {
-        console.log(`Token generated for user ${userId}. Secure: ${isSecure}, SameSite: ${isSecure ? 'none' : 'lax'}`);
+        console.log(`[Token] Generated for user ${userId}. Secure: ${isSecure}, SameSite: ${isSecure ? 'none' : 'lax'}`);
     }
 };
 
