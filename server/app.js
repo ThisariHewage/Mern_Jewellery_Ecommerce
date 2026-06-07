@@ -14,6 +14,9 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
+// Trust proxy for Railway/Production to detect HTTPS correctly
+app.set("trust proxy", 1);
+
 // Simple Request Logging Middleware
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.originalUrl}`);
@@ -21,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-    origin: ["http://localhost:5173", process.env.CLIENT_URL],
+    origin: ["http://localhost:5173", process.env.CLIENT_URL].filter(Boolean),
     credentials: true
 }));
 
