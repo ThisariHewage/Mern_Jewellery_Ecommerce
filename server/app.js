@@ -12,7 +12,6 @@ import newsletterRoutes from "./routes/newsletterRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 
 
-const cors = require('cors');
 const app = express();
 
 // Simple Request Logging Middleware
@@ -22,12 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
-
-app.use(cors({
-    origin: '*',
+    origin: ["http://localhost:5173", process.env.CLIENT_URL],
     credentials: true
 }));
 
