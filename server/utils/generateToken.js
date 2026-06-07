@@ -11,8 +11,9 @@ const generateToken = (req, res, userId) => {
         expiresIn: "30d",
     });
 
-    // Auto-detect if we are on HTTPS
-    const isSecure = req.secure || req.headers["x-forwarded-proto"] === "https";
+    // Auto-detect if we are on HTTPS or in Production
+    const isProduction = process.env.NODE_ENV === "production";
+    const isSecure = req.secure || req.headers["x-forwarded-proto"] === "https" || isProduction;
 
     // Set JWT as HTTP-Only Cookie
     res.cookie("jwt", token, {
@@ -21,6 +22,11 @@ const generateToken = (req, res, userId) => {
         sameSite: isSecure ? "none" : "lax",
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
+
+    // Helpful for debugging in production (not including token itself)
+    if (isProduction) {
+        console.log(`Token generated for user ${userId}. Secure: ${isSecure}, SameSite: ${isSecure ? 'none' : 'lax'}`);
+    }
 };
 
 export default generateToken;
