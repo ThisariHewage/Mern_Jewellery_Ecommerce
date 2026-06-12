@@ -47,7 +47,6 @@ const corsOptions = {
 };
 
 // Enable pre-flight across-the-board
-app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
 // Security detection log (for production debugging)
@@ -99,15 +98,14 @@ app.use("/api/contact", contactRoutes);
 const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
-    // Set static folder
-    app.use(express.static(path.join(__dirname, "/client/dist")));
+    // Set static folder - correctly point to the client/dist from server folder
+    app.use(express.static(path.join(__dirname, "../client/dist")));
 
     // Any route that is not an API route will be redirected to index.html
-    app.get("*", (req, res, next) => {
+    app.get("(.*)", (req, res, next) => {
         if (!req.originalUrl.startsWith("/api")) {
-            res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+            res.sendFile(path.resolve(__dirname, "../client", "dist", "index.html"));
         } else {
-            // If it's an /api/ route that reached here, let notFound handle it
             next();
         }
     });

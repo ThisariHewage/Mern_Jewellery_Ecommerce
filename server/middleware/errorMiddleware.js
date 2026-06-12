@@ -14,11 +14,8 @@ const notFound = (req, res, next) => {
  */
 const errorHandler = (err, req, res, next) => {
     console.error(`Error: ${err.message}`);
+    if (err.stack) console.error(err.stack);
 
-    // Log to file for debugging
-    import('fs').then(fs => {
-        fs.appendFileSync('error.log', `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}\nError: ${err.message}\nStack: ${err.stack}\n\n`);
-    });
     // If the status code is 200, change it to 500 (Internal Server Error)
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
