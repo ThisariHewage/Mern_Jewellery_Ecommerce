@@ -23,10 +23,13 @@ const generateToken = (req, res, userId) => {
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    // Helpful for debugging in production (not including token itself)
+    // Helpful for debugging in production
     if (isProduction) {
-        console.log(`[Token] Generated for user ${userId}. Secure: ${isSecure}, SameSite: ${isSecure ? 'none' : 'lax'}`);
+        console.log(`[Token] Generated for user ${userId}`);
+        console.log(`[Cookie Config] Secure: ${isSecure}, SameSite: ${isSecure ? 'none' : 'lax'}, Domain: ${req.hostname}`);
     }
+
+    return token;
 };
 
 export default generateToken;

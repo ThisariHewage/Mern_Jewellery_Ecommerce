@@ -67,10 +67,6 @@ app.get("/api/config/paypal", (req, res) => {
     res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
 
-app.get("/", (req, res) => {
-    res.send("API Running");
-});
-
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
@@ -79,6 +75,29 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/stripe", stripeRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/contact", contactRoutes);
+
+// Static files & frontend routing for production
+import path from "path";
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+    // Set static folder
+    app.use(express.static(path.join(__dirname, "/client/dist")));
+
+    // Any route that is not an API route will be redirected to index.html
+    app.get("*", (req, res, next) => {
+        if (!req.originalUrl.startsWith("/api")) {
+            res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+        } else {
+            // If it's an /api/ route that reached here, let notFound handle it
+            next();
+        }
+    });
+} else {
+    app.get("/", (req, res) => {
+        res.send("API Running");
+    });
+}
 
 // Register Error Middleware
 app.use(notFound);
