@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -95,7 +96,6 @@ app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/contact", contactRoutes);
 
 // Static files & frontend routing for production
-import path from "path";
 const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
