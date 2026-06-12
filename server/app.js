@@ -15,18 +15,13 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
-// Trust proxy for Railway/Production to detect HTTPS correctly
+// 1. Trust proxy for Railway/Production to detect HTTPS correctly
 app.set("trust proxy", 1);
 
-// Simple Request Logging Middleware
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.originalUrl}`);
-    next();
-});
-
-// CORS configuration
+// 2. CORS configuration with credentials support
 const allowedOrigins = [
     "https://mern-jewellery-ecommerce.vercel.app",
+    "https://mern-jewellery-ecommerce-thisarihewages-projects.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173",
     process.env.CLIENT_URL,
@@ -34,7 +29,6 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
@@ -43,13 +37,11 @@ const corsOptions = {
         }
     },
     credentials: true,
-    optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200,
 };
 
-// Enable pre-flight across-the-board
 app.use(cors(corsOptions));
-
-// Security detection log (for production debugging)
+// 3. Security detection log (for production debugging)
 app.use((req, res, next) => {
     if (process.env.NODE_ENV === "production" && req.originalUrl.includes("/api/")) {
         console.log(`[Security] ${req.method} ${req.originalUrl} - Secure: ${req.secure}, Protocol: ${req.headers["x-forwarded-proto"]}`);
@@ -60,29 +52,20 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cookieParser());
 
-// Debug Route
-app.get("/api/debug", (req, res) => {
-    res.json({
-        node_env: process.env.NODE_ENV,
-        jwt_secret_exists: !!process.env.JWT_SECRET,
-        jwt_secret_length: process.env.JWT_SECRET?.length,
-        client_url: process.env.CLIENT_URL,
-        headers: req.headers,
-        cookies: !!req.cookies?.jwt,
-    });
-});
-
-// Health Check
+// 4. API Routes and Health Checks
 app.get("/api/health", (req, res) => {
-    res.json({
-        status: "UP",
+    res.status(200).json({
+        success: true,
+        message: "API is running",
         db: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
     });
 });
 
-// PayPal Config
-app.get("/api/config/paypal", (req, res) => {
-    res.send(process.env.PAYPAL_CLIENT_ID || "sb");
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "API is running",
+    });
 });
 
 // Routes
@@ -94,29 +77,30 @@ app.use("/api/stripe", stripeRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/contact", contactRoutes);
 
-// Static files & frontend routing for production
+// 6. Production Static Assets & SPA Routing
 const __dirname = path.resolve();
-
 if (process.env.NODE_ENV === "production") {
-    // Set static folder - correctly point to the client/dist from server folder
     app.use(express.static(path.join(__dirname, "../client/dist")));
 
-    // Any route that is not an API route will be redirected to index.html
-    app.get("(.*)", (req, res, next) => {
+    // Express 5 compatible catch-all route for SPA using named parameter '/:any*'
+    app.get("/:any*", (req, res, next) => {
         if (!req.originalUrl.startsWith("/api")) {
             res.sendFile(path.resolve(__dirname, "../client", "dist", "index.html"));
         } else {
             next();
         }
     });
-} else {
-    app.get("/", (req, res) => {
-        res.send("API Running");
-    });
 }
 
-// Register Error Middleware
-app.use(notFound);
+// 7. 404 handler for unknown routes (placed after all logic)
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Route not found",
+    });
+});
+
+// Register Global Error Middleware
 app.use(errorHandler);
 
 export default app;
