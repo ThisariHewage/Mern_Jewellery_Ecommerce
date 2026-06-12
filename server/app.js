@@ -23,25 +23,30 @@ app.use((req, res, next) => {
     next();
 });
 
-// Improved CORS with trailing slash handling and proper origins
+// CORS configuration
 const origins = [
+    "https://mern-jewellery-ecommerce.vercel.app",
+    "http://localhost:3000",
     "http://localhost:5173",
     process.env.CLIENT_URL,
-    process.env.CLIENT_URL?.replace(/\/$/, ""), // Remove trailing slash
 ].filter(Boolean);
 
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (origins.indexOf(origin) !== -1 || origins.indexOf(origin + "/") !== -1) {
+        if (origins.includes(origin)) {
             callback(null, true);
         } else {
+            console.log('CORS blocked origin:', origin);
             callback(new Error("Not allowed by CORS"));
         }
     },
-    credentials: true
+    credentials: true,
 }));
+
+// For temporary testing, you can uncomment this and comment out the above:
+// app.use(cors());
 
 // Security detection log (for production debugging)
 app.use((req, res, next) => {
