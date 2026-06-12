@@ -88,7 +88,7 @@ const LoginScreen = () => {
                         </div>
                     )}
 
-                    <form onSubmit={submitHandler} className="space-y-6">
+                    <form onSubmit={submitHandler} className="space-y-6" autoComplete="off">
                         {/* Email Input */}
                         <div className="group/input relative">
                             <label className="text-[11px] uppercase tracking-[0.2em] text-gray-700 font-bold mb-2 block ml-1 group-focus-within/input:text-accent transition-colors">
@@ -103,6 +103,7 @@ const LoginScreen = () => {
                                     placeholder="your@email.com"
                                     value={email}
                                     required
+                                    autoComplete="off"
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-14 py-4.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-accent/30 focus:shadow-lg focus:shadow-accent/5 outline-none transition-all duration-300 font-medium"
                                 />
@@ -132,6 +133,7 @@ const LoginScreen = () => {
                                     placeholder="••••••••"
                                     value={password}
                                     required
+                                    autoComplete="new-password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-14 py-4.5 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-accent/30 focus:shadow-lg focus:shadow-accent/5 outline-none transition-all duration-300 font-medium tracking-widest"
                                 />

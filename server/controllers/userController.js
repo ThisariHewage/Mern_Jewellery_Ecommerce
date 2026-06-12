@@ -11,6 +11,7 @@ import sendEmail from "../utils/sendEmail.js";
  */
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
+    console.log(`[Login Attempt] Email: ${email}, Body Exists: ${!!req.body}`);
 
     const user = await User.findOne({ email });
 
