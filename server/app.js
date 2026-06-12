@@ -54,6 +54,18 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cookieParser());
 
+// Debug Route
+app.get("/api/debug", (req, res) => {
+    res.json({
+        node_env: process.env.NODE_ENV,
+        jwt_secret_exists: !!process.env.JWT_SECRET,
+        jwt_secret_length: process.env.JWT_SECRET?.length,
+        client_url: process.env.CLIENT_URL,
+        headers: req.headers,
+        cookies: !!req.cookies?.jwt,
+    });
+});
+
 // Health Check
 app.get("/api/health", (req, res) => {
     res.json({
