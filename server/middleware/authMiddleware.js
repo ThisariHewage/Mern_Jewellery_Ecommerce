@@ -35,21 +35,29 @@ const protect = asyncHandler(async (req, res, next) => {
 
             return next();
         } catch (error) {
+            console.error(`[Auth Error] Path: ${req.originalUrl}, Reason: ${error.message}`);
+
+            if (process.env.NODE_ENV === "production") {
+                console.log(`[Diagnostic] JWT_SECRET exists: ${!!process.env.JWT_SECRET}, Secret Length: ${process.env.JWT_SECRET?.length}`);
+            }
+
             // If cookie failed, but there is also a header, try the header as a last resort
-            if (req.cookies.jwt && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+            if (req.cookies?.jwt && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
                 const headerToken = req.headers.authorization.split(" ")[1];
                 try {
                     const decoded = jwt.verify(headerToken, process.env.JWT_SECRET);
                     req.user = await User.findById(decoded.userId).select("-password");
-                    if (req.user) return next();
+                    if (req.user) {
+                        console.log("[Auth] Success via fallback header");
+                        return next();
+                    }
                 } catch (headerError) {
-                    console.error("Auth Error (Fallback Header):", headerError.message);
+                    console.error("[Auth Error] Fallback Header failed:", headerError.message);
                 }
             }
 
-            console.error("Auth Error:", error.message);
             res.status(401);
-            throw new Error("Not authorized, token failed");
+            throw new Error(`Not authorized, token failed: ${error.message}`);
         }
     } else {
         res.status(401);
