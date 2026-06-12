@@ -82,9 +82,10 @@ const __dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../client/dist")));
 
-    // Express 5 compatible catch-all route for SPA using named parameter '/:any*'
-    app.get("/:any*", (req, res, next) => {
-        if (!req.originalUrl.startsWith("/api")) {
+    // Express 5 Robust SPA Catch-all middleware
+    // Bypasses path-to-regexp parser to avoid PathError
+    app.use((req, res, next) => {
+        if (req.method === "GET" && !req.originalUrl.startsWith("/api")) {
             res.sendFile(path.resolve(__dirname, "../client", "dist", "index.html"));
         } else {
             next();
@@ -100,7 +101,7 @@ app.use((req, res) => {
     });
 });
 
-// Register Global Error Middleware
+// 8. Global Error Handler
 app.use(errorHandler);
 
 export default app;
