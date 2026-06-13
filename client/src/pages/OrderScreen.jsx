@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import api from "../services/api";
-import { getOrderDetails, payOrder, payReset } from "../redux/slices/orderSlice";
+import { getOrderDetails, payOrder } from "../redux/slices/orderSlice";
 import { MapPin, CreditCard, ShoppingBag, CheckCircle, Clock } from "lucide-react";
 import SuccessAlert from "../components/SuccessAlert";
 
@@ -13,11 +13,7 @@ const OrderScreen = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const queryParams = new URLSearchParams(location.search);
-    const isSuccess = queryParams.get("success") === "true";
-    const isCanceled = queryParams.get("canceled") === "true";
-
-    const { order, loading, error, successPay } = useSelector((state) => state.orders);
+    const { order, loading, error } = useSelector((state) => state.orders);
     const { userInfo } = useSelector((state) => state.auth);
     const [showSuccess, setShowSuccess] = useState(false);
     const [successProcessed, setSuccessProcessed] = useState(false);
@@ -29,6 +25,10 @@ const OrderScreen = () => {
     }, [dispatch, orderId, order]);
 
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const isSuccess = queryParams.get("success") === "true";
+        const isCanceled = queryParams.get("canceled") === "true";
+
         if (isSuccess && !successProcessed && order && !order.isPaid) {
             setShowSuccess(true);
             setSuccessProcessed(true);
@@ -46,7 +46,7 @@ const OrderScreen = () => {
         if (isCanceled) {
             toast.error("Payment was canceled.");
         }
-    }, [isSuccess, isCanceled, order, orderId, dispatch, successProcessed, userInfo.email]);
+    }, [location.search, order, orderId, dispatch, successProcessed, userInfo.email]);
 
     const deliverOrderHandler = async () => {
         try {
