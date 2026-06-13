@@ -216,7 +216,7 @@ const ProfileScreen = () => {
                                                 <td className="px-6 py-5 font-mono text-[14px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
                                                 <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.createdAt.substring(0, 10)}</td>
                                                 <td className="px-6 py-5 text-sm font-bold text-gray-900">
-                                                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)} items</span>
+                                                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)} </span>
                                                 </td>
                                                 <td className="px-6 py-5 text-sm font-bold text-gray-900">${order.totalPrice}</td>
                                                 <td className="px-6 py-5">
