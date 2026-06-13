@@ -45,34 +45,29 @@ const AboutScreen = () => {
     return (
         <div className="min-h-screen bg-[#fdfbf7]">
             {/* Cinematic Hero Section */}
-            {/* Refined Split Hero Section - Matching Service Page Aesthetic */}
-            <div className="relative min-h-[600px] lg:h-[80vh] flex items-center bg-[#2A0845] overflow-hidden">
-                {/* Subtle Background Glow */}
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[150px]"></div>
+            {/* Refined Hero Section - Matching Service Page Aesthetic */}
+            <div className="relative py-32 text-center overflow-hidden" style={{ background: "linear-gradient(135deg, #1a0533 0%, #2d0a5e 60%, #0d001a 100%)" }}>
+                {/* Subtle Background Glows from Service page if any - adding them for consistency */}
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-[150px]"></div>
 
-                <div className="max-w-4xl mx-auto px-6 w-full relative z-10 text-center animate-fade-in-up">
-                    <p className="text-accent font-sans text-xs uppercase tracking-[0.5em] font-black mb-10">
-                        Our Legacy & Heritage
-                    </p>
-                    <h1 className="text-6xl md:text-9xl font-serif font-bold text-white leading-[1.1] mb-12">
-                        Crafting <br />
-                        <span className="text-accent italic font-light italic text-7xl md:text-9xl block mt-2">
-                            Forever.
-                        </span>
+                <div className="relative z-10 max-w-4xl mx-auto px-6">
+                    <p className="text-xs uppercase tracking-[0.5em] text-amber-400 font-bold mb-4">Our Legacy & Heritage</p>
+                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-tighter mb-6 px-4">
+                        Crafting <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #c9a84c, #f0d080)" }}>Forever</span>
                     </h1>
-                    <p className="text-white/60 text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+                    <p className="text-white/60 max-w-xl mx-auto leading-relaxed text-sm">
                         For two decades, Dewora Jewellers has defined the pinnacle of luxury, blending ancient craftsmanship with contemporary vision.
                     </p>
                 </div>
 
-                {/* Vertical Branding */}
+                {/* Vertical Branding - Kept original high-end boutique touch */}
                 <div className="absolute bottom-10 left-10 flex flex-col items-center gap-6 hidden lg:flex">
                     <div className="rotate-90 origin-left">
-                        <p className="text-[9px] uppercase tracking-[0.4em] font-black text-white/30 whitespace-nowrap">
+                        <p className="text-[9px] uppercase tracking-[0.4em] font-black text-white/20 whitespace-nowrap">
                             ESTABLISHED 2004
                         </p>
                     </div>
-                    <div className="w-[1px] h-16 bg-gradient-to-b from-accent/40 to-transparent"></div>
+                    <div className="w-[1px] h-16 bg-gradient-to-b from-amber-400/20 to-transparent"></div>
                 </div>
             </div>
 
@@ -143,13 +138,17 @@ const AboutScreen = () => {
             <div className="py-32 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                        <div className="relative group">
-                            <div className="absolute -inset-4 border-2 border-accent/20 rounded-[3rem] -z-10 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform duration-700"></div>
+                        <div className="relative group animate-fade-in-left">
+                            <div className="absolute -inset-4 border-2 border-accent/20 rounded-[3rem] -z-10 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-1000"></div>
                             <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/5] shadow-2xl">
-                                <img src="/about-showroom.png" alt="Showroom" className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
-                                <div className="absolute bottom-10 left-10 p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 max-w-xs transition-all hover:scale-105">
-                                    <p className="text-white text-sm font-bold leading-relaxed italic">
+                                <img
+                                    src="/about-showroom.png"
+                                    alt="Showroom"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent opacity-80"></div>
+                                <div className="absolute bottom-10 left-10 p-8 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 max-w-xs transition-all duration-700 group-hover:translate-x-2 group-hover:-translate-y-2 group-hover:shadow-2xl">
+                                    <p className="text-white text-sm font-bold leading-relaxed italic drop-shadow-md">
                                         "Our flagship boutique represents the physical manifestation of our luxury commitment."
                                     </p>
                                 </div>
