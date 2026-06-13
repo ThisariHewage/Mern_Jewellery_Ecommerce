@@ -84,7 +84,7 @@ const ProductCard = ({ product }) => {
                         </h3>
                     </Link>
                     <p className="text-lg font-serif font-bold text-gray-900 mb-3">
-                        ${product.price.toFixed(2)}
+                        Rs. {product.price.toFixed(2)}
                     </p>
 
                     <div className="mb-4">

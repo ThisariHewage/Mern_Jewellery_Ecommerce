@@ -127,9 +127,9 @@ const OrderScreen = () => {
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="text-sm text-gray-500">{item.qty} x ${item.price}</p>
+                                            <p className="text-sm text-gray-500">{item.qty} x Rs. {item.price}</p>
                                         </div>
-                                        <p className="font-bold text-gray-900">${(item.qty * item.price).toFixed(2)}</p>
+                                        <p className="font-bold text-gray-900">Rs. {(item.qty * item.price).toFixed(2)}</p>
                                     </div>
                                 </div>
                             ))}
@@ -141,10 +141,10 @@ const OrderScreen = () => {
                         <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
                             <h2 className="text-2xl font-bold text-gray-900 mb-8">Order Summary</h2>
                             <div className="space-y-4 mb-10 text-sm">
-                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Items</span><span className="font-bold">${order.itemsPrice}</span></div>
+                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Items</span><span className="font-bold">Rs. {order.itemsPrice}</span></div>
                                 <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Shipping</span><span className="font-bold text-gray-900 text-green-600">Free</span></div>
-                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Estimated Tax</span><span className="font-bold">${order.taxPrice}</span></div>
-                                <div className="pt-4 border-t border-gray-200 flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total</span><span className="text-2xl font-bold text-gray-900">${order.totalPrice}</span></div>
+                                <div className="flex justify-between"><span className="text-gray-500 uppercase tracking-widest font-bold">Estimated Tax</span><span className="font-bold">Rs. {order.taxPrice}</span></div>
+                                <div className="pt-4 border-t border-gray-200 flex justify-between items-center"><span className="text-lg font-bold text-gray-900">Total</span><span className="text-2xl font-bold text-gray-900">Rs. {order.totalPrice}</span></div>
                             </div>
                             {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                                 <button onClick={deliverOrderHandler} className="w-full py-4 bg-black text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-gray-800 transition-all">Mark As Delivered</button>

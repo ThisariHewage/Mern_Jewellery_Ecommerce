@@ -114,9 +114,9 @@ const PlaceOrderScreen = () => {
                                                 <Link to={`/product/${item._id}`} className="font-bold text-gray-900 hover:text-gray-600 transition-colors">
                                                     {item.name}
                                                 </Link>
-                                                <p className="text-sm text-gray-500">{item.qty} x ${item.price}</p>
+                                                <p className="text-sm text-gray-500">{item.qty} x Rs. {item.price}</p>
                                             </div>
-                                            <p className="font-bold text-gray-900">${(item.qty * item.price).toFixed(2)}</p>
+                                            <p className="font-bold text-gray-900">Rs. {(item.qty * item.price).toFixed(2)}</p>
                                         </div>
                                     </div>
                                 ))
@@ -133,19 +133,19 @@ const PlaceOrderScreen = () => {
                         <div className="space-y-4 mb-10">
                             <div className="flex justify-between text-gray-500">
                                 <span className="font-medium tracking-wide">Items Subtotal</span>
-                                <span className="font-bold text-gray-900">${cart.itemsPrice}</span>
+                                <span className="font-bold text-gray-900">Rs. {cart.itemsPrice}</span>
                             </div>
                             <div className="flex justify-between text-gray-500">
                                 <span className="font-medium tracking-wide">Shipping Cost</span>
-                                <span className="font-bold text-gray-900">${cart.shippingPrice}</span>
+                                <span className="font-bold text-gray-900">Rs. {cart.shippingPrice}</span>
                             </div>
                             <div className="flex justify-between text-gray-500">
                                 <span className="font-medium tracking-wide">Estimated Tax</span>
-                                <span className="font-bold text-gray-900">${cart.taxPrice}</span>
+                                <span className="font-bold text-gray-900">Rs. {cart.taxPrice}</span>
                             </div>
                             <div className="pt-6 border-t border-gray-200 flex justify-between items-center">
                                 <span className="text-lg font-bold text-gray-900 uppercase tracking-tighter">Total Amount</span>
-                                <span className="text-3xl font-bold text-gray-900 tracking-tighter">${cart.totalPrice}</span>
+                                <span className="text-3xl font-bold text-gray-900 tracking-tighter">Rs. {cart.totalPrice}</span>
                             </div>
                         </div>
 

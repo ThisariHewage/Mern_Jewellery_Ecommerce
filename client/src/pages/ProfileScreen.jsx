@@ -353,7 +353,7 @@ const ProfileScreen = () => {
                                                                 <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-1">Total</p>
                                                                 <div className="flex items-center gap-1.5 text-sm font-black text-primary">
                                                                     <CreditCard size={14} className="text-accent" />
-                                                                    ${order.totalPrice.toLocaleString()}
+                                                                    Rs. {order.totalPrice.toLocaleString()}
                                                                 </div>
                                                             </div>
                                                             <div>

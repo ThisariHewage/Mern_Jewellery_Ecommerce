@@ -97,7 +97,7 @@ const ProductScreen = () => {
                             )}
                         </div>
                         <h1 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-6 leading-tight">{product.name}</h1>
-                        <p className="text-3xl font-serif font-bold text-gray-900 mb-6">${product.price.toFixed(2)}</p>
+                        <p className="text-3xl font-serif font-bold text-gray-900 mb-6">Rs. {product.price.toFixed(2)}</p>
                         <div className="h-[1px] w-full bg-gray-100 mb-8" />
                         <p className="text-gray-500 text-sm leading-relaxed mb-10 font-medium">{product.description}</p>
                         <div className="mb-10">

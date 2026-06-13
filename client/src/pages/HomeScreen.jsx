@@ -182,115 +182,115 @@ const HomeScreen = () => {
                     <div className="flex flex-wrap gap-5 items-center">
                         {/* Solid white button */}
                         <motion.div
-    variants={fadeUp}
-    className="flex flex-wrap gap-5 items-center justify-center md:justify-start"
->
+                            variants={fadeUp}
+                            className="flex flex-wrap gap-5 items-center justify-center md:justify-start"
+                        >
 
-    {/* View Jewellery Button */}
+                            {/* View Jewellery Button */}
 
-    <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.92 }}
-        className="relative overflow-hidden"
-    >
-        <motion.div
-            className="absolute inset-0 rounded-none"
-            initial={{ opacity: 0 }}
-            whileHover={{
-                opacity: 1,
-                scale: 1.2,
-            }}
-            transition={{ duration: 0.4 }}
-            style={{
-                background:
-                    "radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%)",
-            }}
-        />
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.92 }}
+                                className="relative overflow-hidden"
+                            >
+                                <motion.div
+                                    className="absolute inset-0 rounded-none"
+                                    initial={{ opacity: 0 }}
+                                    whileHover={{
+                                        opacity: 1,
+                                        scale: 1.2,
+                                    }}
+                                    transition={{ duration: 0.4 }}
+                                    style={{
+                                        background:
+                                            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%)",
+                                    }}
+                                />
 
-        <Link
-            to="/jewellery"
-            id="hero-cta-shop"
-            className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
-            style={{
-                background: "#ffffff",
-                color: "#111111",
-                padding: "18px 44px",
-                fontSize: "12px",
-                letterSpacing: "0.2em",
-                borderRadius: "0",
-                backdropFilter: "blur(10px)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-            }}
-        >
-            <motion.span
-                animate={{ x: [0, 3, 0] }}
-                transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                }}
-            >
-                
-            </motion.span>
+                                <Link
+                                    to="/jewellery"
+                                    id="hero-cta-shop"
+                                    className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
+                                    style={{
+                                        background: "#ffffff",
+                                        color: "#111111",
+                                        padding: "18px 44px",
+                                        fontSize: "12px",
+                                        letterSpacing: "0.2em",
+                                        borderRadius: "0",
+                                        backdropFilter: "blur(10px)",
+                                        boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                                    }}
+                                >
+                                    <motion.span
+                                        animate={{ x: [0, 3, 0] }}
+                                        transition={{
+                                            duration: 1.5,
+                                            repeat: Infinity,
+                                        }}
+                                    >
 
-            View Jewellery
-        </Link>
-    </motion.div>
+                                    </motion.span>
 
-    {/* Our Story Button */}
+                                    View Jewellery
+                                </Link>
+                            </motion.div>
 
-    <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.92 }}
-        className="relative overflow-hidden"
-    >
-        <motion.div
-            className="absolute inset-0 rounded-none"
-            initial={{ opacity: 0 }}
-            whileHover={{
-                opacity: 1,
-                scale: 1.2,
-            }}
-            transition={{ duration: 0.4 }}
-            style={{
-                background:
-                    "radial-gradient(circle, rgba(201,168,76,0.3) 0%, transparent 70%)",
-            }}
-        />
+                            {/* Our Story Button */}
 
-        <Link
-            to="/about"
-            id="hero-cta-about"
-            className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
-            style={{
-                background: "transparent",
-                color: "#ffffff",
-                padding: "18px 44px",
-                fontSize: "12px",
-                letterSpacing: "0.2em",
-                borderRadius: "0",
-                border: "2px solid rgba(255,255,255,0.75)",
-                backdropFilter: "blur(10px)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-            }}
-        >
-            <motion.span
-                animate={{
-                    rotate: [0, 15, -15, 0],
-                }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                }}
-            >
-                
-            </motion.span>
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.92 }}
+                                className="relative overflow-hidden"
+                            >
+                                <motion.div
+                                    className="absolute inset-0 rounded-none"
+                                    initial={{ opacity: 0 }}
+                                    whileHover={{
+                                        opacity: 1,
+                                        scale: 1.2,
+                                    }}
+                                    transition={{ duration: 0.4 }}
+                                    style={{
+                                        background:
+                                            "radial-gradient(circle, rgba(201,168,76,0.3) 0%, transparent 70%)",
+                                    }}
+                                />
 
-            Our Story
-        </Link>
-    </motion.div>
+                                <Link
+                                    to="/about"
+                                    id="hero-cta-about"
+                                    className="relative z-10 inline-flex items-center gap-3 font-bold uppercase tracking-[0.25em]"
+                                    style={{
+                                        background: "transparent",
+                                        color: "#ffffff",
+                                        padding: "18px 44px",
+                                        fontSize: "12px",
+                                        letterSpacing: "0.2em",
+                                        borderRadius: "0",
+                                        border: "2px solid rgba(255,255,255,0.75)",
+                                        backdropFilter: "blur(10px)",
+                                        boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                                    }}
+                                >
+                                    <motion.span
+                                        animate={{
+                                            rotate: [0, 15, -15, 0],
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                        }}
+                                    >
 
-</motion.div>
-                        
+                                    </motion.span>
+
+                                    Our Story
+                                </Link>
+                            </motion.div>
+
+                        </motion.div>
+
                     </div>
 
                     {/* Stats Row */}
@@ -349,7 +349,7 @@ const HomeScreen = () => {
             {/* ── MARQUEE TRUST BAR ─────────────────── */}
             <div className="py-5 overflow-hidden border-y border-gray-100" style={{ background: "#fafaf9" }}>
                 <div className="flex gap-16 animate-marquee whitespace-nowrap">
-                    {["✦ Free Shipping Over $200", "✦ Certified Conflict-Free Gems", "✦ Lifetime Cleaning Service", "✦ Custom Design Available", "✦ GIA-Certified Appraisals", "✦ 30-Day Returns", "✦ Free Shipping Over $200", "✦ Certified Conflict-Free Gems", "✦ Custom Design Available"].map((t, i) => (
+                    {["✦ Free Shipping Over Rs. 200", "✦ Certified Conflict-Free Gems", "✦ Lifetime Cleaning Service", "✦ Custom Design Available", "✦ GIA-Certified Appraisals", "✦ 30-Day Returns", "✦ Free Shipping Over Rs. 200", "✦ Certified Conflict-Free Gems", "✦ Custom Design Available"].map((t, i) => (
                         <span key={i} className="text-xs uppercase tracking-[0.3em] font-bold text-gray-400">{t}</span>
                     ))}
                 </div>
@@ -492,7 +492,7 @@ const HomeScreen = () => {
                         {[
                             { icon: "💎", title: "Premium Craft", desc: "Every piece hand-finished by master artisans with 10+ years experience." },
                             { icon: "🌿", title: "Ethically Sourced", desc: "All gemstones are certified conflict-free and responsibly mined." },
-                            { icon: "🚚", title: "Free Shipping", desc: "Complimentary insured delivery on all orders over $200." },
+                            { icon: "🚚", title: "Free Shipping", desc: "Complimentary insured delivery on all orders over Rs. 200." },
                             { icon: "🔄", title: "30-Day Returns", desc: "Not in love with your piece? Return it hassle-free within 30 days." },
                         ].map((item, i) => (
                             <div key={i} className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center group">

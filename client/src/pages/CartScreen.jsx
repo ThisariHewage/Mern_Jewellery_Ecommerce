@@ -65,7 +65,7 @@ const CartScreen = () => {
                                             <Link to={`/product/${item._id}`} className="text-lg font-bold text-gray-900 hover:text-gray-600">{item.name}</Link>
                                             <p className="text-sm text-gray-500 mt-1 capitalize">{item.category}</p>
                                         </div>
-                                        <p className="text-lg font-bold text-gray-900">${item.price}</p>
+                                        <p className="text-lg font-bold text-gray-900">Rs. {item.price}</p>
                                     </div>
                                     <div className="flex items-center justify-between mt-6">
                                         <div className="flex items-center bg-gray-50 rounded-full border border-gray-200 p-1">
@@ -86,7 +86,7 @@ const CartScreen = () => {
                                 <div className="flex justify-between text-gray-600">
                                     <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</span>
                                     <span className="font-semibold text-gray-900">
-                                        ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+                                        Rs. {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-gray-600">
@@ -96,13 +96,13 @@ const CartScreen = () => {
                                 <div className="flex justify-between text-gray-600">
                                     <span>Estimated Tax (15%)</span>
                                     <span className="font-semibold text-gray-900">
-                                        ${(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 0.15).toFixed(2)}
+                                        Rs. {(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 0.15).toFixed(2)}
                                     </span>
                                 </div>
                                 <div className="pt-4 border-t border-gray-200 flex justify-between items-center">
                                     <span className="text-lg font-bold text-gray-900">Total</span>
                                     <span className="text-2xl font-bold text-gray-900">
-                                        ${(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 1.15).toFixed(2)}
+                                        Rs. {(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0) * 1.15).toFixed(2)}
                                     </span>
                                 </div>
                             </div>
