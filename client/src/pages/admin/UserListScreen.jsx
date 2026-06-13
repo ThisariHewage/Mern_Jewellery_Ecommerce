@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Users, Edit, Trash2, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
+import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 
 const UserListScreen = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     const fetchUsers = async () => {
         try {
@@ -25,15 +28,20 @@ const UserListScreen = () => {
         fetchUsers();
     }, []);
 
-    const deleteHandler = async (id) => {
-        if (window.confirm("Are you sure you want to delete this user?")) {
-            try {
-                await api.delete(`/api/users/${id}`);
-                toast.success("User deleted successfully");
-                fetchUsers();
-            } catch (err) {
-                toast.error(err?.response?.data?.message || err.message);
-            }
+    const deleteHandler = (id) => {
+        setSelectedUserId(id);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await api.delete(`/api/users/${selectedUserId}`);
+            toast.success("User deleted successfully");
+            fetchUsers();
+            setShowDeleteModal(false);
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message);
+            setShowDeleteModal(false);
         }
     };
 
@@ -112,6 +120,14 @@ const UserListScreen = () => {
                     </div>
                 </div>
             )}
+
+            <DeleteConfirmModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDeleteConfirm}
+                title="Delete User"
+                message="Are you sure you want to delete this user? This action cannot be undone."
+            />
         </div>
     );
 };
