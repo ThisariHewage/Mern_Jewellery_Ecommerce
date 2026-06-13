@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import CheckoutSteps from "../components/CheckoutSteps";
-import api from "../services/api";
 import { createOrder, resetOrder } from "../redux/slices/orderSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import { MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
@@ -24,18 +23,9 @@ const PlaceOrderScreen = () => {
     const { order, success, error, loading } = orderCreate;
 
     useEffect(() => {
-        if (success) {
-            const createCheckoutSession = async () => {
-                try {
-                    const { data } = await api.post("/api/stripe/create-checkout-session", {
-                        orderId: order._id,
-                    });
-                    window.location.href = data.url;
-                } catch (err) {
-                    toast.error(err?.response?.data?.message || err.message);
-                }
-            };
-            createCheckoutSession();
+        if (success && order) {
+            // Navigate to the in-site payment page instead of Stripe's hosted checkout
+            navigate(`/order/${order._id}/pay`);
         }
         if (error) {
             toast.error(error);

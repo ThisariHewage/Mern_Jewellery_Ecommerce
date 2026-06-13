@@ -36,6 +36,7 @@ import OrderListScreen from "./pages/admin/OrderListScreen";
 import AdminDashboardScreen from "./pages/admin/AdminDashboardScreen";
 import ForgotPasswordScreen from "./pages/ForgotPasswordScreen";
 import NotFoundScreen from "./pages/NotFoundScreen";
+import CheckoutPaymentScreen from "./pages/CheckoutPaymentScreen";
 
 function App() {
   const location = useLocation();
@@ -72,6 +73,7 @@ function App() {
             <Route path="/payment" element={<PaymentScreen />} />
             <Route path="/placeorder" element={<PlaceOrderScreen />} />
             <Route path="/order/:id" element={<OrderScreen />} />
+            <Route path="/order/:id/pay" element={<CheckoutPaymentScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
           </Route>
 
