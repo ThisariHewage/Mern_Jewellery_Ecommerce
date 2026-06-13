@@ -93,7 +93,7 @@ const ProductListScreen = () => {
                         <table className="w-full text-left">
                             <thead>
                                 <tr className="bg-gray-50 border-b border-gray-100">
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">ID</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Product ID</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Name</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Price</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Stock</th>
@@ -104,19 +104,19 @@ const ProductListScreen = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {products.map((product) => (
-                                    <tr key={product._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[10px] text-gray-400">{product._id.substring(0, 10)}...</td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700">{product.name}</td>
-                                        <td className="px-6 py-5 text-sm font-bold text-gray-900">${product.price}</td>
-                                        <td className="px-6 py-5 text-sm font-bold">
+                                    <tr key={product.productId} className="hover:bg-gray-50/50 transition-colors group">
+                                        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{product.productId}</td>
+                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[200px]">{product.name}</td>
+                                        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">${product.price}</td>
+                                        <td className="px-6 py-5 text-sm font-bold whitespace-nowrap">
                                             {product.countInStock <= 5 ? (
                                                 <span className="text-rose-600 bg-rose-50 px-2 py-1 rounded-md">{product.countInStock}</span>
                                             ) : (
                                                 <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{product.countInStock}</span>
                                             )}
                                         </td>
-                                        <td className="px-6 py-5 text-sm text-gray-500">{product.category}</td>
-                                        <td className="px-6 py-5 text-sm text-gray-500">{product.brand}</td>
+                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.category}</td>
+                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.brand}</td>
                                         <td className="px-6 py-5 text-right space-x-3">
                                             <Link
                                                 to={`/admin/product/${product._id}/edit`}

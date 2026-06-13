@@ -69,8 +69,14 @@ const ProductCard = ({ product }) => {
                 </Link>
 
                 <div className="p-6 text-center">
-                    <p className="text-[9px] uppercase tracking-[0.2em] text-[#c9a84c] mb-2 font-bold">
-                        {product.brand || product.category}
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#c9a84c] mb-2 font-bold flex items-center justify-center gap-2">
+                        <span>{product.brand || product.category}</span>
+                        {product.productId && (
+                            <>
+                                <span className="w-1 h-1 rounded-full bg-[#c9a84c]/40"></span>
+                                <span className="text-gray-500">{product.productId}</span>
+                            </>
+                        )}
                     </p>
                     <Link to={`/product/${product._id}`}>
                         <h3 className="text-sm font-medium text-gray-900 hover:text-[#c9a84c] transition-colors mb-2 line-clamp-2 px-2 leading-relaxed">

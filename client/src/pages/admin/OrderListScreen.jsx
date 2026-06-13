@@ -77,31 +77,36 @@ const OrderListScreen = () => {
                         <table className="w-full text-left">
                             <thead>
                                 <tr className="bg-gray-50 border-b border-gray-100">
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">ID</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">User</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Address</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Quantity</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Date</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Total</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Paid</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Delivered</th>
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 text-center">Action</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Order ID</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Product ID</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">User</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Address</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Quantity</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Date</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Total</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Paid</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap">Delivered</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500 whitespace-nowrap text-center">Action</th>
 
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {orders.map((order) => (
                                     <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-400">{order.orderNumber || order._id.substring(0, 10)}</td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700">{order.user && order.user.name}</td>
-                                        <td className="px-6 py-5 text-[14px] text-gray-500 max-w-[200px] truncate" title={`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`}>
+                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-400 whitespace-nowrap">{order.orderNumber || order._id.substring(0, 10)}</td>
+                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-500 max-w-[150px] truncate" title={order.orderItems.map((item) => item.productId).filter(Boolean).join(", ")}>
+                                            {order.orderItems.map((item) => item.productId).filter(Boolean).slice(0, 2).join(", ")}
+                                            {order.orderItems.length > 2 && "..."}
+                                        </td>
+                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[120px]">{order.user && order.user.name}</td>
+                                        <td className="px-6 py-5 text-[14px] text-gray-500 max-w-[150px] truncate" title={`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`}>
                                             {order.shippingAddress.city}, {order.shippingAddress.country}
                                         </td>
                                         <td className="px-6 py-5 text-sm font-bold text-gray-900">
-                                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)} items</span>
+                                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)}</span>
                                         </td>
-                                        <td className="px-6 py-5 text-sm text-gray-500">{order.createdAt.substring(0, 10)}</td>
-                                        <td className="px-6 py-5 text-sm font-bold text-gray-900">${order.totalPrice}</td>
+                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap">{order.createdAt.substring(0, 10)}</td>
+                                        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">${order.totalPrice}</td>
                                         <td className="px-6 py-5">
                                             {order.isPaid ? (
                                                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">

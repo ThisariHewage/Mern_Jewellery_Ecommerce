@@ -64,11 +64,32 @@ const productSchema = mongoose.Schema(
             required: true,
             default: 0,
         },
+        productId: {
+            type: String,
+            unique: true,
+            sparse: true,
+        },
     },
     {
         timestamps: true,
     }
 );
+
+productSchema.pre("save", async function () {
+    if (this.isNew) {
+        const lastProduct = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+        let nextNumber = 1;
+
+        if (lastProduct && lastProduct.productId) {
+            const lastNumber = parseInt(lastProduct.productId.replace("DD", ""), 10);
+            if (!isNaN(lastNumber)) {
+                nextNumber = lastNumber + 1;
+            }
+        }
+
+        this.productId = `DD${String(nextNumber).padStart(5, "0")}`;
+    }
+});
 
 const Product = mongoose.model("Product", productSchema);
 

@@ -24,6 +24,11 @@ const userSchema = mongoose.Schema(
         },
         resetPasswordOTP: String,
         resetPasswordOTPExpire: Date,
+        userId: {
+            type: String,
+            unique: true,
+            sparse: true,
+        },
     },
     {
         timestamps: true,
@@ -49,9 +54,24 @@ userSchema.methods.getResetPasswordOTP = function () {
     return otp;
 };
 
-// Middleware to hash password before saving to database
+// Middleware to handle tasks before saving to database
 userSchema.pre("save", async function () {
-    // Only hash the password if it's being modified (or is new)
+    // 1. Generate userId if it's a new user
+    if (this.isNew) {
+        const lastUser = await this.constructor.findOne({}, {}, { sort: { createdAt: -1 } });
+        let nextNumber = 1;
+
+        if (lastUser && lastUser.userId) {
+            const lastNumber = parseInt(lastUser.userId.replace("TD", ""), 10);
+            if (!isNaN(lastNumber)) {
+                nextNumber = lastNumber + 1;
+            }
+        }
+
+        this.userId = `TD${String(nextNumber).padStart(5, "0")}`;
+    }
+
+    // 2. Hash the password if it's being modified (or is new)
     if (!this.isModified("password")) {
         return;
     }

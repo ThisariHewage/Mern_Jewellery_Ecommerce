@@ -69,7 +69,7 @@ const UserListScreen = () => {
                         <table className="w-full text-left">
                             <thead>
                                 <tr className="bg-gray-50 border-b border-gray-100">
-                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">ID</th>
+                                    <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">User ID</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Name</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Email</th>
                                     <th className="px-6 py-5 text-[10px] uppercase tracking-[0.2em] font-bold text-gray-500">Admin</th>
@@ -79,9 +79,9 @@ const UserListScreen = () => {
                             <tbody className="divide-y divide-gray-50">
                                 {users.map((user) => (
                                     <tr key={user._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[10px] text-gray-400">{user._id}</td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700">{user.name}</td>
-                                        <td className="px-6 py-5 text-sm text-gray-500">
+                                        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{user.userId || user._id}</td>
+                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[150px]">{user.name}</td>
+                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[200px]">
                                             <a href={`mailto:${user.email}`} className="hover:text-black">{user.email}</a>
                                         </td>
                                         <td className="px-6 py-5">

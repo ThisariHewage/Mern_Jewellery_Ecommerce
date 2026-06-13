@@ -87,7 +87,15 @@ const ProductScreen = () => {
                     </div>
 
                     <div className="flex flex-col justify-center py-6 lg:col-span-7">
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] mb-3 font-extrabold">{product.brand || product.category}</p>
+                        <div className="flex items-center gap-3 mb-3">
+                            <p className="text-[10px] uppercase tracking-[0.3em] text-[#c9a84c] font-extrabold">{product.brand || product.category}</p>
+                            {product.productId && (
+                                <>
+                                    <span className="w-1 h-1 rounded-full bg-gray-300" />
+                                    <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 font-bold">{product.productId}</p>
+                                </>
+                            )}
+                        </div>
                         <h1 className="text-4xl lg:text-5xl font-serif font-bold text-gray-900 mb-6 leading-tight">{product.name}</h1>
                         <p className="text-3xl font-serif font-bold text-gray-900 mb-6">${product.price.toFixed(2)}</p>
                         <div className="h-[1px] w-full bg-gray-100 mb-8" />

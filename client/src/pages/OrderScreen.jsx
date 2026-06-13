@@ -66,7 +66,7 @@ const OrderScreen = () => {
         <div className="max-w-7xl mx-auto px-4 py-12">
             <SuccessAlert show={showSuccess} onClose={() => setShowSuccess(false)} />
             <div className="mb-12">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Order #{order.orderNumber || order._id}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2 truncate whitespace-nowrap" title={`Order #${order.orderNumber || order._id}`}>Order #{order.orderNumber || order._id}</h1>
                 <p className="text-gray-500 uppercase tracking-widest text-xs font-medium">Thank you for your purchase</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -118,7 +118,17 @@ const OrderScreen = () => {
                                 <div key={index} className="flex items-center gap-6 p-4 rounded-2xl hover:bg-gray-50 transition-colors group">
                                     <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100"><img src={item.image} alt={item.name} className="w-full h-full object-cover" /></div>
                                     <div className="flex-1 flex justify-between items-center">
-                                        <div><Link to={`/product/${item.product}`} className="font-bold text-gray-900 hover:text-gray-600">{item.name}</Link><p className="text-sm text-gray-500">{item.qty} x ${item.price}</p></div>
+                                        <div>
+                                            <div className="flex items-center gap-3">
+                                                <Link to={`/product/${item.product}`} className="font-bold text-gray-900 hover:text-gray-600">{item.name}</Link>
+                                                {(item.productId || (item.product && item.product.productId)) && (
+                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px] font-mono font-bold">
+                                                        {item.productId || item.product.productId}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-500">{item.qty} x ${item.price}</p>
+                                        </div>
                                         <p className="font-bold text-gray-900">${(item.qty * item.price).toFixed(2)}</p>
                                     </div>
                                 </div>
