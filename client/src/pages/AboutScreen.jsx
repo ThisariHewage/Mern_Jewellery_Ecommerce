@@ -61,7 +61,7 @@ const AboutScreen = () => {
                 </div>
 
                 {/* Vertical Branding - Kept original high-end boutique touch */}
-                <div className="absolute bottom-10 left-10 flex flex-col items-center gap-6 hidden lg:flex">
+                <div className="absolute bottom-10 left-10 flex flex-col items-center gap-10 hidden lg:flex">
                     <div className="rotate-90 origin-left">
                         <p className="text-[9px] uppercase tracking-[0.4em] font-black text-white/20 whitespace-nowrap">
                             ESTABLISHED 2004
