@@ -1,9 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition, memo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Users, Edit, Trash2, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
 import DeleteConfirmModal from "../../components/DeleteConfirmModal";
+
+// Memoized Row for performance optimization
+const UserRow = memo(({ user, onDelete }) => (
+    <tr className="hover:bg-gray-50/50 transition-colors group">
+        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{user.userId || user._id}</td>
+        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[150px]">{user.name}</td>
+        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[200px]">
+            <a href={`mailto:${user.email}`} className="hover:text-black">{user.email}</a>
+        </td>
+        <td className="px-6 py-5">
+            {user.isAdmin ? (
+                <CheckCircle size={18} className="text-green-500" />
+            ) : (
+                <XCircle size={18} className="text-red-500" />
+            )}
+        </td>
+        <td className="px-6 py-5 text-right space-x-3">
+            <Link
+                to={`/admin/user/${user._id}/edit`}
+                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
+                title="Edit User"
+            >
+                <Edit size={16} />
+            </Link>
+            <button
+                onClick={() => onDelete(user._id)}
+                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors cursor-pointer"
+                title="Delete User"
+            >
+                <Trash2 size={16} />
+            </button>
+        </td>
+    </tr>
+));
 
 const UserListScreen = () => {
     const [users, setUsers] = useState([]);
@@ -11,6 +45,7 @@ const UserListScreen = () => {
     const [error, setError] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [isPending, startTransition] = useTransition();
 
     const fetchUsers = async () => {
         try {
@@ -29,6 +64,7 @@ const UserListScreen = () => {
     }, []);
 
     const deleteHandler = (id) => {
+        // High-priority update: Show modal immediately
         setSelectedUserId(id);
         setShowDeleteModal(true);
     };
@@ -37,7 +73,12 @@ const UserListScreen = () => {
         try {
             await api.delete(`/api/users/${selectedUserId}`);
             toast.success("User deleted successfully");
-            fetchUsers();
+
+            // Background update: Re-fetching data
+            startTransition(() => {
+                fetchUsers();
+            });
+
             setShowDeleteModal(false);
         } catch (err) {
             toast.error(err?.response?.data?.message || err.message);
@@ -72,7 +113,7 @@ const UserListScreen = () => {
             ) : error ? (
                 <div className="py-20 text-center text-red-500 font-medium">{error}</div>
             ) : (
-                <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                <div className={`bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm transition-opacity duration-300 ${isPending ? 'opacity-50' : 'opacity-100'}`}>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
@@ -86,34 +127,11 @@ const UserListScreen = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {users.map((user) => (
-                                    <tr key={user._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{user.userId || user._id}</td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[150px]">{user.name}</td>
-                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[200px]">
-                                            <a href={`mailto:${user.email}`} className="hover:text-black">{user.email}</a>
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            {user.isAdmin ? (
-                                                <CheckCircle size={18} className="text-green-500" />
-                                            ) : (
-                                                <XCircle size={18} className="text-red-500" />
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-5 text-right space-x-3">
-                                            <Link
-                                                to={`/admin/user/${user._id}/edit`}
-                                                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
-                                            >
-                                                <Edit size={16} />
-                                            </Link>
-                                            <button
-                                                onClick={() => deleteHandler(user._id)}
-                                                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <UserRow
+                                        key={user._id}
+                                        user={user}
+                                        onDelete={deleteHandler}
+                                    />
                                 ))}
                             </tbody>
                         </table>

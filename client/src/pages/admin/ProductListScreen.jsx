@@ -1,10 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition, memo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Package, Edit, Trash2, Plus, ArrowLeft } from "lucide-react";
 import api from "../../services/api";
 import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 
+// Memoized Row for performance optimization
+const ProductRow = memo(({ product, onDelete }) => (
+    <tr className="hover:bg-gray-50/50 transition-colors group">
+        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{product.productId}</td>
+        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[200px]">{product.name}</td>
+        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">Rs. {product.price}</td>
+        <td className="px-6 py-5 text-sm font-bold whitespace-nowrap">
+            {product.countInStock <= 5 ? (
+                <span className="text-rose-600 bg-rose-50 px-2 py-1 rounded-md">{product.countInStock}</span>
+            ) : (
+                <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{product.countInStock}</span>
+            )}
+        </td>
+        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.category}</td>
+        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.brand}</td>
+        <td className="px-6 py-5 text-right space-x-3">
+            <Link
+                to={`/admin/product/${product._id}/edit`}
+                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
+            >
+                <Edit size={16} />
+            </Link>
+            <button
+                onClick={() => onDelete(product._id)}
+                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors cursor-pointer"
+            >
+                <Trash2 size={16} />
+            </button>
+        </td>
+    </tr>
+));
 
 const ProductListScreen = () => {
     const navigate = useNavigate();
@@ -14,6 +45,7 @@ const ProductListScreen = () => {
     const [loadingCreate, setLoadingCreate] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [isPending, startTransition] = useTransition();
 
     const fetchProducts = async () => {
         try {
@@ -40,7 +72,11 @@ const ProductListScreen = () => {
         try {
             await api.delete(`/api/products/${selectedProductId}`);
             toast.success("Product deleted successfully");
-            fetchProducts();
+
+            startTransition(() => {
+                fetchProducts();
+            });
+
             setShowDeleteModal(false);
         } catch (err) {
             toast.error(err?.response?.data?.message || err.message);
@@ -88,7 +124,7 @@ const ProductListScreen = () => {
             ) : error ? (
                 <div className="py-20 text-center text-red-500 font-medium">{error}</div>
             ) : (
-                <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                <div className={`bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm transition-opacity duration-300 ${isPending ? 'opacity-50' : 'opacity-100'}`}>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
@@ -104,34 +140,11 @@ const ProductListScreen = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {products.map((product) => (
-                                    <tr key={product.productId} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-sm text-gray-400 whitespace-nowrap">{product.productId}</td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[200px]">{product.name}</td>
-                                        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">${product.price}</td>
-                                        <td className="px-6 py-5 text-sm font-bold whitespace-nowrap">
-                                            {product.countInStock <= 5 ? (
-                                                <span className="text-rose-600 bg-rose-50 px-2 py-1 rounded-md">{product.countInStock}</span>
-                                            ) : (
-                                                <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">{product.countInStock}</span>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.category}</td>
-                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap truncate max-w-[120px]">{product.brand}</td>
-                                        <td className="px-6 py-5 text-right space-x-3">
-                                            <Link
-                                                to={`/admin/product/${product._id}/edit`}
-                                                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
-                                            >
-                                                <Edit size={16} />
-                                            </Link>
-                                            <button
-                                                onClick={() => deleteHandler(product._id)}
-                                                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <ProductRow
+                                        key={product.productId}
+                                        product={product}
+                                        onDelete={deleteHandler}
+                                    />
                                 ))}
                             </tbody>
                         </table>

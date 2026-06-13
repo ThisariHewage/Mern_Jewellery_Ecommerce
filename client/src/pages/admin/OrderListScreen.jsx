@@ -1,9 +1,67 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition, memo } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ShoppingBag, XCircle, CheckCircle, ChevronRight, ArrowLeft, Trash2, Eye } from "lucide-react";
 import api from "../../services/api";
 import DeleteConfirmModal from "../../components/DeleteConfirmModal";
+
+// Memoized Row for performance optimization
+const OrderRow = memo(({ order, onDelete }) => (
+    <tr className="hover:bg-gray-50/50 transition-colors group">
+        <td className="px-6 py-5 font-mono text-[14px] text-gray-400 whitespace-nowrap">{order.orderNumber || order._id.substring(0, 10)}</td>
+        <td className="px-6 py-5 font-mono text-[14px] text-gray-500 max-w-[150px] truncate" title={order.orderItems.map((item) => item.productId).filter(Boolean).join(", ")}>
+            {order.orderItems.map((item) => item.productId).filter(Boolean).slice(0, 2).join(", ")}
+            {order.orderItems.length > 2 && "..."}
+        </td>
+        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[120px]">{order.user && order.user.name}</td>
+        <td className="px-6 py-5 text-[14px] text-gray-500 max-w-[150px] truncate" title={`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`}>
+            {order.shippingAddress.city}, {order.shippingAddress.country}
+        </td>
+        <td className="px-6 py-5 text-sm font-bold text-gray-900">
+            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)}</span>
+        </td>
+        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap">{order.createdAt.substring(0, 10)}</td>
+        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">Rs. {order.totalPrice}</td>
+        <td className="px-6 py-5">
+            {order.isPaid ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
+                    <CheckCircle size={12} /> {order.paidAt.substring(0, 10)}
+                </span>
+            ) : (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-widest">
+                    <XCircle size={12} /> No
+                </span>
+            )}
+        </td>
+        <td className="px-6 py-5">
+            {order.isDelivered ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
+                    <CheckCircle size={12} /> {order.deliveredAt.substring(0, 10)}
+                </span>
+            ) : (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-widest">
+                    <XCircle size={12} /> No
+                </span>
+            )}
+        </td>
+        <td className="px-6 py-5 text-center space-x-3 whitespace-nowrap">
+            <Link
+                to={`/order/${order._id}`}
+                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
+                title="View Details"
+            >
+                <Eye size={16} />
+            </Link>
+            <button
+                onClick={() => onDelete(order._id)}
+                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors cursor-pointer"
+                title="Delete Order"
+            >
+                <Trash2 size={16} />
+            </button>
+        </td>
+    </tr>
+));
 
 const OrderListScreen = () => {
     const [orders, setOrders] = useState([]);
@@ -11,6 +69,7 @@ const OrderListScreen = () => {
     const [error, setError] = useState(null);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -37,7 +96,11 @@ const OrderListScreen = () => {
         try {
             await api.delete(`/api/orders/${selectedOrderId}`);
             toast.success("Order deleted successfully");
-            setOrders(orders.filter((order) => order._id !== selectedOrderId));
+
+            startTransition(() => {
+                setOrders(orders.filter((order) => order._id !== selectedOrderId));
+            });
+
             setShowDeleteModal(false);
         } catch (err) {
             toast.error(err?.response?.data?.message || err.message);
@@ -72,7 +135,7 @@ const OrderListScreen = () => {
             ) : error ? (
                 <div className="py-20 text-center text-red-500 font-medium">{error}</div>
             ) : (
-                <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                <div className={`bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm transition-opacity duration-300 ${isPending ? 'opacity-50' : 'opacity-100'}`}>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
@@ -92,60 +155,11 @@ const OrderListScreen = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-50">
                                 {orders.map((order) => (
-                                    <tr key={order._id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-400 whitespace-nowrap">{order.orderNumber || order._id.substring(0, 10)}</td>
-                                        <td className="px-6 py-5 font-mono text-[14px] text-gray-500 max-w-[150px] truncate" title={order.orderItems.map((item) => item.productId).filter(Boolean).join(", ")}>
-                                            {order.orderItems.map((item) => item.productId).filter(Boolean).slice(0, 2).join(", ")}
-                                            {order.orderItems.length > 2 && "..."}
-                                        </td>
-                                        <td className="px-6 py-5 text-sm font-medium text-gray-700 whitespace-nowrap truncate max-w-[120px]">{order.user && order.user.name}</td>
-                                        <td className="px-6 py-5 text-[14px] text-gray-500 max-w-[150px] truncate" title={`${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.country}`}>
-                                            {order.shippingAddress.city}, {order.shippingAddress.country}
-                                        </td>
-                                        <td className="px-6 py-5 text-sm font-bold text-gray-900">
-                                            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold">{order.orderItems.reduce((acc, item) => acc + item.qty, 0)}</span>
-                                        </td>
-                                        <td className="px-6 py-5 text-sm text-gray-500 whitespace-nowrap">{order.createdAt.substring(0, 10)}</td>
-                                        <td className="px-6 py-5 text-sm font-bold text-gray-900 whitespace-nowrap">${order.totalPrice}</td>
-                                        <td className="px-6 py-5">
-                                            {order.isPaid ? (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
-                                                    <CheckCircle size={12} /> {order.paidAt.substring(0, 10)}
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-bold uppercase tracking-widest">
-                                                    <XCircle size={12} /> No
-                                                </span>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-5">
-                                            {order.isDelivered ? (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-widest">
-                                                    <CheckCircle size={12} /> {order.deliveredAt.substring(0, 10)}
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase tracking-widest">
-                                                    <XCircle size={12} /> No
-                                                </span>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-5 text-center space-x-3 whitespace-nowrap">
-                                            <Link
-                                                to={`/order/${order._id}`}
-                                                className="inline-flex items-center justify-center p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 hover:text-black transition-colors"
-                                                title="View Details"
-                                            >
-                                                <Eye size={16} />
-                                            </Link>
-                                            <button
-                                                onClick={() => deleteHandler(order._id)}
-                                                className="inline-flex items-center justify-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 hover:text-red-800 transition-colors"
-                                                title="Delete Order"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <OrderRow
+                                        key={order._id}
+                                        order={order}
+                                        onDelete={deleteHandler}
+                                    />
                                 ))}
                             </tbody>
                         </table>
