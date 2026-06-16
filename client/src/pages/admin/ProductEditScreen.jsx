@@ -20,7 +20,7 @@ const ProductEditScreen = () => {
     const [category, setCategory] = useState("");
     const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState("");
-    
+
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -115,8 +115,8 @@ const ProductEditScreen = () => {
 
     return (
         <div className="max-w-3xl mx-auto px-6 py-16">
-            <Link 
-                to="/admin/productlist" 
+            <Link
+                to="/admin/productlist"
                 className="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-gray-500 hover:text-black transition-colors mb-10"
             >
                 <ChevronLeft size={16} />
@@ -153,9 +153,15 @@ const ProductEditScreen = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                             {/* Price */}
                             <div className="space-y-2">
-                                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Price ($)</label>
+                                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">
+                                    Price
+                                </label>
+
                                 <div className="relative group">
-                                    <DollarSign size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors font-medium">
+                                        Rs.
+                                    </span>
+
                                     <input
                                         type="number"
                                         value={price}
@@ -186,7 +192,7 @@ const ProductEditScreen = () => {
                         {/* Image Upload */}
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Product Image</label>
-                            
+
                             {/* Preview + Upload Area */}
                             <div className="relative">
                                 <input
@@ -200,15 +206,15 @@ const ProductEditScreen = () => {
                                 {hasValidImage ? (
                                     /* Premium Image Card with Hover-to-Replace & Top-Right Delete */
                                     <div className="relative rounded-3xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 h-64 group">
-                                        <img 
-                                            src={image} 
-                                            alt="Product preview" 
+                                        <img
+                                            src={image}
+                                            alt="Product preview"
                                             onError={() => setImageError(true)}
                                             className="w-full h-full object-contain bg-white transition-transform duration-700 group-hover:scale-102"
                                         />
-                                        
+
                                         {/* Glassmorphic replace overlay on hover */}
-                                        <div 
+                                        <div
                                             onClick={() => fileInputRef.current?.click()}
                                             className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 text-white cursor-pointer backdrop-blur-[2px]"
                                         >
@@ -235,11 +241,10 @@ const ProductEditScreen = () => {
                                     /* Premium dashed Upload Drop Zone */
                                     <div
                                         onClick={() => fileInputRef.current?.click()}
-                                        className={`relative cursor-pointer border-2 border-dashed rounded-3xl p-10 text-center transition-all duration-300 ${
-                                            uploading
-                                                ? "border-amber-400 bg-amber-50"
-                                                : "border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-100/70"
-                                        }`}
+                                        className={`relative cursor-pointer border-2 border-dashed rounded-3xl p-10 text-center transition-all duration-300 ${uploading
+                                            ? "border-amber-400 bg-amber-50"
+                                            : "border-gray-200 bg-gray-50 hover:border-gray-400 hover:bg-gray-100/70"
+                                            }`}
                                     >
                                         {uploading ? (
                                             <div className="flex flex-col items-center gap-4 py-4">
