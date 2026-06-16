@@ -17,7 +17,14 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
         throw new Error("Please enter a valid email address");
     }
 
-    const emailSent = await sendEmail({
+    // Respond immediately — don't block on email
+    res.status(200).json({
+        success: true,
+        message: "Subscription received",
+    });
+
+    // Fire-and-forget: send notification email in background
+    sendEmail({
         email: process.env.EMAIL_USERNAME,
         subject: "New Dewora Newsletter Subscriber",
         message: [
@@ -29,17 +36,9 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
                 timeZone: "Asia/Colombo",
             })}`,
         ].join("\n"),
-    });
-
-    if (!emailSent) {
-        res.status(500);
-        throw new Error("Could not send subscription email");
-    }
-
-    res.status(200).json({
-        success: true,
-        message: "Subscription received",
-    });
+    })
+        .then((result) => console.log("[Newsletter] Email sent:", result))
+        .catch((err) => console.error("[Newsletter] Email failed:", err.message));
 });
 
 export { subscribeNewsletter };
