@@ -39,15 +39,17 @@ ${message}
             `,
         };
 
-        await sendEmail(emailOptions);
+        const emailSent = await sendEmail(emailOptions);
 
         res.status(201).json({
+            success: true,
             _id: contact._id,
             name: contact.name,
             email: contact.email,
             subject: contact.subject,
             message: contact.message,
             status: contact.status,
+            emailSent: emailSent, // Inform the frontend if email was actually sent
         });
     } else {
         res.status(400);

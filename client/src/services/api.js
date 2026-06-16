@@ -5,8 +5,14 @@ import axios from "axios";
  * Central Axios instance for API calls.
  * We can add interceptors here later if we need to handle global errors or auth headers.
  */
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+if (import.meta.env.MODE === "production") {
+    console.log(`[API] Initializing with Base URL: ${baseURL}`);
+}
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+    baseURL,
     withCredentials: true,
 });
 
