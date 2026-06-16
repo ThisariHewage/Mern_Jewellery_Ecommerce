@@ -25,18 +25,27 @@ const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5173",
     process.env.CLIENT_URL,
-].filter(Boolean);
+].filter(Boolean).map(url => url.replace(/\/$/, "")); // Normalize: remove trailing slashes
 
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
 
-        if (allowedOrigins.indexOf(origin) !== -1 || (process.env.NODE_ENV !== "production" && origin.includes("localhost"))) {
+        // Normalize incoming origin
+        const normalizedOrigin = origin.replace(/\/$/, "");
+
+        const isAllowed = allowedOrigins.includes(normalizedOrigin) ||
+            (process.env.NODE_ENV !== "production" && normalizedOrigin.includes("localhost")) ||
+            normalizedOrigin.endsWith(".vercel.app"); // Explicitly allow all vercel previews for this project
+
+        if (isAllowed) {
             callback(null, true);
         } else {
-            console.warn(`[CORS] Blocked Origin: ${origin}. Allowed: ${allowedOrigins.join(", ")}`);
-            callback(new Error("Not allowed by CORS"));
+            console.warn(`[CORS] Blocked Origin: ${origin}. Expected one of: ${allowedOrigins.join(", ")}`);
+            // Instead of throwing an error which might stop headers from being sent, 
+            // we call with null, false which tells the cors middleware to not add headers.
+            callback(null, false);
         }
     },
     credentials: true,
