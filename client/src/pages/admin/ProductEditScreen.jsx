@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ChevronLeft, Package, DollarSign, Image as ImageIcon, Tag, Hash, AlignLeft, Check, Upload, X } from "lucide-react";
+import { ChevronLeft, Package, Image as ImageIcon, Tag, Hash, AlignLeft, Check, Upload, X } from "lucide-react";
 import api from "../../services/api";
 
 const ProductEditScreen = () => {
@@ -25,6 +25,10 @@ const ProductEditScreen = () => {
     const [updating, setUpdating] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
+
+    const stopNumberWheelChange = (e) => {
+        e.currentTarget.blur();
+    };
 
     useEffect(() => {
         setImageError(false);
@@ -168,6 +172,7 @@ const ProductEditScreen = () => {
                                         required
                                         step="0.01"
                                         onChange={(e) => setPrice(e.target.value)}
+                                        onWheel={stopNumberWheelChange}
                                         className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium text-sm"
                                     />
                                 </div>
@@ -183,6 +188,7 @@ const ProductEditScreen = () => {
                                         value={countInStock}
                                         required
                                         onChange={(e) => setCountInStock(e.target.value)}
+                                        onWheel={stopNumberWheelChange}
                                         className="w-full pl-14 pr-6 py-4 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-black outline-none transition-all font-medium text-sm"
                                     />
                                 </div>
