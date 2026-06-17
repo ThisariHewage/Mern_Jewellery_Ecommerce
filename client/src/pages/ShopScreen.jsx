@@ -1,15 +1,37 @@
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/slices/productSlice";
 import ProductCard from "../components/ProductCard";
+import ProductPagination from "../components/ProductPagination";
+
+const PRODUCTS_PER_PAGE = 12;
 
 const ShopScreen = () => {
     const dispatch = useDispatch();
     const { products, loading, error } = useSelector((state) => state.products);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
+
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+    const requestedPage = Number(searchParams.get("page")) || 1;
+    const currentPage = Math.min(Math.max(requestedPage, 1), totalPages || 1);
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const paginatedProducts = products.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+
+    const handlePageChange = (page) => {
+        const newParams = new URLSearchParams(searchParams);
+        if (page === 1) {
+            newParams.delete("page");
+        } else {
+            newParams.set("page", page);
+        }
+        setSearchParams(newParams);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-16">
@@ -34,11 +56,18 @@ const ShopScreen = () => {
                     {error}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
-                    {products.map((product) => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+                        {paginatedProducts.map((product) => (
+                            <ProductCard key={product._id} product={product} />
+                        ))}
+                    </div>
+                    <ProductPagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </>
             )}
         </div>
     );

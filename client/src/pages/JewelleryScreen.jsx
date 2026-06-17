@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/slices/productSlice";
 import ProductCard from "../components/ProductCard";
+import ProductPagination from "../components/ProductPagination";
+
+const PRODUCTS_PER_PAGE = 12;
 
 const JewelleryScreen = () => {
     useEffect(() => {
@@ -15,6 +18,7 @@ const JewelleryScreen = () => {
     const productFilter = searchParams.get("product") || "All";
     const sortFilter = searchParams.get("sort") || "";
     const keywordFilter = searchParams.get("keyword") || "";
+    const pageFilter = Number(searchParams.get("page")) || 1;
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -84,6 +88,22 @@ const JewelleryScreen = () => {
     } else if (sortFilter === "price_desc") {
         filteredProducts.sort((a, b) => b.price - a.price);
     }
+
+    const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+    const currentPage = Math.min(Math.max(pageFilter, 1), totalPages || 1);
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const paginatedProducts = filteredProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+
+    const handlePageChange = (page) => {
+        const newParams = new URLSearchParams(searchParams);
+        if (page === 1) {
+            newParams.delete("page");
+        } else {
+            newParams.set("page", page);
+        }
+        setSearchParams(newParams);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
 
     const categories = ["All", "Men", "Women", "Bridal"];
     const productTypes = ["All", "Anklet", "Bangle", "Bracelet", "Chain", "Earrings", "Necklace", "Ring", "Pendant"];
@@ -158,11 +178,18 @@ const JewelleryScreen = () => {
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
-                        {filteredProducts.map((product) => (
-                            <ProductCard key={product._id} product={product} />
-                        ))}
-                    </div>
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+                            {paginatedProducts.map((product) => (
+                                <ProductCard key={product._id} product={product} />
+                            ))}
+                        </div>
+                        <ProductPagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
                 )}
             </div>
         </div>
